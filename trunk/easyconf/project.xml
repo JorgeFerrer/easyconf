@@ -14,19 +14,20 @@
        1.1, 1.2, 2.0-SNAPSHOT -->
   <currentVersion>0.7.0-beta</currentVersion>
     <organization>
-        <name>Germinus XXI S.A.</name>
-        <url>http://www.germinus.com/</url>
-        <logo>http://www.germinus.com/images/logos/logo_s.gif</logo>
+        <name>EasyConf team</name>
+        <url>http://www.sourceforge.net/projects/easyconf</url>
+        <logo></logo>
     </organization>
 
 
   <!-- the year the project started -->
-  <inceptionYear>2004</inceptionYear>
+  <inceptionYear>2005</inceptionYear>
   <package>com.germinus.easyconf</package>
   <logo>http://maven.apache.org/images/maven.jpg</logo>
   <description>
-    Software configuration made easy. Check the Javadocs in 'Projects report'
-    for more information.
+    EasyConf is a library to access configuration of software components and applications. 
+    It defines simple conventions to make it easier to use. It was born in a portlets-based 
+    portal and has several features useful for this and similar environments.
   </description>
 
   <shortDescription>
@@ -34,11 +35,11 @@
   </shortDescription>
 
   <!-- the project home page -->
-  <url>http://192.168.1.52/easyconf/site/</url>
-  <issueTrackingUrl>http://172.16.0.72:8080/issues</issueTrackingUrl>
-  <siteAddress>192.168.1.52</siteAddress>
-  <siteDirectory>/var/www/easyconf/site/</siteDirectory>
-  <distributionDirectory>/www/maven.apache.org/builds/</distributionDirectory>
+  <url>http://easyconf.sourceforge.net</url>
+  <issueTrackingUrl>https://sourceforge.net/tracker/?group_id=131552&amp;atid=721404</issueTrackingUrl>
+  <siteAddress>shell.sourceforge.net</siteAddress>
+  <siteDirectory>/home/groups/e/ea/easyconf/htdocs</siteDirectory>
+  <distributionDirectory>/www/easyconf/builds/</distributionDirectory>
 
   <!-- the version control repository and http url for online access
        the connection element has the form:
@@ -51,14 +52,12 @@
 
   <!-- any mailing lists for the project -->
   <mailingLists>
-      <mailingLists>
-        <mailingList>
-            <name>easyconf-users</name>
-            <subscribe>easyconf-users-subscribe@sourceforge.net</subscribe>
-            <unsubscribe>easyconf-users-unsubscribe@sourceforge.net</unsubscribe>
-            <archive>http://sourceforge.net/mailarchive/forum.php?forum=easyconf-users</archive>
-        </mailingList>
-    </mailingLists>
+     <mailingList>
+        <name>easyconf-users</name>
+        <subscribe>easyconf-users-subscribe@sourceforge.net</subscribe>
+        <unsubscribe>easyconf-users-unsubscribe@sourceforge.net</unsubscribe>
+        <archive>http://sourceforge.net/mailarchive/forum.php?forum=easyconf-users</archive>
+     </mailingList>
   </mailingLists>
   
   <!-- who the developers are for the project -->
