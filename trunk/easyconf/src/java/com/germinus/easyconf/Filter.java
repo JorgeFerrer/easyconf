@@ -21,8 +21,9 @@ package com.germinus.easyconf;
  * @author jferrer
  */
 public class Filter {
-    public static final char FILTER_SEPARATOR = ':';
-    public static final char SEPARATOR = '.';
+    public static final char SELECTOR_SEPARATOR = '.';
+    public static final char FILTER_START = '[';
+    public static final char FILTER_END = ']';
 
     private String[] selectors;
 
@@ -51,10 +52,10 @@ public class Filter {
      * concatenated.
      *
      * Example: if the filter has two selectors (bar and foo). Fragments would
-     * be (assuming the SELECTOR_SEPARATOR='.' and FILTER_SEPARATOR=':'):
+     * be:
      * <ul>
-     *  <li>For n=2: ":bar.foo"
-     *  <li>For n=1: ":bar"
+     *  <li>For n=2: "[bar.foo]"
+     *  <li>For n=1: "[bar]"
      *  <li>For n=0: ""
      *  <li>Otherwise: throws IllegalArgumentException
      * </ul>
@@ -70,13 +71,14 @@ public class Filter {
             return "";
         }
         StringBuffer filter = new StringBuffer();
-        filter.append(FILTER_SEPARATOR);
+        filter.append(FILTER_START);
         for (int i = 0; i < n; i++) {
             if (i != 0) {
-                filter.append(SEPARATOR);
+                filter.append(SELECTOR_SEPARATOR);
             }
             filter.append(selectors[i]);
         }
+        filter.append(FILTER_END);
         return filter.toString();
     }
 

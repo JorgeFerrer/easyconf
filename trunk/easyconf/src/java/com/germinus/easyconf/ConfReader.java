@@ -36,7 +36,10 @@ public class ConfReader {
     }
 
     /**
-     * Get the full configuration of the given component
+     * Get the full configuration of the given component.
+     * 
+     * The configuration will be cached so that next calls will not need
+     * to reload the properties or XML files again.
      * @param componentName any String which can be used to identified a
      * configuration component.
      * @return a <code>ComponentConf</code> instance 
