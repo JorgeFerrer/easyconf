@@ -241,8 +241,9 @@ public class ComponentProperties {
      * but it is not found
      */
     public Class getClass(String key, Class defaultValue) throws ClassNotFoundException {
-        String className = getString(key);
-        if (className == null) {
+        String defaultStringValue = null;
+        String className = getString(key, defaultStringValue);
+        if (className == defaultStringValue) {
             return defaultValue;
         }
         return ClasspathUtil.locateClass(className);
@@ -260,8 +261,9 @@ public class ComponentProperties {
      * value has been specified in the configurations file
      */
     public Class getClass(String key, Filter filter, Class defaultValue) throws ClassNotFoundException {
-        String className = getString(key, filter);
-        if (className == null) {
+        String defaultStringValue = null;
+        String className = getString(key, filter, null);
+        if (className == defaultStringValue) {
             return defaultValue;
         }
         return ClasspathUtil.locateClass(className);
