@@ -54,8 +54,33 @@ public class ConfReaderTest extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(ConfReaderTest.class);
-//        suite.addTest(new ConfReaderTest("testFilter"));
+//        suite.addTest(new ConfReaderTest("testABCD"));
         return suite;
+    }
+
+    public void testGetExistentClass() throws ClassNotFoundException {
+        Class theClass = getProperties().getClass("com.germinus.easyconf.DatabaseConf-class");
+        assertEquals("An invalid class was loaded", 
+                DatabaseConf.class, theClass);
+        theClass = getProperties().getClass("com.germinus.easyconf.DatabaseConf-class", Table.class);
+        assertEquals("An invalid class was loaded", 
+                DatabaseConf.class, theClass);
+        theClass = getProperties().getClass("non-existent-property", Table.class);
+        assertEquals("The default class should have been used", 
+                Table.class, theClass);
+    }
+
+    public void testGetNonexistentClass() {
+        try {
+            Class theClass = getProperties().getClass("non-existent-class");
+            fail("A ClassNotFoundException should have been thrown");
+        } catch (ClassNotFoundException success) {        
+        }
+        try {
+            Class theClass = getProperties().getClass("non-existent-class", Table.class);
+            fail("A ClassNotFoundException should have been thrown");
+        } catch (ClassNotFoundException success) {        
+        }
     }
 
     public void testAllFilesHaveBeenRead() {
