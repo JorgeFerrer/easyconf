@@ -1,0 +1,11 @@
+<project xmlns:deploy="deploy">
+
+  <goal name="dependent-libs">
+    <deploy:copy-deps todir="target/dependent-libs"/>
+    <zip destfile="target/easyconf-dependent-libs.zip"
+         basedir="target/dependent-libs">
+    	
+    </zip>
+  </goal>
+
+</project>
