@@ -59,6 +59,7 @@
              <email>jferrer@germinus.com</email>
              <roles>
                  <role>Project Manager</role>
+                 <role>Developer</role>
              </roles>
              <organization>Germinus XXI</organization>
              <timezone>0</timezone>
@@ -66,9 +67,9 @@
       <developer>
              <name>Jesús Jaimez</name>
              <id>jjaimez</id>
-             <email>jjaimez@germinus.com</email>
+             <email>jjaimez@aubay.es</email>
              <roles>
-                 <role>Project Manager</role>
+                 <role>Developer</role>
              </roles>
              <organization>Germinus XXI</organization>
              <timezone>0</timezone>
@@ -78,7 +79,7 @@
              <id>ifolmedo</id>
              <email>iferrer@germinus.com</email>
              <roles>
-                 <role>Project Manager</role>
+                 <role>Developer</role>
              </roles>
              <organization>Germinus XXI</organization>
              <timezone>0</timezone>
