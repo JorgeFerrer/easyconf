@@ -39,6 +39,14 @@
          <li>Conversion of the properties of a component configuration to a <tt>DynaBean</tt>
             object</li>
          <li>Much more documentation</li>
+         <li><p>Bug fixes:
+            <ul>
+               <li>The base properties file was mandatory if when reading the
+						configuration object</li>
+					<li><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1152885&amp;group_id=131552&amp;atid=721404">BUG 
+                  1152885</a>: Exception not thrown when base file is missing</li>
+            </ul></p>           
+          </li>
       </ul>
     </section>
     <section name="Older versions">

@@ -4,12 +4,17 @@
       <author >Jorge Ferrer</author>
    </properties>
    <body>
-      <section name="Using XML files for configuration">
+      <section name="Accesing the configuration from JSP files">
+         <p>
+				
+			</p>
+      </section>
+      <section name="Access to properties using a taglib">
          <p>
 
 			</p>
       </section>
-      <section name="XML tips">
+      <section name="Access to the configuration object using a taglib">
          <p>
         		Where possible map elements to classes and attributes to fields of those classes.
          </p>         
