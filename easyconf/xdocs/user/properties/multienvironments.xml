@@ -4,15 +4,160 @@
       <author >Jorge Ferrer</author>
    </properties>
    <body>
-      <section name="What is configuration for multiple environments?">
-         <p>What is it? Mainly for server applications.</p>
-      </section>
-      <section name="How to do it">
-         <p>Using two of the features already explained in previous sections: include-and-override
-            and system properties.</p>
+      <section name="Support for multiple environments">
          <p>
+            This feature is useful mainly for server applications. This type of 
+            applications usually integrate with external systems and the data
+            to connect to them is different depending on the environment in which
+            the application is running. For example, there may be a local development
+            environment, an integration environment, a preproduction environment
+            and of course a production environment.
+         </p>
+         <p>
+            EasyConf supports having different properties for each environment. In
+            fact it does so using the features you already know:
+            <ul>
+               <li>Inclusion of files</li>
+               <li>Access to system properties</li>
+            </ul>
+            Let's see an example which shows how to use this features to support
+            multiple environments.
+         </p>            
+      </section>
+      <section name="An example">
+         <p>
+				Let's assume a component called <i>moduleABC</i>. We want to 
+            support two environments: <i>development</i> and <i>production</i>.            
+            The base configuration properties of this component
+            will be searched for in a file called
+            <tt>moduleABC.properties</tt>. Some of the properties in this file
+            will have a value which depends on the environment. In the base file
+            default values will be provided. The values specific to the
+            environment will be in other two files:
+            <ul>
+               <li><tt>moduleABC.development.properties</tt></li>
+               <li><tt>moduleABC.production.properties</tt></li>
+            </ul>
+            We could include, for example, the first of this files in the 
+            <tt>moduleABC.properties</tt> 
+            file using the <tt>include-and-override</tt> special property:
+         </p>
+         <source>
+include-and-override=moduleABC.development.properties
+         </source>
+         <p>
+            The values of the properties of the included file will override the values of
+            the same properties of the base file (<tt>moduleABC.properties</tt>). Next,
+            let's do a little change in the previous sentence. Instead of hardcoding
+            the word <tt>development</tt>, we'll use a variable:
+			</p>
+         <source>
+include-and-override=moduleABC.${my-environment}.properties
+         </source>
+         <p>
+            The last step is to give a value to this property using a system property. So
+            in the development environment you have to execute the application using:
+         </p>
+         <source>
+java -Dmy-environment=development ...
+         </source>
+         <p>
+            In this case the file <tt>moduleABC.development.properties</tt> will be 
+            included and the properties for the <i>development</i> environment will 
+            override the default ones. To load the file with the properties for production
+            all you have to do is to execute the application using:
+         </p>
+         <source>
+java -Dmy-environment=production ...
+         </source>
+         <p>
+            And that's all. You can deploy the same application in all the environments
+            and then choose the configuration using a single system property. To add
+            more environments just create more files of the form 
+            <tt>moduleABC.ENVIRONMENT.properties</tt>. Note that the name of the
+            system property is an example, you are free to choose any name you want.
+         </p>
+         <p>
+            The following image shows this process:
            <img src="../../resources/multi-environment.gif"/>
          </p>
+         <p>
+            Note that if the system property <tt>my-environment</tt> is given a value which
+            does not correspond to a supported environment no file will be included. 
+            The reason is that in this case <tt>include-and-override</tt> will try
+            to include a file which does not exist, and in that case it will just
+            silently ignore it.
+         </p>
       </section>
+      <section name="Multiple projects and multiple environments">
+         <p>
+            A more complex case occurs when you have a product which is used
+            for several projects and then each projects has several environments.
+            This situation is also supported by EasyConf. All you have to do
+            is to include in the base properties file another file whose name
+            depends on the project name. So if we have two projects, projectA and
+            projectB and two environments 6 files may be used:
+         </p>
+         <ul>
+            <li><tt>moduleABC.projectA.properties</tt>: will contain the properties
+               whose value has been changed for the projectA.</li> 
+            <li><tt>moduleABC.projectA.development.properties</tt>: will contain the 
+               properties whose value has been changed for the development
+               environment of projectA.</li> 
+            <li><tt>moduleABC.projectA.production.properties</tt>: will contain the 
+               properties whose value has been changed for the production
+               environment of projectA.</li> 
+            <li><tt>moduleABC.projectB.properties</tt>: will contain the properties
+               whose value has been changed for the projectB.</li> 
+            <li><tt>moduleABC.projectB.development.properties</tt>: will contain the 
+               properties whose value has been changed for the development
+               environment of projectB.</li> 
+            <li><tt>moduleABC.projectB.production.properties</tt>: will contain the 
+               properties whose value has been changed for the production
+               environment of projectB.</li> 
+         </ul> 
+         <p>
+            There are several ways to achieve this, but a good one would be
+            using a second system property which contains the name of the
+            project. For example, we'll give this second property the name
+            <tt>my-project</tt>. In the <tt>moduleABC.properties</tt> file we 
+            write:
+         </p>
+         <source>
+include-and-override=moduleABC.${my-project}.properties
+include-and-override=moduleABC.${my-project}.${my-environment}.properties
+         </source>
+         <p>
+            The first file to be included is the one with properties specific for 
+            a project. Next the file with the properties specific for one environment
+            of that project will be loaded overriding any previous property values.
+         </p>   
+         <p>
+            To use the configuration, for example, for the production environment of
+            projectB execute the application with the following command line arguments:
+         </p>   
+         <source>
+java -Dmy-project=projectB -Dmy-environment=production ...
+			</source>            
+      </section>
+      <section name="Multiple components and multiple environments">
+         <p>
+            Another complex environment happens when <a href="multicomponents.html">several
+            components</a> are aggregated and the values of its properties must have 
+            different values in different environments. In this case the solution is 
+            very similar to the above cases, but the base files must not be changed.
+            For this reason, the inclusion of the files with the properties specific 
+            for an environment
+            is done in the <tt>global-configuration.properties</tt> file. For example:
+         </p>
+         <source>
+include-and-override=global-configuration.${my-environment}.properties
+         </source>
+         <p>
+            And then all the property values specific for one of environments will 
+            be set in <tt>global-configuration.development.properties</tt>,
+            <tt>global-configuration.production.properties</tt>, etc. 
+          </p>
+      </section>   
    </body>
 </document>
