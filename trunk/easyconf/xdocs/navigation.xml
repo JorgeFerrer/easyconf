@@ -1,0 +1,22 @@
+<project name="EasyConf">
+
+    <title>EasyConf</title>
+
+    <body>
+      <menu name="Users">
+	<item name="Features" href="/index.html" />
+	<item name="Cookbook" href="/user/cookbook.html" />
+	<item name="Properties" href="/user/properties-files.html" />
+	<item name="XML Files" href="/user/xml-files.html" />
+	<item name="Best practices" href="/best-practices.html" />
+	<item name="Reference" href="/reference/index.html" collapsable="true" >
+	  <item name="Conventions" href="/reference/conventions.html"/>
+	</item>
+	<search/>
+      </menu>
+      <menu name="Developers">
+	<item name="Philosophy" href="/dev/philosophy.html" />
+	<item name="How to contribute" href="/how-to-contribute.html" />
+      </menu>
+    </body>
+  </project>
