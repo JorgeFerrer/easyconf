@@ -22,18 +22,18 @@
             subtype as selectors:
 			</p>
          <source>
-            getProperties().getString("skin", Filter.by(userType, userSubtype));
+getProperties().getString("skin", Filter.by(userType, userSubtype));
          </source>
          <p>
             In the properties file the skin property may be given different values
             depending of the values of the user type and subtype. For example:
          </p>
          <source>
-            skin[teacher]=blue
-            skin[student][secundary]=green
-            skin[student]=yellow
-            skin=grey
-         </source>
+skin[teacher]=blue
+skin[student][secundary]=green
+skin[student]=yellow
+skin=grey
+			</source>
          <p>
             With this configuration the default skin is <i>grey</i> and it will 
             be applied to users which
