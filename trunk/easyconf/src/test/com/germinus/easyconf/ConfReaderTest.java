@@ -1,3 +1,18 @@
+/*
+ * Copyright 2004-2005 Germinus XXI
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.germinus.easyconf;
 
 import java.util.Arrays;
@@ -57,12 +72,15 @@ public class ConfReaderTest extends TestCase {
 					 getProperties().getString("string-not-overridden"));
     }
     
-    public void testFilter() {
-        Object value = getProperties().getString("property-with-filter",
+    public void testFilterWithDefault() {
+        String value = getProperties().getString("property-with-filter",
                                                  Filter.by("selector1", "selector2"),
                                                  "defaultvalue");
         assertEquals("Invalid value when specifying two selectors",
     				 "selector1-and-selector2", value);
+    }
+    public void testFilterWithoutDefault() {
+        Object value = null;
         try {
             value = getProperties().getString("Inexistent property",
                     Filter.by("selector1", "selector2"));
@@ -80,7 +98,7 @@ public class ConfReaderTest extends TestCase {
                     Filter.by("selector1", "selector2"));
             value = getProperties().getByte("Inexistent property",
                     Filter.by("selector1", "selector2"));
-        fail("A NoSuchElementException should have been thrown");
+            fail("A NoSuchElementException should have been thrown");
         } catch (NoSuchElementException success) {
         }
     }
