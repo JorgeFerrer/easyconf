@@ -5,10 +5,28 @@
    </properties>
    <body>
       <section name="What are property filters?">
-         <p>Formally they are optional sufixes of the property name. But it is easier to
-            understand what they are and why they are useful with an example.</p>
          <p>
-            ...
+            Filters are a method to give several values to a property and choose one of 
+            them based on the value of one or more selectors. They have been found particularly
+            useful in environments which have heavy personalization requirements, although
+            thay can be very handy in a lot of other situations
+         </p>
+         <p>
+				As an example will take a property called <tt>skin</tt> which defines the default
+            skin of a user in an educative portal. The users are categorized in types
+            differentiating teachers from students from others. The students are further 
+            subdivided depending on their grade level (primary, secondary, etc). We 
+            want to let the person
+            configuring the portal set a different default skin depending on the type of 
+            user. To do this we retrieve the property value using the user type and
+            subtype as selectors:
+			</p>
+         <source>
+            getProperties().getString("skin", Filter.by(userType, userSubtype));
+         </source>
+         <p>
+            In the properties file the skin property may be given different values
+            depending of the values of the user type and subtype. For example:
          </p>
          <source>
             skin[teacher]=blue
@@ -17,11 +35,18 @@
             skin=grey
          </source>
          <p>
-            ...
+            With this configuration the default skin is <i>grey</i> and it will 
+            be applied to users which
+            are not teachers neither students. For students the default skin is
+            <i>yellow</i> unless it is of subtype secundary in which case the
+            default skin will be <i>green</i>.
          </p>
-         <source>
-            getProperties().getString("skin", Filter.by(userType, userSubtype));
-         </source>
+         <p>
+            EasyConf supports an unlimited number of selectors. They can be optionally 
+            used in any of the supported property types with or without a defautl value.
+            Check the <a href="/apidocs/com/germinus/easyconf/Filter.html">Javadoc of 
+               the Filter class</a> for more information
+         </p>
       </section>
    </body>
 </document>
