@@ -60,10 +60,10 @@ public class ConfReaderTest extends TestCase {
     }
 
     public void testGetExistentClass() throws ClassNotFoundException {
-        Class theClass = getProperties().getClass("com.germinus.easyconf.DatabaseConf-class");
+        Class theClass = getProperties().getClass("database-configuration-class");
         assertEquals("An invalid class was loaded", 
                 DatabaseConf.class, theClass);
-        theClass = getProperties().getClass("com.germinus.easyconf.DatabaseConf-class", Table.class);
+        theClass = getProperties().getClass("database-configuration-class", Table.class);
         assertEquals("An invalid class was loaded", 
                 DatabaseConf.class, theClass);
         theClass = getProperties().getClass("non-existent-property", Table.class);
@@ -102,23 +102,21 @@ public class ConfReaderTest extends TestCase {
     
     /**
      * Expected property keys and values:
-     * long-with-filter:selector1.selector2=1234
-     * short-with-filter:selector1.selector2=1234
-     * int-with-filter:selector1.selector2=1234
-     * byte-with-filter:selector1.selector2=123
-     * biginteger-with-filter:selector1.selector2=1234
-     * bigdecimal-with-filter:selector1.selector2=1234
-     * double-with-filter:selector1.selector2=1234
-     * float-with-filter:selector1.selector2=1234
-     * list-with-filter:selector1.selector2=1234,5678
-     * boolean-with-filter:selector1.selector2=false
+     * property-with-filter[selector1.selector2]
+     * long-with-filter[selector1.selector2]=1234
+     * short-with-filter[selector1.selector2]=1234
+     * int-with-filter[selector1.selector2]=1234
+     * byte-with-filter[selector1.selector2]=123
+     * biginteger-with-filter[selector1.selector2]=1234
+     * bigdecimal-with-filter[selector1.selector2]=1234
+     * double-with-filter[selector1.selector2]=1234
+     * float-with-filter[selector1.selector2]=1234
+     * list-with-filter[selector1.selector2]=1234,5678
+     * boolean-with-filter[selector1.selector2]=false
      */
     public void testFilterWithDefault() {
-        String value = getProperties().getString("property-with-filter",
-                                                 Filter.by("selector1", "selector2"),
-                                                 "defaultvalue");
-        assertEquals("Invalid string value when specifying two selectors",
-    				 "selector1-and-selector2", value);
+        assertEquals("Invalid string value when specifying two selectors", "selector1-and-selector2", 
+					 getProperties().getString("property-with-filter", Filter.by("selector1", "selector2"), "defaultvalue"));
         assertEquals("Invalid long value when specifying two selectors", 1234, 
 				 	  getProperties().getLong("long-with-filter", Filter.by("selector1", "selector2"), 0l));
         assertEquals("Invalid short value when specifying two selectors", 1234, 
