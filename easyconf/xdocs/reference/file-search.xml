@@ -8,7 +8,7 @@
   <body>
     <section name="Where does EasyConf look for the configuration files?">
       <p>
-        Every property file looked for by EasyConf is searched in several places
+        Every property or xml file looked for by EasyConf is searched in several places
         to allow the maximum flexibility. The order in which this places are checked is:
       </p>
       <ol>
