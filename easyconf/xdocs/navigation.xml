@@ -4,19 +4,27 @@
 
     <body>
       <menu name="Users">
-	<item name="Features" href="/index.html" />
-	<item name="Cookbook" href="/user/cookbook.html" />
-	<item name="Properties" href="/user/properties-files.html" />
-	<item name="XML Files" href="/user/xml-files.html" />
-	<item name="Best practices" href="/best-practices.html" />
-	<item name="Reference" href="/reference/index.html" collapsable="true" >
-	  <item name="Conventions" href="/reference/conventions.html"/>
-	</item>
-	<search/>
+	  	<item name="Home" href="/index.html" />
+		<item name="Quick start guide" href="/quickstart.html" />
+		<search/>
       </menu>
+      <menu name="User Guide">
+		<item name="Features" href="/user/features.html" />
+		<!--
+		<item name="Properties" href="/user/property-files.html" />
+		<item name="XML Files" href="/user/xml-files.html" />
+		-->
+	  </menu>
+	  <menu name="Reference">
+  	    <!-- <item name="Property types" href="/reference/property-types.html"/> -->
+		<!-- <item name="Property types" href="/reference/file-search.html"/> -->
+		<!-- <item name="Conventions" href="/reference/conventions.html"/> -->
+      </menu>
+      <!--
       <menu name="Developers">
-	<item name="Philosophy" href="/dev/philosophy.html" />
-	<item name="How to contribute" href="/how-to-contribute.html" />
+		<item name="Philosophy" href="/dev/philosophy.html" />
+		<item name="How to contribute" href="/how-to-contribute.html" />
       </menu>
+      -->
     </body>
   </project>

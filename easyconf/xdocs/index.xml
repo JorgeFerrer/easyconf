@@ -6,47 +6,47 @@
   </properties>
 
   <body>
-    <section name="Welcome to EasyConf">
+    <section name="What is easyconf?">
       <p>
-	  The key features of EasyConf are:
+        EasyConf is a library to access configuration of software components and 
+        applications. It defines simple conventions to make it easier to use. It 
+        was born in a portlets-based portal and has several features useful for 
+        this and similar environments.
+      </p>
+      <p>
+        EasyConf aims to make very easy to make Java applications configurable. You can start
+        with a very simple scheme and when
+        you need it you'll be able to add powerful functionality such as XML files, support for 
+        several environments or aggregation of componentes.
+      </p>
+    </section>
+    <section name="State">
+      <p>
+        EasyConf is stable and <i>production ready</i>. It is being used in several production 
+        environments without any known bugs.
+      </p>
+      <p>
+        Version number has not reached 1.0 yet because we are currently waiting for feedback from
+        the community about the <a href="conventions.html">conventions used</a>. Based on this 
+        feedback some of the current conventions may change. Should that happen, the changes will
+        be clearly documented and a explanation of the needed changes (if any) when updating
+        will be provided.
+      </p>
+    </section>
+    <section name="Main features">
+      <p>
+	  The key <a href="features.html">features</a> of EasyConf are:
 	  <ol>
 	    <li><b>Usage of easy to remember conventions</b> to simplify configuring
 	      applications</li>
 	    <li><b>Component based configuration</b> (for example for portlets
-	      and portals</li>
+	      and portals)</li>
 	    <li><b>Support for multiple environments</b> (development, integration,
   preproduction, production, etc)</li>
+        <li><b>Support for <i>typed</i> property files, XML files or a combination of both</b></li>
 	  </ol>
       </p>
-      <p>
-	  Complete list of features:
-	  <ol>
-	    <li>Two file formats supported:
-	      <ol>
-		<li>Properties configuration</li>
-		<li>User-defined XML configuration</li>
-	      </ol>
-	    </li>
-	    <li>Support for reloading of configuration (in progress)</li>
-	    <li>Features of properties configuration:
-	      <ol>
-		<li>Variables support</li>
-		<li>Typed properties (automatic conversion to numbers, 
-		  lists, boolean, etc)</li>
-		<li>Support for include clauses</li>
-		<li>Properties with 'selectors'</li>
-	      </ol>
-	    </li>
-	    <li>Features of XML configuration:
-	      <ol>
-		<li>Converts XML configuration to JavaBeans</li>
-		<li>All XML vocabularies supported</li>
-		<li>The XML format is described using digester
-		rules</li>
-	      </ol>
-	    </li>
-	  </ol>
-	</p>
+
       </section>
     </body>
   </document>

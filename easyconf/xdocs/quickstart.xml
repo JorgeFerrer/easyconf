@@ -1,0 +1,125 @@
+<document>
+
+  <properties>
+    <title>Quick start guide</title>
+    <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
+  </properties>
+
+  <body>
+    <section name="The problem">
+      <p>
+      	You are developing an application and you have to use a value which may change in the
+      	future. For example you are developing a calculator and you have to implement a function
+      	to convert Euros to Dollars. Currently you know its (for example) 1.2:1 ratio so you 
+      	<i>hardcode</i> it in a constant:
+      </p>
+      <source>
+      	  public static final double EURO_TO_DOLLARS_RATIO = 1.2;
+      	  public double toDollars(double euros) {
+      	     return euros/EURO_TO_DOLLARS_RATIO;
+      	  }
+      </source>
+     <p>
+      	You wish you could make that value configurable so you don't have to recompile when
+      	it changes. How would you do it? You could use the <tt>Properties</tt> class which
+      	comes with Java but you'll have to define conventions about where to place the configuration
+      	file and which method to use to find it. Furthermore you'll have to deal with the conversion
+      	of the value to a <tt>double</tt>. It's not that much work, but we programmers are lazy.
+      </p>
+        
+    </section>
+    <section name="A simple solution">
+      <p>
+        Here is how you would do it with EasyConf. First change the above lines
+      	with:
+      </p>
+      <source>
+      	  public static final double EURO_TO_DOLLARS_RATIO = ConfReader.getInstance().
+      	     getComponentConfiguration("calculator").getProperties().getDouble("euro-to-dollars");
+
+      	  public double toDollars(double euros) {
+      	     return euros/EURO_TO_DOLLARS_RATIO;
+      	  }
+      </source>
+      <p>
+      	Then create a file called <tt>calculator.properties</tt> and place it anywhere that
+      	will end up being in the classpath of the application. This file should have the following
+      	content:
+      </p>
+      <source>
+      	  euro-to-dollars=1.2
+      </source>
+      <p>
+      	And that's it!
+      </p>
+    </section>
+    <section name="Explanation">
+      <p>
+        In this simple case EasyConf provided a few simple conveniences:
+      </p>
+      <ul>
+        <li>You don't hardcode the
+          name of a file in your code. You just give a name, <i>calculator</i> which EasyConf
+          will map to a file name <tt>calculator.properties</tt>. You'll find later that this makes a 
+          difference when you later want to use more than one file to configure the calculator.</li>
+        <li>EasyConf will look for the file in a <a href="reference/file-search.html">variety of locations</a>.
+          Third the number is automatically converted to a double. If it cannot be converted a 
+          <tt>ConversionException</tt> is thrown. </li>
+        <li>You can read the value in a single line. Yes I know it looks like a complicated line for
+          this simple example, but that makes it possible to add more complex configuration later.</li>
+      </ul>
+    </section>
+
+    <section name="Adding more properties">
+      <p>
+        Later on, when developing more functionalities of the calculator you find more places where
+        you could take advantage of your newly created configuration file. In this case you need a
+        list of items and a boolean value. With a small refactoring you get:
+      </p>
+      <source>
+      	  public static final double  EURO_TO_DOLLARS_RATIO = getProperties().getDouble("euro-to-dollars");
+      	  public static final List    SUPPORTED_CURRENCIES  = getProperties().getList("supported-currencies");
+      	  public static final List    TRUSTED_CURRENCIES  = getProperties().getList("trusted-currencies");
+      	  public static final boolean CONVERSION_ALLOWED    = getProperties().getBoolean("conversion-allowed");
+
+      	  private static ComponentProperties getProperties(double euros) {
+      	     return ConfReader.getInstance().getComponentConfiguration("calculator").getProperties();
+      	  }
+      </source>
+      <p>
+      And add the new properties to <tt>calculator.properties</tt>:
+      </p>
+      <source>
+      	  euro-to-dollars=1.2    
+      	  supported-currencies=${trusted-currencies},pound
+      	  trusted-currencies=dollar,euro
+      	  conversion-allowed=true
+      </source>        
+      <p>
+        This example shows a new feature of EasyConf (inherited from Commons Configuration in fact): the 
+        ability to use variables inside the property file. It
+        also shows how handy it is to have automatic conversion of properties to different types
+        Check the complete list of <a href="reference/property-types.html">supported types</a>.
+      </p>
+    </section>
+
+    <section name="More functionality">
+    <p>
+      As your configuration needs grow you'll find other useful features in EasyConf. For example, it is
+      possible to complement or substitute the properties file with an
+      XML file. EasyConf allows any arbitrary XML vocabulary and converts it to Java POJOs (using Digester).
+    </p>
+    <p>
+      In the manual you'll also find how EasyConf supports changing the configuration for different 
+      environments. For example if you need to use some configuration in the local environment and a
+      different one for the production environment. EasyConf supports an unlimitted number of environments.
+    </p>
+    <p>
+      Another interesting feature is to configure a set of components when they are aggregated to form
+      a more complex application. For example if you deploy several portlets which use EasyConf in a portal 
+      you can change the default property values of any or all of the portlets in a single property files.
+    </p>      
+    </section>
+    
+  </body>
+</document>
