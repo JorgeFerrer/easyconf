@@ -39,7 +39,11 @@
             be applied to users which
             are not teachers neither students. For students the default skin is
             <i>yellow</i> unless it is of subtype secundary in which case the
-            default skin will be <i>green</i>.
+            default skin will be <i>green</i>. It is important to know that it
+            is optional and up to the person writting the configuration to use
+            selector values or not. He/she can just give a simple value to the
+            property. Using filters from code when retrieving the property value
+            just offers the possibility to the configurator.
          </p>
          <p>
             EasyConf supports an unlimited number of selectors. They can be optionally 
