@@ -6,51 +6,59 @@
   </properties>
 
   <body>
-    <section name="Features">
-      <p>
-	  The key features of EasyConf are:
-	  <ol>
-	    <li><b>Usage of easy to remember conventions</b> to simplify configuring
-	      applications</li>
-	    <li><b>Component based configuration</b> (for example for portlets
-	      and portals</li>
-	    <li><b>Support for multiple environments</b> (development, integration,
-  preproduction, production, etc)</li>
-	  </ol>
-      </p>
-      <p>
-	  Complete list of features:
-	  <ol>
-	    <li>Two file formats supported:
-	      <ol>
-		<li>Properties configuration</li>
-		<li>User-defined XML configuration</li>
-	      </ol>
-	    </li>
-	    <li>Support for reloading of configuration (in progress)</li>
-	    <li>Features of properties configuration:
-	      <ol>
-		<li>Variables support</li>
-		<li>Typed properties (automatic conversion to numbers, 
-		  lists, boolean, etc)</li>
-		<li>Support for include clauses</li>
-		<li>Properties with 'selectors'</li>
-	      </ol>
-	    </li>
-	    <li>Features of XML configuration:
-	      <ol>
-		<li>Converts XML configuration to JavaBeans</li>
-		<li>All XML vocabularies supported</li>
-		<li>The XML format is described using digester
-		rules</li>
-	      </ol>
-	    </li>
-	  </ol>
-	</p>
-	<p>
-	For more information about this features check the 
-	<a href="../apidocs/overview-summary.html">Javadoc summary of EasyConf</a>
-	</p>
-   </section>
+      <section name="Features">
+         <p> The key features of EasyConf are: <ol> <li><b>Usage of easy to 
+            remember conventions</b> to simplify configuring applications</li> 
+            <li><b>Component based configuration</b> (for example for portlets 
+            and portals</li> <li><b>Support for multiple environments</b> 
+            (development, integration, preproduction, production, etc)</li> 
+            </ol> </p>
+         <p> Complete list of features: </p>
+         <ol>
+            <li>
+               <p>Two file formats supported: </p>
+               <ol>
+                  <li>Properties configuration</li>
+                  <li>User-defined XML configuration</li>
+               </ol>
+            </li>
+            <li>Support for reloading of configuration (in progress, scheduled 
+               for v. 0.8)</li>
+            <li><p>Utils for J2EE applications</p>
+               <ol>
+                  <li>Taglib to retrieve properties from JSPs</li>
+                  <li>Taglib to retrieve the configuration object (in progress, scheduled for v. 0.8)</li>
+                  <li>Servlet and struts action to refresh the configuration 
+                     (in progress, scheduled for v. 0.8)</li>
+               </ol>
+            </li>
+            <li>
+               <p>Features of properties configuration: </p>
+               <ol>
+                  <li>Variables support</li>
+                  <li>Typed properties (automatic conversion to numbers, lists, 
+                     boolean, etc)</li>
+                  <li>Property filters</li>
+                  <li>Access to system properties. It can also be viewed as being able
+                     to override property values through a system property</li>
+                  <li>Support for loading classes from a class name specified in a proprety</li>
+                  <li>Support for including property files</li>
+                  <li>Support for configuring multiple environments (devel, production, preproduction, etc)</li>
+                  <li>Special support for multicomponent environments (p.e. portlets and portals)</li>
+               </ol>
+            </li>
+            <li>
+               <p>Features of XML configuration:</p>
+               <ol>
+                  <li>Converts XML configuration to JavaBeans</li>
+                  <li>All XML vocabularies supported</li>
+                  <li>The XML format is described using digester rules</li>
+               </ol>
+            </li>
+         </ol>
+         <p> For more information about this features check the <a 
+            href="../apidocs/overview-summary.html">Javadoc summary of 
+            EasyConf</a> </p>
+      </section>
    </body>
   </document>
