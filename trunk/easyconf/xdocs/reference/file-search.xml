@@ -8,8 +8,24 @@
   <body>
     <section name="Where does EasyConf look for the configuration files?">
       <p>
-        Sorry, this page has not been written yet
+        Every property file looked for by EasyConf is searched in several places
+        to allow the maximum flexibility. The order in which this places are checked is:
       </p>
+      <ol>
+        <li>URL: checks if the specified file name is a valid URL and if it is tries to get it.</li>
+        <li>File system: if it is an absolute path (starts with a slash) it is interpreted from the
+        root of the file system. Otherwise the directory where the JVM is being executed will
+        be used as the base directory.</li>
+        <li>User home directory: the home directory obtained with the <tt>user.home</tt> system property
+        will be used as the base directory</li>
+        <li>Context classpath</li>
+        <li>System claspath</li>
+       </ol>
+       <p>
+         This behaviour is implemented by Jakarta's commons configuration. You can check the locate method of the
+         <a href="http://jakarta.apache.org/commons/configuration/xref/org/apache/commons/configuration/ConfigurationUtils.html">ConfigurationUtils</a>
+         class for more information.
+       </p>
       </section>
     </body>
   </document>

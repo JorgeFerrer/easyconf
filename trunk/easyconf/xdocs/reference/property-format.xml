@@ -1,0 +1,19 @@
+<document>
+
+  <properties>
+    <title>Properties format</title>
+    <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
+  </properties>
+
+  <body>
+    <section name="Properties format">
+      <p>
+        EasyConf supports several conveniences when specifying the value of a property.
+        It uses Jakarta's common configuration to provide this functionality.
+        Check the <a href="http://jakarta.apache.org/commons/configuration/apidocs/org/apache/commons/configuration/PropertiesConfiguration.html">Javadoc page of the PropertiesConfiguration</a> class
+        for a complete description.
+      </p>
+      
+      </section>
+    </body>
+  </document>

@@ -6,7 +6,7 @@
   </properties>
 
   <body>
-    <section name="What is easyconf?">
+    <section name="What is EasyConf?">
       <p>
         EasyConf is a library to access configuration of software components and 
         applications. It defines simple conventions to make it easier to use. It 
@@ -23,19 +23,19 @@
     <section name="State">
       <p>
         EasyConf is stable and <i>production ready</i>. It is being used in several production 
-        environments without any known bugs.
+        environments without any known bugs. EasyConf is based on several <a href="dependencies.html">external libraries</a>
+        which are also stable.
       </p>
       <p>
         Version number has not reached 1.0 yet because we are currently waiting for feedback from
-        the community about the <a href="conventions.html">conventions used</a>. Based on this 
-        feedback some of the current conventions may change. Should that happen, the changes will
-        be clearly documented and a explanation of the needed changes (if any) when updating
-        will be provided.
+        the community about the <a href="reference/conventions.html">conventions used</a>. Based on this 
+        feedback some of the current conventions may change. Should that happen, changes needed when 
+        updating will be clearly documented.
       </p>
     </section>
     <section name="Main features">
       <p>
-	  The key <a href="features.html">features</a> of EasyConf are:
+	  The key <a href="user/features.html">features</a> of EasyConf are:
 	  <ol>
 	    <li><b>Usage of easy to remember conventions</b> to simplify configuring
 	      applications</li>

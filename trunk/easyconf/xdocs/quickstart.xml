@@ -35,7 +35,8 @@
       </p>
       <source>
       	  public static final double EURO_TO_DOLLARS_RATIO = ConfReader.getInstance().
-      	     getComponentConfiguration("calculator").getProperties().getDouble("euro-to-dollars");
+      	     getComponentConfiguration("calculator").getProperties().
+      	     getDouble("euro-to-dollars");
 
       	  public double toDollars(double euros) {
       	     return euros/EURO_TO_DOLLARS_RATIO;
@@ -77,13 +78,18 @@
         list of items and a boolean value. With a small refactoring you get:
       </p>
       <source>
-      	  public static final double  EURO_TO_DOLLARS_RATIO = getProperties().getDouble("euro-to-dollars");
-      	  public static final List    SUPPORTED_CURRENCIES  = getProperties().getList("supported-currencies");
-      	  public static final List    TRUSTED_CURRENCIES  = getProperties().getList("trusted-currencies");
-      	  public static final boolean CONVERSION_ALLOWED    = getProperties().getBoolean("conversion-allowed");
+      	  public static final double  EURO_TO_DOLLARS_RATIO = 
+      	  	getProperties().getDouble("euro-to-dollars");
+      	  public static final List    SUPPORTED_CURRENCIES  = 
+      	  	getProperties().getList("supported-currencies");
+      	  public static final List    TRUSTED_CURRENCIES    = 
+      	  	getProperties().getList("trusted-currencies");
+      	  public static final boolean CONVERSION_ALLOWED    = 
+      	  	getProperties().getBoolean("conversion-allowed");
 
       	  private static ComponentProperties getProperties(double euros) {
-      	     return ConfReader.getInstance().getComponentConfiguration("calculator").getProperties();
+      	     return ConfReader.getInstance().getComponentConfiguration("calculator").
+      	     	getProperties();
       	  }
       </source>
       <p>

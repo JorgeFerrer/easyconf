@@ -23,7 +23,7 @@
   <!-- the year the project started -->
   <inceptionYear>2005</inceptionYear>
   <package>com.germinus.easyconf</package>
-  <logo>http://maven.apache.org/images/maven.jpg</logo>
+  <logo>http://easyconf.sourceforge.net/easyconf.jpg</logo>
   <description>
     EasyConf is a library to access configuration of software components and applications. 
     It defines simple conventions to make it easier to use. It was born in a portlets-based 
