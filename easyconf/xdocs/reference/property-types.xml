@@ -8,8 +8,23 @@
   <body>
     <section name="Property types">
       <p>
-        Sorry, this page has not been written yet
+        EasyConf supports typed access to the configuration properties of a component.
+        The current supported types are (in alphabetic order):
       </p>
+      <ul>
+        <li>BigDecimal</li>
+        <li>BigInteger</li>
+        <li>Boolean</li>
+        <li>Byte</li>
+        <li>Double</li>
+        <li>Float</li>
+        <li>Integer</li>
+        <li>List</li>
+        <li>Long</li>
+        <li>Short</li>
+        <li>String</li>
+        <li>StringArray</li>
+      </ul>
       </section>
     </body>
   </document>

@@ -25,7 +25,12 @@ import org.apache.commons.logging.LogFactory;
 
 
 /**
- * Part of a component configuration which contains its properties
+ * Part of a component configuration which contains its properties.
+ * 
+ * The properties can be accessed by type and automatic conversion will
+ * be performed. The supported types are: BigDecimal, BigInteger,
+ * Boolean, Byte, Double, Float, Integer, List, Long, Short, String
+ * and StringArray
  * 
  * It is based on the <code>Configuration</code> interface from 
  * Jakarta Commons Configuration but it is given a different name which
@@ -133,7 +138,7 @@ public class ComponentProperties {
     public BigInteger getBigInteger(String key, Filter filter, BigInteger defaultValue) {
         return (BigInteger) getPropertyWithFilter(key, filter, BigInteger.class, defaultValue);
     }
-
+    
     // ..................... Boolean ......................
     
     public boolean getBoolean(String key) {
@@ -183,7 +188,7 @@ public class ComponentProperties {
     public byte getByte(String key, Filter filter, byte defaultValue) {
         return getByte(key,filter,new Byte(defaultValue)).byteValue();       
     }
-
+    
     // ..................... Double ......................
     
     public double getDouble(String key) {
@@ -231,7 +236,7 @@ public class ComponentProperties {
     public float getFloat(String key, Filter filter, float defaultValue) {
         return getFloat(key, filter, new Float(defaultValue)).floatValue();
     }
-
+    
     // ..................... Integer ......................  
     
     public int getInt(String key) {
@@ -255,7 +260,7 @@ public class ComponentProperties {
     public int getInt(String key, Filter filter, int defaultValue) {
         return getInteger(key,filter, new Integer(defaultValue)).intValue();
     }
-
+    
     // ..................... List ......................  
 
     public List getList(String key) {
@@ -273,6 +278,7 @@ public class ComponentProperties {
     public List getList(String key, Filter filter, List defaultValue) {
         return (List) getPropertyWithFilter(key, filter, List.class, defaultValue);
     }
+    
     // ..................... Long ......................  
 
     public long getLong(String key) {
@@ -296,7 +302,7 @@ public class ComponentProperties {
     public long getLong(String key, Filter filter, long defaultValue) {
         return getLong(key, filter, new Long(defaultValue)).longValue();
     }
-
+    
     // ..................... Short ......................  
 
     public short getShort(String key) {
@@ -320,7 +326,7 @@ public class ComponentProperties {
     public short getShort(String key, Filter filter, short defaultValue) {
         return getShort(key,filter,new Short(defaultValue)).shortValue();
     }
-
+    
     // ..................... String ......................  
 
     public String getString(String key) {
@@ -338,7 +344,7 @@ public class ComponentProperties {
     public String getString(String key, Filter filter, String defaultValue) {
         return (String) getPropertyWithFilter(key, filter, String.class, defaultValue);
     }
-
+    
     // ..................... StringArray ......................  
 
     public String[] getStringArray(String key) {

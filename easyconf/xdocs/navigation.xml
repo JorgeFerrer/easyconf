@@ -3,9 +3,10 @@
     <title>EasyConf</title>
 
     <body>
-      <menu name="Users">
+      <menu name="Introduction">
 	  	<item name="Home" href="/index.html" />
 		<item name="Quick start guide" href="/quickstart.html" />
+		<item name="Download" href="/download.html" />
 		<search/>
       </menu>
       <menu name="User Guide">
@@ -16,9 +17,10 @@
 		-->
 	  </menu>
 	  <menu name="Reference">
-  	    <!-- <item name="Property types" href="/reference/property-types.html"/> -->
-		<!-- <item name="Property types" href="/reference/file-search.html"/> -->
-		<!-- <item name="Conventions" href="/reference/conventions.html"/> -->
+  	    <item name="Property types" href="/reference/property-types.html"/>
+  	    <item name="Property format" href="/reference/property-format.html"/>
+		<item name="File search" href="/reference/file-search.html"/>
+		<item name="Conventions" href="/reference/conventions.html"/>
       </menu>
       <!--
       <menu name="Developers">
@@ -26,5 +28,10 @@
 		<item name="How to contribute" href="/how-to-contribute.html" />
       </menu>
       -->
+      <footer>
+    <A href="http://sourceforge.net/projects/easyconf">
+      <IMG src="http://sourceforge.net/sflogo.php?group_id=72748" border="0" alt="sf logo"/>
+    </A>
+   </footer>
     </body>
   </project>
