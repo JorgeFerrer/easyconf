@@ -51,11 +51,12 @@ import java.util.ArrayList;
  * @jsp.tag name="property" body-content="empty" tei-class="com.germinus.easyconf.taglib.PropertyTei"
  */
 public class PropertyTag extends BodyTagSupport {
+    private static final String DEFAULT_TYPE = "java.lang.String";
 
     protected String id = null;
     protected String component = null;
     protected String property = null;
-    protected String type = "java.lang.String";
+    protected String type = DEFAULT_TYPE;
     protected String selector1 = "";
     protected String selector2 = "";
     protected String selector3 = "";
@@ -101,6 +102,9 @@ public class PropertyTag extends BodyTagSupport {
      * @jsp.attribute required="false" rtexprvalue="true"
      */
     public String getType() {
+        if (StringUtils.isEmpty(type)) {
+            type = DEFAULT_TYPE;
+        }
         return (this.type);
     }
 
@@ -108,7 +112,9 @@ public class PropertyTag extends BodyTagSupport {
      * @jsp.attribute required="false" rtexprvalue="true"
      */
     public void setType(String type) {
-        this.type = type;
+        if (StringUtils.isNotEmpty(type)) {
+            this.type = type;
+        }
     }
 
 
@@ -247,31 +253,31 @@ public class PropertyTag extends BodyTagSupport {
 
     private Object readProperty(ComponentProperties conf) throws JspException {
         Object value;
-        if (type.equals("java.util.List")) {
+        if (getType().equals("java.util.List")) {
             value = conf.getList(property, getPropertyFilter(), EMPTY_LIST);
-        } else if (type.equals("java.lang.Integer")) {
+        } else if (getType().equals("java.lang.Integer")) {
             value = conf.getInteger(property, getPropertyFilter(), new Integer(0));
-        } else if (type.equals("java.lang.String")) {
+        } else if (getType().equals("java.lang.String")) {
             if (defaultValue != null) {
                 value = conf.getString(property, getPropertyFilter(), defaultValue);
             } else {
                 value = conf.getString(property, getPropertyFilter());
             }
-        } else if (type.equals("java.lang.Double")) {
+        } else if (getType().equals("java.lang.Double")) {
             value = new Double(conf.getDouble(property, getPropertyFilter()));
-        } else if (type.equals("java.lang.Float")) {
+        } else if (getType().equals("java.lang.Float")) {
             value = new Float(conf.getFloat(property, getPropertyFilter()));
-        } else if (type.equals("java.lang.Byte")) {
+        } else if (getType().equals("java.lang.Byte")) {
             value = new Byte(conf.getByte(property, getPropertyFilter()));
-        } else if (type.equals("java.math.BigDecimal")) {
+        } else if (getType().equals("java.math.BigDecimal")) {
             value = conf.getBigDecimal(property, getPropertyFilter());
-        } else if (type.equals("java.lang.BigInteger")) {
+        } else if (getType().equals("java.lang.BigInteger")) {
             value = conf.getBigInteger(property, getPropertyFilter());
-        } else if (type.equals("java.lang.Boolean")) {
+        } else if (getType().equals("java.lang.Boolean")) {
             value = new Boolean(conf.getBoolean(property, getPropertyFilter()));
-        } else if (type.equals("java.lang.Short")) {
+        } else if (getType().equals("java.lang.Short")) {
             value = new Short(conf.getShort(property, getPropertyFilter()));
-        } else if (type.equals("java.lang.Long")) {
+        } else if (getType().equals("java.lang.Long")) {
             value = new Long(conf.getLong(property, getPropertyFilter()));
         } else {
                 JspException e = new JspException("Unsupported type: " +type);
