@@ -213,6 +213,53 @@ public class ComponentProperties {
         return getDouble(key, filter, new Double(defaultValue)).doubleValue();
     }
         
+    // ..................... Class ......................  
+
+    /**
+     * Get the <code>Class</code> representation of the class name
+     * specified in the given property
+     * @throws ClassNotFoundException if the specified class is not found
+     */
+    public Class getClass(String key) throws ClassNotFoundException {
+        String className = getString(key);
+        return ClasspathUtil.locateClass(className);
+    }
+    
+    /**
+     * Get the <code>Class</code> representation of the class name
+     * specified in the given property. Or the <code>defaultValue</code>
+     * if no value has been given to the property. 
+     * 
+     * @throws ClassNotFoundException if a class has been configured
+     * but it is not found
+     */
+    public Class getClass(String key, Class defaultValue) throws ClassNotFoundException {
+        String className = getString(key);
+        if (className == null) {
+            return defaultValue;
+        }
+        return ClasspathUtil.locateClass(className);
+    }
+
+    /**
+     * Similar to the previous methods but complementing the property key with the given filter
+     */
+    public Class getClass(String key, Filter filter) throws ClassNotFoundException {
+        String className = getString(key, filter);
+        return ClasspathUtil.locateClass(className);
+    }
+    /**
+     * Equivalent to the previous method but giving a default value which will be used if no
+     * value has been specified in the configurations file
+     */
+    public Class getClass(String key, Filter filter, Class defaultValue) throws ClassNotFoundException {
+        String className = getString(key, filter);
+        if (className == null) {
+            return defaultValue;
+        }
+        return ClasspathUtil.locateClass(className);
+    }
+    
     // ..................... Float ......................
     
     public float getFloat(String key) {

@@ -16,6 +16,7 @@
         <li>BigInteger</li>
         <li>Boolean</li>
         <li>Byte</li>
+        <li>Class: useful for implementing plugins</li>
         <li>Double</li>
         <li>Float</li>
         <li>Integer</li>
