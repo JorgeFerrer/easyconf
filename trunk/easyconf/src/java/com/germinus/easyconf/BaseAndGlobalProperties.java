@@ -42,6 +42,7 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
     private String componentName;
     private List loadedFiles = new ArrayList();
     private Properties systemProperties;
+    private boolean baseConfigurationLoaded = false;
 
     public BaseAndGlobalProperties(String componentName) {
         this.componentName = componentName;
@@ -81,25 +82,29 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
 
 
     public void addBaseFileName(String fileName) {
-        addFileProperties(fileName, baseConf);
+        Configuration conf = addFileProperties(fileName, baseConf);
+        if ((conf != null) && (!conf.isEmpty())) {
+            baseConfigurationLoaded = true;
+        }
     }
 
     public void addGlobalFileName(String fileName) {
         addFileProperties(fileName, globalConf);
     }
 
-    private void addFileProperties(String fileName, CompositeConfiguration conf) {
+    private Configuration addFileProperties(String fileName, CompositeConfiguration conf) {
         try {
             Configuration newConf = new SysPropertiesConfiguration(fileName);
-
             addIncludedFileProperties(newConf, conf);
             conf.addConfiguration(newConf);
             super.addConfiguration(newConf);
             loadedFiles.add(fileName);
+            return newConf;
         } catch (org.apache.commons.configuration.ConfigurationException e) {
             throw new ConfigurationException("Error reading file" + fileName, e);
         } catch (Exception ignore) {
             log.debug("Configuration source " + fileName + " ignored");
+            return null;
         }
     }
 
@@ -120,5 +125,9 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
 
     public List loadedFiles() {
         return loadedFiles;
+    }
+
+    public boolean hasBaseConfiguration() {
+        return baseConfigurationLoaded;
     }
 }

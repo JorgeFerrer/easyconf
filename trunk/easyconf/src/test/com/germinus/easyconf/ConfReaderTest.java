@@ -243,8 +243,19 @@ public class ConfReaderTest extends TestCase {
 
     public void testComponentWithoutProperties() {
         ComponentConfiguration conf = ConfReader.getConfiguration("module_without_properties");
-        assertNotNull("The properties should not be null", 
-                conf.getProperties());        
+        try {
+            assertNotNull("The properties should not be null",
+                conf.getProperties());
+            fail("An exception should have been thrown because the base file " +
+                 "does not exist");
+        } catch (ConfigurationNotFoundException ok) {
+        }
+        try {
+            conf.getConfigurationObject();
+        } catch (ConfigurationNotFoundException e) {
+            fail("When the getProperties method is not called explicitly, " +
+                 "the base properties file should not be mandatory");
+        }
 
     }
 
