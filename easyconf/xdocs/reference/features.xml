@@ -22,14 +22,12 @@
                   <li>User-defined XML configuration</li>
                </ol>
             </li>
-            <li>Support for reloading of configuration (in progress, scheduled 
-               for v. 0.8)</li>
             <li><p>Utils for J2EE applications</p>
                <ol>
                   <li>Taglib to retrieve properties from JSPs</li>
-                  <li>Taglib to retrieve the configuration object (in progress, scheduled for v. 0.8)</li>
+                  <li>Taglib to retrieve the configuration object</li>
                   <li>Servlet and struts action to refresh the configuration 
-                     (in progress, scheduled for v. 0.8)</li>
+                     (in progress, scheduled for v. 0.9)</li>
                </ol>
             </li>
             <li>
@@ -55,6 +53,27 @@
                   <li>The XML format is described using digester rules</li>
                </ol>
             </li>
+            <li>
+               <p>Design philosophy:</p>
+               <ol>
+                  <li><a href="http://martinfowler.com/ieeeSoftware/failFast.pdf">Fail Fast</a>: if 
+                     a property is not found (and no default value has been given) an Exception is
+                     throws. If the property is found but is not of the expected type, an exception
+                     is also thrown.
+                     If the properties of a component is explicitly requested and its
+                     base properties file does not exist, an exception is throws. If the
+                     configuration object is explicitly requested and the XML file is not
+                     found an exception is thrown. All this exceptions explain clearly the reason
+                     of the error and allow developers and administrators to quickly detect the
+                     problem and find the cause. It is always up to the developer to catch this
+                     exceptions hidding the problem.</li>
+                  <li>Conventions over software and configuration: uses conventions instead of offering
+                     unnecesary flexibility through configuration. This makes EasyConf simpler
+                     and easier to use.</li>
+               </ol>
+            </li>            
+            <li>Support for reloading of configuration (in progress, full support scheduled 
+               for v. 0.9)</li>
          </ol>
          <p> For more information about this features check the <a 
             href="../apidocs/overview-summary.html">Javadoc summary of 
