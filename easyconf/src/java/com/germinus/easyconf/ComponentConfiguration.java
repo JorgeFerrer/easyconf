@@ -97,7 +97,7 @@ public class ComponentConfiguration {
 
 
     public boolean isCacheEnabled() {
-        return getProperties().getBoolean("easyconf:cache.enabled", true);
+        return getAvailableProperties().getBoolean("easyconf:cache.enabled", true);
     }
 
 
