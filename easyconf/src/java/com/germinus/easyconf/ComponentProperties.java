@@ -42,11 +42,11 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ComponentProperties {
 
-    Configuration properties;
+    BaseAndGlobalProperties properties;
     public static final String NULL_STRING = null;
     private static final Log log = LogFactory.getLog(ComponentProperties.class);
 
-    ComponentProperties(Configuration conf) {
+    ComponentProperties(BaseAndGlobalProperties conf) {
         this.properties = conf;
     }
     
@@ -474,4 +474,7 @@ public class ComponentProperties {
     }
 
 
+    public boolean hasBaseConfiguration() {
+        return properties.hasBaseConfiguration();
+    }
 }

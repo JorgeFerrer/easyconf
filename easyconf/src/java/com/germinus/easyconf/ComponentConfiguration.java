@@ -60,7 +60,8 @@ public class ComponentConfiguration {
         }
         try {
             configurationObject = getConfigurationManager().
-                    readConfigurationObject(componentName, getProperties());
+                    readConfigurationObject(componentName,
+                                            getAvailableProperties());
         } catch (IOException e) {
             throw new ConfigurationException(componentName, "Error reading object configuration", e);
         } catch (SAXException e) {
@@ -77,12 +78,23 @@ public class ComponentConfiguration {
      * Get a typed map of the properties associated with this component
      */
     public ComponentProperties getProperties() {
+        ComponentProperties properties = getAvailableProperties();
+        if (!properties.hasBaseConfiguration()) {
+            String msg = "The base properties file was not found";
+            throw new ConfigurationNotFoundException(componentName, msg);
+        }
+        return properties;
+    }
+
+    private ComponentProperties getAvailableProperties() {
         if (properties != null) {
             return properties;
         }
-        properties = getConfigurationManager().readPropertiesConfiguration(componentName);
+        properties = getConfigurationManager().
+                readPropertiesConfiguration(componentName);
         return properties;
     }
+
 
     public boolean isCacheEnabled() {
         return getProperties().getBoolean("easyconf:cache.enabled", true);
