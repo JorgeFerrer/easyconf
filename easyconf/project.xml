@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project>
+
+  <!-- the version of maven's project object model -->
+  <pomVersion>3</pomVersion>
+  
+  <!-- a unique name for this project -->
+  <id>easyconf</id>
+  
+  <!-- a short but descriptive name for the project -->
+  <name>Easyconf library</name>
+  
+  <!-- The version of the project under development, e.g.
+       1.1, 1.2, 2.0-SNAPSHOT -->
+  <currentVersion>0.6.3-SNAPSHOT</currentVersion>
+    <organization>
+        <name>Germinus XXI S.A.</name>
+        <url>http://www.germinus.com/</url>
+        <logo>http://www.germinus.com/images/logos/logo_s.gif</logo>
+    </organization>
+
+
+  <!-- the year the project started -->
+  <inceptionYear>2004</inceptionYear>
+  <package>com.germinus.easyconf</package>
+  <logo>http://maven.apache.org/images/maven.jpg</logo>
+  <description>
+    Software configuration made easy. Check the Javadocs in 'Projects report'
+    for more information.
+  </description>
+
+  <shortDescription>
+    Software configuration made easy
+  </shortDescription>
+
+  <!-- the project home page -->
+  <url>http://192.168.1.52/easyconf/site/</url>
+  <issueTrackingUrl>http://172.16.0.72:8080/issues</issueTrackingUrl>
+  <siteAddress>192.168.1.52</siteAddress>
+  <siteDirectory>/var/www/easyconf/site/</siteDirectory>
+  <distributionDirectory>/www/maven.apache.org/builds/</distributionDirectory>
+
+  <!-- the version control repository and http url for online access
+       the connection element has the form:
+       scm:<system>:<system specific connection string> -->
+  <repository>
+    <connection>scm:cvs:pserver:anoncvs@cvs.lab.germinus.com:/data/cvs/XPRESSION:easyconf</connection>
+    <url>http://cvs.lab.germinus.com/viewcvs/easyconf/</url>
+  </repository>
+
+  <!-- any mailing lists for the project -->
+  <mailingLists/>
+  
+  <!-- who the developers are for the project -->
+  <developers>
+      <developer>
+             <name>Jorge Ferrer</name>
+             <id>jferrer</id>
+             <email>jferrer@germinus.com</email>
+             <roles>
+                 <role>Project Manager</role>
+             </roles>
+             <organization>Germinus XXI</organization>
+             <timezone>0</timezone>
+         </developer>
+      <developer>
+             <name>Jesús Jaimez</name>
+             <id>jjaimez</id>
+             <email>jjaimez@germinus.com</email>
+             <roles>
+                 <role>Project Manager</role>
+             </roles>
+             <organization>Germinus XXI</organization>
+             <timezone>0</timezone>
+         </developer>
+  </developers>
+
+  <!-- jar files the project is dependent on -->
+  <dependencies>
+      <dependency>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <version>1.2.8</version>
+          <url>http://www.apache.org/</url>
+      </dependency>
+
+      <dependency>
+          <groupId>servletapi</groupId>
+          <artifactId>servletapi</artifactId>
+          <version>2.3</version>
+          <url>http://www.apache.org/</url>
+          <properties>
+              <war.bundle>false</war.bundle>
+          </properties>
+      </dependency>
+      <dependency>
+          <groupId>struts</groupId>
+          <artifactId>struts</artifactId>
+          <version>1.1</version>
+          <url>http://www.apache.org/</url>
+          <properties>
+              <war.bundle>true</war.bundle>
+          </properties>
+      </dependency>
+
+	<!-- Commons configuration and dependant libraries -->
+
+      <dependency>
+          <groupId>commons-configuration</groupId>
+          <artifactId>commons-configuration</artifactId>
+          <version>1.0-rc2</version>
+          <url>http://www.apache.org/</url>
+      </dependency>
+
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.0</version>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.0</version>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <groupId>dom4j</groupId>
+      <artifactId>dom4j</artifactId>
+      <version>1.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+
+    <dependency>
+     <groupId>commons-digester</groupId>
+      <artifactId>commons-digester</artifactId>
+      <version>1.6</version>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils-core</artifactId>
+      <version>1.7.0</version>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils-bean-collections</artifactId>
+      <version>1.7.0</version>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+
+    <dependency>
+          <groupId>xerces</groupId>
+      <artifactId>xerces</artifactId>
+      <version>2.2.1</version>
+      <url>http://xml.apache.org/xerces2-j/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+
+    <dependency>
+          <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
+      <version>2.0.2</version>
+      <url>http://xml.apache.org/commons/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+
+  </dependencies>
+
+    <!-- build information for the project -->
+  <build>
+    <nagEmailAddress>turbine-maven-dev@jakarta.apache.org</nagEmailAddress>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <includes>
+        <include>com/germinus/easyconf/ConfReaderTest.java</include>
+      </includes>
+      <resources>
+        <resource>
+          <directory>src/test</directory>
+          <includes>
+            <include>*.properties</include>
+            <include>*.xml</include>
+          </includes>
+        </resource>
+      </resources>
+    </unitTest>
+
+      <resources>
+        <resource>
+          <directory>src/conf</directory>
+          <includes>
+            <include>*.properties</include>
+            <include>*.xml</include>
+            <include>*.dtd</include>
+          </includes>
+        </resource>
+      </resources>
+    
+  </build>
+  <!--
+  <reports>
+    <report>maven-jdepend-plugin</report>
+    <report>maven-checkstyle-plugin</report>
+    <report>maven-changes-plugin</report>
+    <report>maven-changelog-plugin</report>
+    <report>maven-file-activity-plugin</report>
+    <report>maven-developer-activity-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-jxr-plugin</report>
+    <report>maven-junit-report-plugin</report>
+    <report>maven-tasklist-plugin</report>
+    <report>maven-pmd-plugin</report>
+    <report>maven-simian-plugin</report>
+    <report>maven-faq-plugin</report>
+    <report>maven-jcoverage-plugin</report>
+    <report>maven-tasks-plugin</report>
+    <report>maven-findbugs-plugin</report>
+  </reports>
+   -->
+
+</project>
+

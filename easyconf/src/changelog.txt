@@ -1,0 +1,6 @@
+##
+## Description of changes
+##
+
+Changes to 0.5
+- Renamed easyconf.ext.files as overriden-properties.files

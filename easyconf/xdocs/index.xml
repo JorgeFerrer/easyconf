@@ -1,0 +1,52 @@
+<document>
+
+  <properties>
+    <title>Welcome to EasyConf</title>
+    <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
+  </properties>
+
+  <body>
+    <section name="Welcome to EasyConf">
+      <p>
+	  The key features of EasyConf are:
+	  <ol>
+	    <li><b>Usage of easy to remember conventions</b> to simplify configuring
+	      applications</li>
+	    <li><b>Component based configuration</b> (for example for portlets
+	      and portals</li>
+	    <li><b>Support for multiple environments</b> (development, integration,
+  preproduction, production, etc)</li>
+	  </ol>
+      </p>
+      <p>
+	  Complete list of features:
+	  <ol>
+	    <li>Two file formats supported:
+	      <ol>
+		<li>Properties configuration</li>
+		<li>User-defined XML configuration</li>
+	      </ol>
+	    </li>
+	    <li>Support for reloading of configuration (in progress)</li>
+	    <li>Features of properties configuration:
+	      <ol>
+		<li>Variables support</li>
+		<li>Typed properties (automatic conversion to numbers, 
+		  lists, boolean, etc)</li>
+		<li>Support for include clauses</li>
+		<li>Properties with 'selectors'</li>
+	      </ol>
+	    </li>
+	    <li>Features of XML configuration:
+	      <ol>
+		<li>Converts XML configuration to JavaBeans</li>
+		<li>All XML vocabularies supported</li>
+		<li>The XML format is described using digester
+		rules</li>
+	      </ol>
+	    </li>
+	  </ol>
+	</p>
+      </section>
+    </body>
+  </document>

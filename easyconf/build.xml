@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<project name="custom-ext" basedir="." default="deploy">
+	<target name="zip-changes" if="date" description="Make a zip with the files changed 
+		since the specified 'date' of the form MM/dd/yyyy">
+		<mkdir dir="target"/>
+		<zip destfile="target/ext-changes.zip">
+			<fileset dir="." excludes="**/target/**, **/classes/**, *~">
+				<date datetime="${date}" when="after"/>
+    			<type type="file"/>
+			</fileset>
+		</zip>	
+	</target>	
+</project>
+
