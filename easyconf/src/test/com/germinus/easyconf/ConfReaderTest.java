@@ -55,7 +55,9 @@ public class ConfReaderTest extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(ConfReaderTest.class);
+//        suite.addTest(new ConfReaderTest("testUsingSystemProperties"));
 //        suite.addTest(new ConfReaderTest("testUsingSystemPropertiesInIncludes"));
+        
         return suite;
     }
 
@@ -286,11 +288,29 @@ public class ConfReaderTest extends TestCase {
     }
 
     public void testUsingSystemProperties() {
-        System.setProperty("easyconf-environment", "local");
-        assertEquals("The environment was not correctly read from the system property",
-                     "local",
-                     getProperties().getString("test_module_environment"));
-        System.setProperty("easyconf-environment", "");
+//        System.setProperty("easyconf-environment", "local");
+//        assertEquals("The environment was not correctly read from the system property",
+//                     "local",
+//                     getProperties().getString("test_module_environment"));
+//        System.setProperty("easyconf-environment", "");
+        
+        System.setProperty("sysproperty-without-prefix-and-default-value", 
+		                   "value-of-sysproperty-without-prefix-and-default-value");
+        assertEquals("A system property without prefix should not be read if there is a default value",
+        		     "defaultValue",
+        			 getProperties().getString("sysproperty-without-prefix-and-default-value"));
+
+        System.setProperty("sysproperty-without-prefix",
+                           "value-of-sysproperty-without-prefix");
+        assertEquals("The value of the sysproperty should be returned if there isn't a default value",
+   		     "value-of-sysproperty-without-prefix",
+   			 getProperties().getString("sysproperty-without-prefix"));
+		
+        System.setProperty("test_module:sysproperty-with-prefix-and-default-value", 
+		"value-of-sysproperty-with-prefix");
+        assertEquals("The value of the sysproperty should be returned if a prefix is used",
+		            "value-of-sysproperty-with-prefix",
+			         getProperties().getString("sysproperty-with-prefix-and-default-value"));
 
     }
 
