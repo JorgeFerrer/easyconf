@@ -7,8 +7,8 @@
       <section name="Using XML files for configuration">
          <p>
 			EasyConf handles XML configuration files by <b>converting the XML data
-            to Java objects (POJOs)</b>. There no need to work with complex
-            DOM objects or alike. The XML structured is converted to POJOs
+            to Java objects (POJOs)</b>. There is no need to work with complex
+            DOM objects or alike. The XML structure is converted to POJOs
             that already exist in your project or to ones you create to
             hold the configuration. Those objects have no dependency on
             EasyConf or its XML source and they can have additional business
@@ -24,8 +24,9 @@
           </p>
           <p>
             Once you have an XML file and the necesary POJOs, the second step
-            is to write a mapping file. Note: Here EasyConf gives up a little ease of
-            use in favor of flexibility. We consider this is a worthy trade off
+            is to write a mapping file. By having to write by hand a
+            mapping file EasyConf gives up a little ease of
+            use in favor of flexibility. We believe this is a worthy trade off
             because it makes the library available for much broader uses, such as when 
             the configuration files already exist and you cannot change it.
          </p>
@@ -36,9 +37,35 @@
             it is not difficult to use at all, although it seems hard to understand at first.
          </p>
       </section>
-      <section name="A complete example">
+      <section name="Quick introduction to Digester">
          <p>
-            XML example:
+            The best way to learn to use Digester is by going through an example. But before
+            we go into the details you have to know some concepts of how Digester works:
+            When parsing an XML file Digester reads the XML structure as if it were a tree
+            each time it finds an element or an attribute it issues an event. The user
+            can program or configure rules which catch those events and perform some
+            action. Digester comes with several default rules which are enough for most uses.
+            These rules work with a stack to build the object representation of the XML 
+            file. As the XML structure is visited objects are filled and pushed into the
+            stack. The actions of the next rules will operate on the last introduces objects
+            of the stack. During the example we'll represent the stack state as follows:
+         </p>
+         <source>
+            |       |
+            |       |
+            |object1|
+            |object2|
+            ---------
+         </source>
+         <p>
+            Where <tt>object1</tt> is the last object introduced into the stack.
+         </p>
+      </section>
+      <section name="Explanation by example">
+          <p>
+            We'll use as an example the configuration file of a Content Management System.
+            It supports several content types, each with its own set of fields and properties.
+            The XML file which describes the content types is the following:
          </p>
          <source>
              <![CDATA[
@@ -48,7 +75,7 @@
              id="0"
              directory="news-notes"
              name="cms.news.notes.name"
-             dataClass="com.germinus.linde.cvro.model.NewsNoteData"
+             dataClass="com.foo.bar.cvro.model.NewsNoteData"
              iconFile="ictipo_apunte.gif"
              include="true"
              creationFieldSet="0">
@@ -69,7 +96,9 @@
              ]]>
          </source>
          <p>
-            Java classes:
+            This XML file is converted to several POJOs. First there is a class called
+            <tt>ContentTypeDefinitions</tt> which holds a <tt>List</tt> of the available
+            content types. Each content type is represented by the following class::
          </p>
          <source>
              <![CDATA[
@@ -90,6 +119,10 @@ public class ContentTypeDefinition {
          // ................ Getters and setters .................
 }            ]]>
          </source>
+         <p>
+            This class has a list of fields. Each of them is represented using
+            the class <tt>FieldDefinition</tt>:
+         </p>
          <source>
              <![CDATA[
 public class FieldDefinition {
@@ -111,7 +144,7 @@ public class FieldDefinition {
             ]]>
          </source>
          <p>
-            The mapping file:
+            The mapping file used to convert the XML file to these objects is:
          </p>
          <source>
             <![CDATA[
@@ -119,17 +152,17 @@ public class FieldDefinition {
 
 <digester-rules>
     <pattern value="cms/contentTypes">
-        <object-create-rule classname="com.germinus.linde.cms.ContentTypeDefinitions"/>
+        <object-create-rule classname="com.foo.bar.cms.ContentTypeDefinitions"/>
         <pattern value="contentType">
-            <object-create-rule classname="com.germinus.linde.cms.ContentTypeDefinition"/>
+            <object-create-rule classname="com.foo.bar.cms.ContentTypeDefinition"/>
             <set-properties-rule/>
             <set-next-rule methodname="addContentTypeDefinition"
-                           paramtype="com.germinus.linde.cms.ContentTypeDefinition"/>
+                           paramtype="com.foo.bar.cms.ContentTypeDefinition"/>
             <pattern value="field">
-                 <object-create-rule classname="com.germinus.linde.cms.FieldDefinition"/>
+                 <object-create-rule classname="com.foo.bar.cms.FieldDefinition"/>
                  <set-properties-rule/>
                  <set-next-rule methodname="addFieldDefinition"
-                            paramtype="com.germinus.linde.cms.FieldDefinition"/>
+                            paramtype="com.foo.bar.cms.FieldDefinition"/>
              </pattern>
         </pattern>
     </pattern>
@@ -137,13 +170,155 @@ public class FieldDefinition {
                ]]>
             </source>
          <p>
-            Explanation step by step.
+            Let's go over it. The pattern elements set the rules into a context. the first
+            pattern, <tt>&lt;pattern value="cms/contentTypes"></tt> states that we only
+            care about the contents inside the <tt>contentTypes</tt> element.
+            Inside this pattern we find the first rule <tt>object-create-rule</tt>. This
+            rule will be fired when the Digester parser finds an element called 
+            <tt>contentTypes</tt> that is inside an element called <tt>cms</tt>. 
+         </p>
+         <p>
+            Digester comes with many rules but only 3 or 4 are used frequently when using
+            an XML file for configuration purposes. The most common rules and its most
+            important attributes are:
+         </p>
+         <ul>
+            <li><b>object-create-rule</b>: creates a new object and pushes it onto the 
+               object stack. It has one parameter, <tt>classname</tt> which has the name
+               of the class of the object to be created.
+               <a href="http://jakarta.apache.org/commons/digester/commons-digester-1.6/docs/api/org/apache/commons/digester/ObjectCreateRule.html">(More 
+                  information)</a>
+               </li>
+
+            <li><b>set-properties-rule</b>: sets properties on the object at the top of the stack, 
+               based on attributes with corresponding names. No attribute is needed, but you
+               can filter the properties read by using the attributes 
+               <tt>attributeNames</tt> and <tt>propertyNames</tt>.
+               <a href="http://jakarta.apache.org/commons/digester/commons-digester-1.6/docs/api/org/apache/commons/digester/SetPropertiesRule.html">(More 
+                  information)</a>
+               </li>
+
+            <li><b>set-next-rule</b>: calls a method on the (top-1) (parent) object, passing 
+               the top object (child) as an argument. The attribute <tt>methodname</tt> is
+               used to specify the method which should be called on the parent object to
+               set the child object. the attribute <tt>paramtype</tt> specifies the type
+               of the child object.
+               <a href="http://jakarta.apache.org/commons/digester/commons-digester-1.6/docs/api/org/apache/commons/digester/SetNextRule.html">(More 
+                  information)</a>
+               </li>
+
+            <li><b>call-method-rule</b>: calls a method on an object on the stack (normally 
+               the top/parent object), passing arguments collected from subsequent 
+               CallParamRule rules or from the body of this element. The 
+               <tt>methodName</tt> attribute is used to specify the method that will
+               be called on the stack object. The <tt>paramCount</tt> attribute
+               specifies the number of parameters. The value of those parameters values 
+               will be specified by this number of <tt>call-param-rule</tt> rules.
+               <a href="http://jakarta.apache.org/commons/digester/commons-digester-1.6/docs/api/org/apache/commons/digester/CallMethodRule.html">(More 
+                  information)</a>
+               </li>
+
+            <li><b>call-param-rule</b>: saves a parameter for use by a surrounding 
+               CallMethodRule. There are several ways to specify the value of the
+               parameter.
+               <a href="http://jakarta.apache.org/commons/digester/commons-digester-1.6/docs/api/org/apache/commons/digester/CallParamRule.html">(More 
+                  information)</a>
+               </li>
+         </ul>
+         <p>
+            All other rules are documented in the 
+               <a href="http://jakarta.apache.org/commons/digester/commons-digester-1.6/docs/api/org/apache/commons/digester/package-summary.html">Digester 
+               Javadocs</a>. You can also create your own rules as described in the section
+               <a href="http://jakarta.apache.org/commons/digester/commons-digester-1.6/docs/api/org/apache/commons/digester/xmlrules/package-summary.html#doc.InclusionJava">Including 
+               programmatically-created rules</a>.                     
+         </p>
+         <p>
+            Now that you know what the rules do, let's continue with the rules of our example. After
+            firing the first <tt>object-create-rule</tt> the content of the stack is:
+         </p>
+         <source>
+            |                      |
+            |                      |
+            |                      |
+            |contentTypeDefinitions|
+            -----------------------
+         </source>
+         <p>
+            Let's review the rules that we had left
+         </p>
+         <source>
+            <![CDATA[
+        ...
+        <pattern value="contentType">
+            <object-create-rule classname="com.foo.bar.cms.ContentTypeDefinition"/>
+            <set-properties-rule/>
+            <set-next-rule methodname="addContentTypeDefinition"
+                           paramtype="com.foo.bar.cms.ContentTypeDefinition"/>
+            <pattern value="field">
+                 <object-create-rule classname="com.foo.bar.cms.FieldDefinition"/>
+                 <set-properties-rule/>
+                 <set-next-rule methodname="addFieldDefinition"
+                            paramtype="com.foo.bar.cms.FieldDefinition"/>
+             </pattern>
+        </pattern>
+        ...
+               ]]>
+            </source>         
+         <p>
+            Next we find another pattern whose value is <tt>contentType</tt>. It tells
+            digester to fire several rules each time a <tt>contentType</tt> element is
+            found in the configuration file. The first rule (<tt>object-create-rule</tt>)
+            creates an instance of <tt>ContentTypeDefinition</tt> and pushes it into the 
+            stack. The second (<tt>set-properties-rule</tt>) populates its properties. The 
+            third one (<tt>set-next-rule</tt>) calls the method <tt>addContentType</tt>
+            of <tt>contentTypeDefinitions</tt> to add the definition to the list.
+            The same process is followed to read the fields and add them to the list
+            of fields of the content type currently being read. When the parsing is inside
+            a field the content of the stack is:
+         </p>
+         <source>
+            |                      |
+            |fieldDefinition       |
+            |contentTypeDefinition |
+            |contentTypeDefinitions|
+            -----------------------
+         </source>
+         <p>
+            We have seen how the <tt>object-create-rule</tt> pushes objects into the
+            stack but, who takes them out? Digester does it automatically. In our 
+            example, when a <tt>contentType</tt> XML element is entered (the
+            tag &lt;element> is found) the <tt>object-create-rule</tt> is fired
+            and an object is pushed into the stack. But when the <tt>contentType</tt> 
+            XML element finishes (the tag &lt;/element> is found) all pushed objects
+            are popped. That's why the <tt>set-next-rule</tt> is necessary, so that
+            the previous object in the stack keeps a reference to the object before
+            it is popped out.            
+         </p>
+         <p>
+            Getting to know digester in great detail takes some time. Hopefully this
+            example has shown enough to get you starting. You can learn more
+            reading some of the following articles:
+         </p>
+         <ul>
+            <li><a href="http://javaboutique.webdeveloper.com/tutorials/digester/">Digesting XML documents</a></li>
+            <li><a href="http://manning.com/catalog/view.php?book=goyal4">XML Parsing with Digester</a></li>
+            <li><a href="http://www.javaworld.com/javaworld/jw-10-2002/jw-1025-opensourceprofile.html">Simplify XML file processing with the Jakarta Commons Digester </a></li>
+         </ul>
+         <p>
+            When reading this articles remember that with EasyConf the interface with Digester
+            is only through the mapping file, you cannot access it's API directly (and shouldn't
+            need it).
          </p>
       </section>
       <section name="XML tips">
-         <p>
-        		Where possible map elements to classes and attributes to fields of those classes.
-         </p>
+         <ul>
+        		<li>Map elements to classes and attributes to fields of those classes where possible.
+               This simple rule will simplify your mapping files.</li>
+            <li>When adding a list of elements to a parent object with a <tt>set-next-rule</tt> 
+               remember that you can use any structure to hold the items. For simple cases
+               lists are ok, but for others it's better to use <tt>Hashtables</tt> or more 
+               complex structures.</li>
+         </ul>
       </section>
    </body>
 </document>
