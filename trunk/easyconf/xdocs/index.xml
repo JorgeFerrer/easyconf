@@ -40,18 +40,18 @@
       </p>
     </section>
     <section name="Main features">
-      <p>
-	  The key <a href="user/features.html">features</a> of EasyConf are:
+     	<p>
+	  		The key <a href="user/features.html">features</a> of EasyConf are:
+    	</p>
 	  <ol>
         <li><b>Support for <i>typed</i> property files, XML files or a combination of both</b></li>
 	     <li><b>Support for multiple environments</b> (development, integration,
   preproduction, production, etc)</li>
 	     <li><b>Support for applications which aggregate several components</b>: for example for portlets
 	      and portals</li>
+        <li><b>Well documented</b></li>
 	     <li><b>Easy to remember conventions</b> instead of configuration to simplify usage</li>
 	  </ol>
-      </p>
-
-      </section>
+     </section>
     </body>
-  </document>
+</document>
