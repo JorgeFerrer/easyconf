@@ -14,8 +14,8 @@
         this and similar environments.
       </p>
       <p>
-        EasyConf aims to make very easy to make Java applications configurable. You can start
-        with a very simple scheme and when
+        EasyConf aims to make easy the development of highly configurable Java
+        applications. You can start with a very simple scheme and when
         you need it you'll be able to add powerful functionality such as XML files, support for 
         several environments or aggregation of componentes.
       </p>
