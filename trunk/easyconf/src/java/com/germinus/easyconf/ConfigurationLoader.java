@@ -15,9 +15,6 @@
  */
 package com.germinus.easyconf;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.CompositeConfiguration;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.Substitutor;
 import org.apache.commons.digester.substitution.MultiVariableExpander;
@@ -27,10 +24,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.SAXException;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Collections;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -64,85 +57,6 @@ class ConfigurationLoader {
 
         log.info("Properties for " + componentName + " loaded from " + properties.loadedFiles());
         return new ComponentProperties(properties);
-    }
-
-    public ComponentProperties readPropertiesConfiguration1(String componentName) {
-        List environmentFileNames = getEnvironmentFileNames(componentName);
-        Configuration envConf = readPropertiesFromFiles(environmentFileNames);
-        List baseFileNames = getBaseFileNames(componentName);
-        Configuration baseConf = readPropertiesFromFiles(baseFileNames);
-        List filesWithOverriddenProperties = getFilesWithOverriddenProperties(baseConf);
-        Configuration overriddenConf = readPropertiesFromFiles(filesWithOverriddenProperties);
-
-        List loadOrder = new ArrayList();
-        loadOrder.addAll(environmentFileNames);
-        loadOrder.addAll(filesWithOverriddenProperties);
-        loadOrder.addAll(baseFileNames);
-        log.info("Override order for " + componentName + " (first files override last): " +
-                 loadOrder);
-
-        CompositeConfiguration componentConf = new CompositeConfiguration();
-        componentConf.addConfiguration(envConf.subset(componentName));
-        componentConf.addConfiguration(envConf);
-        componentConf.addConfiguration(overriddenConf.subset(componentName));
-        componentConf.addConfiguration(overriddenConf);
-        componentConf.addConfiguration(baseConf.subset(componentName));
-        componentConf.addConfiguration(baseConf);
-
-        return new ComponentProperties(componentConf);
-    }
-
-    private CompositeConfiguration readPropertiesFromFiles(List fileNames) {
-        CompositeConfiguration compositeConf = new CompositeConfiguration();
-        Iterator confSources = fileNames.iterator();
-        while (confSources.hasNext()) {
-            String confSource = (String) confSources.next();
-            try {
-            	Configuration newConfiguration;
-            	newConfiguration = new PropertiesConfiguration(confSource);
-        	    compositeConf.addConfiguration(newConfiguration);
-                log.debug("Read configuration from " + confSource);
-            } catch (Exception ignore) {
-                log.debug("Configuration source " + confSource + " ignored");
-            }
-        }
-        return compositeConf;
-    }
-
-    /**
-     * Get an ordered list of configuration sources. The most relevant are
-     * returned first.
-     * @param componentName The name of the component
-     */
-    private List getBaseFileNames(String componentName) {
-        List sources = new ArrayList();
-
-        sources.add(GLOBAL_CONFIGURATION_FILE + ".properties");
-        sources.add(componentName + ".properties");
-
-        return sources;
-    }
-
-    /**
-     * Get an ordered list of configuration sources. The most relevant are
-     * returned first.
-     * @param componentName The name of the component
-     */
-    private List getEnvironmentFileNames(String componentName) {
-        String environmentName = System.getProperty(ENVIRONMENT_NAME_VARIABLE, DEFAULT_ENV);
-        List sources = new ArrayList();
-
-        if (environmentName != DEFAULT_ENV) {
-            sources.add(GLOBAL_CONFIGURATION_FILE + "." + environmentName + ".properties");
-            sources.add(componentName + "." + environmentName + ".properties");
-        }
-        return sources;
-    }
-
-    private List getFilesWithOverriddenProperties(Configuration componentConf) {
-        List files = componentConf.getList(OVERRIDEN_PROPERTIES_FILES_PROPERTY);
-        Collections.reverse(files);
-        return files;
     }
 
     public Object readConfigurationObject(String componentName,

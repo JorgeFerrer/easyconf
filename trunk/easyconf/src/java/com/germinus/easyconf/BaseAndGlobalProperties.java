@@ -55,6 +55,7 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
      * @return
      */
     protected Object getPropertyDirect(String key) {
+        log.debug("Looking for property " + key);
         Object value = null;
         if (value == null) {
             value = systemProperties.getProperty(key);
@@ -89,10 +90,8 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
 
     private void addFileProperties(String fileName, CompositeConfiguration conf) {
         try {
-            Configuration newConf = new PropertiesConfiguration(fileName);
-//            if (newConf instanceof AbstractConfiguration) {
-//                ((AbstractConfiguration)newConf).setThrowExceptionOnMissing(true);
-//            }
+            Configuration newConf = new SysPropertiesConfiguration(fileName);
+
             addIncludedFileProperties(newConf, conf);
             conf.addConfiguration(newConf);
             super.addConfiguration(newConf);
@@ -102,16 +101,21 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
         } catch (Exception ignore) {
             log.debug("Configuration source " + fileName + " ignored");
         }
-
     }
+
     private void addIncludedFileProperties(Configuration newConf, CompositeConfiguration conf) {
-        List fileNames = newConf.getList(ConfigurationLoader.OVERRIDEN_PROPERTIES_FILES_PROPERTY);
-        Collections.reverse(fileNames);
-        Iterator it = fileNames.iterator();
-        while (it.hasNext()) {
-            String iteratedFileName = (String) it.next();
+        String[] fileNames = newConf.getStringArray(ConfigurationLoader.OVERRIDEN_PROPERTIES_FILES_PROPERTY);
+        for (int i = fileNames.length - 1; i >= 0; i--) {
+            String iteratedFileName = fileNames[i];
+            log.info("Adding included file: " + iteratedFileName);
             addFileProperties(iteratedFileName, conf);
         }
+//        Collections.reverse(fileNames);
+//        Iterator it = fileNames.iterator();
+//        while (it.hasNext()) {
+//            String iteratedFileName = (String) it.next();
+//            addFileProperties(iteratedFileName, conf);
+//        }
     }
 
     public List loadedFiles() {
