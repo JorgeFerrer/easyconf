@@ -33,6 +33,7 @@ import org.apache.commons.logging.LogFactory;
  * Note that it depends on external files
  * 
  * @author Jorge Ferrer
+ * @author Ismael F. Olmedo
  */
 public class ConfReaderTest extends TestCase {
 
@@ -54,7 +55,7 @@ public class ConfReaderTest extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(ConfReaderTest.class);
-//        suite.addTest(new ConfReaderTest("testABCD"));
+//        suite.addTest(new ConfReaderTest("testUsingSystemPropertiesInIncludes"));
         return suite;
     }
 
@@ -275,15 +276,23 @@ public class ConfReaderTest extends TestCase {
                       componentConf1, componentConf2);
     }
 
-    /** To Run this test you have to execute with -D=easyconf:environment=local */
-    public void inactive_testUsingSystemProperties() {
-        ComponentConfiguration componentConf = ConfReader.getConfiguration("test_module");
-        String sysProperty = "easyconf:environment";
-        assertEquals("The environment was not correctly read from the system property: " + sysProperty,
+    public void testUsingSystemProperties() {
+        System.setProperty("easyconf-environment", "local");
+        assertEquals("The environment was not correctly read from the system property",
                      "local",
-                     componentConf.getProperties().getString("test_module_environment"));
+                     getProperties().getString("test_module_environment"));
+        System.setProperty("easyconf-environment", "");
 
     }
+
+    public void testUsingSystemPropertiesInIncludes() {
+        System.setProperty("easyconf-environment", "local");
+        assertEquals("The file with a sysproperty in the name was not loaded",
+                     "mysql",
+                     getProperties().getString("test_module_db"));
+        System.setProperty("easyconf-environment", "");
+    }
+
     /**
      * Does not work due to a bug in digester (TODO: confirm)
      */
