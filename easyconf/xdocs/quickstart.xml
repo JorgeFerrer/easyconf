@@ -88,10 +88,10 @@
       <source>
       	  public static final double  EURO_TO_DOLLARS_RATIO = 
       	  	getProperties().getDouble("euro-to-dollars");
-      	  public static final List    SUPPORTED_CURRENCIES  = 
-      	  	getProperties().getList("supported-currencies");
-      	  public static final List    TRUSTED_CURRENCIES    = 
-      	  	getProperties().getList("trusted-currencies");
+      	  public static final String[]    SUPPORTED_CURRENCIES  = 
+      	  	getProperties().getStringArray("supported-currencies");
+      	  public static final String[]    TRUSTED_CURRENCIES    = 
+      	  	getProperties().getStringArray("trusted-currencies");
       	  public static final boolean CONVERSION_ALLOWED    = 
       	  	getProperties().getBoolean("conversion-allowed");
 
