@@ -40,6 +40,7 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
      * @return
      */
     protected Object getPropertyDirect(String key) {
+        log.debug("Looking value for property " +key);
         Object value = null;
         if (value == null) {
             value = globalConf.getProperty(key);
@@ -75,6 +76,9 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
     private void addFileProperties(String fileName, CompositeConfiguration conf) {
         try {
             Configuration newConf = new PropertiesConfiguration(fileName);
+//            if (newConf instanceof AbstractConfiguration) {
+//                ((AbstractConfiguration)newConf).setThrowExceptionOnMissing(true);
+//            }
             addIncludedFileProperties(newConf, conf);
             conf.addConfiguration(newConf);
             super.addConfiguration(newConf);
