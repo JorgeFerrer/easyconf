@@ -12,7 +12,7 @@
   
   <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-SNAPSHOT -->
-  <currentVersion>0.6.3-SNAPSHOT</currentVersion>
+  <currentVersion>0.7.0-beta</currentVersion>
     <organization>
         <name>Germinus XXI S.A.</name>
         <url>http://www.germinus.com/</url>
@@ -44,12 +44,22 @@
        the connection element has the form:
        scm:<system>:<system specific connection string> -->
   <repository>
-    <connection>scm:cvs:pserver:anoncvs@cvs.lab.germinus.com:/data/cvs/XPRESSION:easyconf</connection>
-    <url>http://cvs.lab.germinus.com/viewcvs/easyconf/</url>
+    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/easyconf:easyconf</connection>
+    <developerConnection>scm:cvs:ext:jferrergerminus@cvs.sourceforge.net:/cvsroot/easyconf:easyconf</developerConnection>
+    <url>http://cvs.sourceforge.net/viewcvs.py/easyconf/</url>
   </repository>
 
   <!-- any mailing lists for the project -->
-  <mailingLists/>
+  <mailingLists>
+      <mailingLists>
+        <mailingList>
+            <name>easyconf-users</name>
+            <subscribe>easyconf-users-subscribe@sourceforge.net</subscribe>
+            <unsubscribe>easyconf-users-unsubscribe@sourceforge.net</unsubscribe>
+            <archive>http://sourceforge.net/mailarchive/forum.php?forum=easyconf-users</archive>
+        </mailingList>
+    </mailingLists>
+  </mailingLists>
   
   <!-- who the developers are for the project -->
   <developers>
