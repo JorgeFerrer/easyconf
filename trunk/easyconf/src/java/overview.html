@@ -22,7 +22,7 @@ to access documentation. Its main features are:
 Easyconf consist of a central component
 (ConfReader singleton) that returns the configuration of a given
 component. This class is a singleton and has a
-simple method called <code>getComponentConfiguration</code> which must be
+simple method called <code>getConfiguration</code> which must be
 given the name of a component. The name of the component can be any String
 which can be used to identify it within easyconf.
 
@@ -30,8 +30,7 @@ which can be used to identify it within easyconf.
 Following is an example of how to use this class:
 <pre>
 
-ComponentConfiguration conf = ConfReader.getInstance().
-                                getComponentConfiguration("my-component");
+ComponentConfiguration conf = ConfReader.getConfiguration("my-component");
 
 </pre>
 

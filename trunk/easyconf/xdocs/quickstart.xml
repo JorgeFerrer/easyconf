@@ -34,8 +34,8 @@
       	with:
       </p>
       <source>
-      	  public static final double EURO_TO_DOLLARS_RATIO = ConfReader.getInstance().
-      	     getComponentConfiguration("calculator").getProperties().
+      	  public static final double EURO_TO_DOLLARS_RATIO = ConfReader.
+      	     getConfiguration("calculator").getProperties().
       	     getDouble("euro-to-dollars");
 
       	  public double toDollars(double euros) {
@@ -88,8 +88,7 @@
       	  	getProperties().getBoolean("conversion-allowed");
 
       	  private static ComponentProperties getProperties(double euros) {
-      	     return ConfReader.getInstance().getComponentConfiguration("calculator").
-      	     	getProperties();
+      	     return ConfReader.getConfiguration("calculator").getProperties();
       	  }
       </source>
       <p>
