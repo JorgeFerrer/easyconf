@@ -7,7 +7,7 @@
       <section name="Reading properties">
          <p>
             In this section it is assumed that you know how to get the properties
-            of a component. Otherwise, pleas read the
+            of a component. Otherwise, please read the
              <a href="/user/introduction.html">Introduction</a>.
          </p>
          <p>
@@ -20,10 +20,10 @@
              String skin = getProperties().getString("skin");
          </source>
          <p>
-             In this examples and the following it will be assumed that there
+             Note: In all the examples it will be assumed that there
              is a method called <tt>getProperties()</tt> which obtains the
              properties of a configuration component. A possible implementation
-             of this component would be:
+             of this method would be:
          </p>
          <source>
             private ComponentProperties getProperties() {
@@ -33,7 +33,7 @@
       </section>
       <section name="Using default values">
           <p>
-              All methods to request a property value have an optional parameter
+              All methods to get the value of a property have an optional parameter
               to specify a default value. Using this parameter the previous
               example would be written as:
           </p>
@@ -45,7 +45,7 @@
               files associated with the component, <i>blue</i> will be returned.
           </p>
           <p>
-              <b>Note</b>: If no default value is specified, EasyConf considers
+              When no default value is specified EasyConf considers
               the property mandatory and if it is not found a
               <tt>NoSuchElementException</tt> is thrown.
           </p>
@@ -71,11 +71,12 @@
           </ul>
          <p>
              To use the automatic conversion you must know in advance which
-             is the numeric value and use the apropriate <i>getter</i> method
-             of <tt>ComponentProperties</tt>. For example to read a
+             is the numeric type of the property and use the appropriate <i>getter</i> 
+             method of <tt>ComponentProperties</tt>. For example to read a
              <tt>Short</tt> value the <tt>getShort(...)</tt> method should be
              used, for a <tt>BigInteger</tt>, use <tt>getBigInteger(...)</tt>,
-             etc.
+             etc. Here is an example which shows the usage of methods for all
+             of the supported numeric types:
          </p>
          <source>
              value = getProperties().getBigDecimal("big-decimal");
@@ -89,26 +90,75 @@
              value = getProperties().getShort("short");
          </source>
          <p>
-             If the conversion fails a runtime <tt>ConversionException</tt> will
+             If the conversion fails, a runtime <tt>ConversionException</tt> will
              be thrown.
          </p>
       </section>
       <section name="Multivaluated properties">
+         <p>
+            Multivaluated properties are those that may have more than one value. EasyConf
+            supports automatic conversion of multivaluated properties to:
+         </p>   
+         <ul>
+            <li><tt>java.util.List</tt></li>
+            <li><tt>java.lang.String[]</tt></li>
+         </ul>
+         <p>
+            The conversion is performed by separating the property value interpreting
+            the comma character as a separator. Here is an example:
+         </p>
+         <source>
+            multivaluated=one,two,three
+         </source>
+         <p>
+            Note that the character next to the comma is not ignored even if it is an space 
+            so do not leave spaces between elements (unless that's really what you want).
+            This property can be read with both the <tt>getList()</tt> and the 
+            <tt>getStringArray()</tt> methods:
+         </p>
+         <source>
+         	List values = getProperties().getList("multivaluated");
+            String[] array = getProperties().getStringArray("multivaluated");
+         </source>
+         <p>
+            Both methods are pretty similar. The most important property is explained in the
+            support for variables. This is explained in the next section.
+         </p>
+         <p>
+            <b>Important note</b>: as a result of this automatic conversion if the value
+            of a single valued property contains commas they must be scaped with a double slash. 
+            Example:
+         </p>
+         <source>
+            single-valued=one\\,two\\,three
+         </source>   
       </section>
       <section name="Using variables">
-        <p>====== CONTINUE WRITTING HERE ====</p>
-         <p> paragraph </p>
+         <p>
+            EasyConf supports using variables in the value of a property to
+            refer to the value of another property. This functionality is not available for 
+            all property types, only for the following:
+         </p>
+         <ul>
+            <li>String</li>
+            <li>StringArray</li>
+         </ul>
+         <p>
+            Note: support for variables is provided by one of the underlying libraries,
+            Jakata Commons configuration, which is the one that has this limitation. I hope that the support
+            for variables will be extended to all property types in future versions.
+         </p>
+         <p>Lets see some examples:</p>
 	      <source>
       	  supported-currencies=${trusted-currencies},pound
       	  trusted-currencies=dollar,euro
+           european-currency=euro
+           default-currency=${european-currency}
          </source>        
 
-        <p><b>Known limitations</b>: variables can only be used in properties which will
-        be retrieved with as an <tt>String</tt> or <tt>StringArray</tt>. Otherwise the
-        variable value will not be resolved</p>
       </section>
       <section name="Properties with class names">
-         <p> paragraph </p>
+         <p>=== CONTINUE HERE ===</p>
       </section>
       <section name="Including other files">
          <p>Use the <tt>include-and-override</tt> special property. Every properties file can
