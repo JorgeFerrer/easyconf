@@ -1,11 +1,17 @@
 <document>
    <properties>
-      <title>TITLE TITLE</title>
+      <title>Planned features</title>
       <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
    </properties>
    <body>
-      <section name="SECTION TITLE">
+      <section name="Planned features">
          <p> paragraph </p>
+         <ul>
+            <li>Reloading</li>
+            <li>Properties in database</li>
+            <li>Properties in JNDI</li>
+            <li>New property type: name-value pairs</li>
+          </ul>   
       </section>
    </body>
 </document>

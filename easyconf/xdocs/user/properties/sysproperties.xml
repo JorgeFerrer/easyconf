@@ -1,11 +1,12 @@
 <document>
    <properties>
-      <title>TITLE TITLE</title>
+      <title>Reading system properties</title>
       <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
    </properties>
    <body>
-      <section name="SECTION TITLE">
-         <p> paragraph </p>
+      <section name="Reading system properties">
+         <p>Integrated into EasyConf. Useful for overwriting property values.</p>
+         <p>Also used to support multiple environments</p>
       </section>
    </body>
 </document>
