@@ -11,6 +11,17 @@
       <section name="Automatic conversion">
          <p> paragraph </p>
       </section>
+      <section name="Using variables">
+         <p> paragraph </p>
+	      <source>
+      	  supported-currencies=${trusted-currencies},pound
+      	  trusted-currencies=dollar,euro
+         </source>        
+
+			<p><b>Known limitations</b>: variables can only be used in properties which will
+			be retrieved with as an <tt>String</tt> or <tt>StringArray</tt>. Otherwise the 
+			variable value will not be resolved</p>
+      </section>
       <section name="Reading a Class property">
          <p> paragraph </p>
       </section>
