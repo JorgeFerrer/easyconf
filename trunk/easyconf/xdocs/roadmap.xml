@@ -1,0 +1,58 @@
+<document>
+   <properties>
+      <title>Roadmap</title>
+      <author >Jorge Ferrer</author>
+   </properties>
+   <body>
+      <section name="Roadmap">
+         <p>
+            After its release under an open source license the main purpose of
+            its developers is to receive feedback on its conventions. Once
+            those conventions are consolidated version 1.0 will be released
+         </p>
+         <p>
+            In the meanwhile we have several features in mind. We expect most
+            of them to be finished in the first half of 2005.
+         </p>
+      </section>
+      <section name="Planned features">
+         <p>
+            <b>Planned features for property files</b>
+         </p>
+         <ul>
+            <li>Reloading</li>
+            <li>Properties in database</li>
+            <li>Properties in JNDI</li>
+            <li>New property type: name-value pairs</li>
+          </ul>   
+         <p>
+            <b>Planned features for XML files</b>
+         </p>
+         <p>The first planned features are to solve the currently known
+            limitations of the support of XML files with respecto to
+            the configuration through property files. These are:
+         </p>
+         <ul>
+            <li>You can only have one XML file per component</li>
+            <li>There is no complete support for changing XML configuration
+            when aggregating components. Only that offered by variables</li>
+            <li>There is no complete support for changing XML configuration
+            for each differnt environment. Only that offered by variables.</li>
+         </ul>
+         <p>
+            Other planned features for XML files are:
+         </p>
+         <ul>
+            <li>Storage of XML files in a database</li>
+            <li>Reloading</li>
+         </ul>
+         <p>
+           <b>Finish the reload configuration service</b>
+         </p>
+         <p>
+            Implement the servlet interface and fix it by including
+            Jakarta Commons Configuration v1.1 when it is released.
+         </p>
+      </section>
+   </body>
+</document>

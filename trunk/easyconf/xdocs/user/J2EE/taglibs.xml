@@ -1,0 +1,18 @@
+<document>
+   <properties>
+      <title>Taglibs</title>
+      <author >Jorge Ferrer</author>
+   </properties>
+   <body>
+      <section name="Using XML files for configuration">
+         <p>
+
+			</p>
+      </section>
+      <section name="XML tips">
+         <p>
+        		Where possible map elements to classes and attributes to fields of those classes.
+         </p>         
+      </section>
+   </body>
+</document>

@@ -1,11 +1,71 @@
 <document>
    <properties>
-      <title>TITLE TITLE</title>
-      <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
+      <title>Using XML files for configuration</title>
+      <author >Jorge Ferrer</author>
    </properties>
    <body>
-      <section name="SECTION TITLE">
-         <p> paragraph </p>
+      <section name="Using XML files for configuration">
+         <p>
+				EasyConf handles XML configuration files by <b>converting the XML data           
+            to Java objects (POJOs)</b>. There no need to work with complex
+            DOM objects or alike. The XML structured is converted to POJOs
+            that already exist in your project or to ones you create to
+            hold the configuration. Those objects have no dependency on
+            EasyConf or its XML source and they can have additional business
+            logic if wanted.
+			</p>
+         <p>
+            The first step you should take is to design the XML definition that
+            you want to use (if you don't already have one) and fill a sample
+            XML file. Then you should define the POJOs that will hold the
+            configuration. You can design them completly independent of each
+            other but you'll later see that following some conventions makes
+            the mapping file a lot simpler.
+          </p>
+          <p>
+            Once you have an XML file and the necesary POJOs, the second step
+            is to write a mapping file. Note: Here EasyConf gives up a little ease of
+            use in favor of flexibility. We consider this is a worthy trade off
+            because it makes the library available for much broader uses, such as when 
+            the configuration files already exist and you cannot change it.
+         </p>
+         <p>
+            The mapping file follows the 
+            <a href="http://jakarta.apache.org/commons/digester/api/org/apache/commons/digester/xmlrules/package-summary.html">markup 
+            language of digester rules</a>. The example of the next section will show 
+            it is not difficult to use at all, although it seems hard to understand at first.
+         </p>
+      </section>
+      <section name="A complete example">
+         <p>
+            XML example:
+         </p>
+         <source>
+            ... the XML ...
+         </source>
+         <p>
+            Java classes:
+         </p>
+         <source>
+            ... first ...
+         </source>
+         <source>
+            .... second ...
+         </source>
+         <p>
+            The mapping file:
+         </p>
+         <source>
+            ... digester xml rules ...
+         </source>
+         <p>
+            Explanation step by step.
+         </p>         
+      </section>
+      <section name="XML tips">
+         <p>
+        		Where possible map elements to classes and attributes to fields of those classes.
+         </p>         
       </section>
    </body>
 </document>

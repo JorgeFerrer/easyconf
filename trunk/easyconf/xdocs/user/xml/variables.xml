@@ -1,11 +1,38 @@
 <document>
    <properties>
-      <title>TITLE TITLE</title>
-      <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
+      <title>Using variables</title>
+      <author >Jorge Ferrer</author>
    </properties>
    <body>
-      <section name="SECTION TITLE">
-         <p> paragraph </p>
+      <section name="Using variables">
+         <p>
+            EasyConf supports the usage of variables inside the XML files.
+            The variables permit access to any of the component properties.
+            For example if you have the following properties file:
+         </p>
+         <source>
+            db.type=mysql
+            db.url=jdbc:mysql://localhost/testdb
+         </source>
+         <p>
+            You could write in the XML file:
+         </p>
+         <source>
+            <![CDATA[
+            <sources>
+               <database-source url="${db.url}"
+                                type="${db.type"/>
+            </sources>
+            ]]>
+         </source>
+         <p>
+            The properties values can be specified using any of the methods
+            described in this manual. It is recommended to give them a default
+            value in the component base file (for example my-component.properties).
+            But you can override this value in included files, the 
+            <tt>global-configuration-properties</tt> file or using system
+            properties.
+         </p>
       </section>
    </body>
 </document>

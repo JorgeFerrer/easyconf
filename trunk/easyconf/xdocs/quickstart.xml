@@ -2,10 +2,18 @@
 
   <properties>
     <title>Quick start guide</title>
-    <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
+    <author>Jorge Ferrer</author>
   </properties>
 
   <body>
+    <section name="Introduction to the quick start guide">
+      <p>
+         This guide shows how to use EasyConf to solve the simplest configuration problem
+         Its purpose is to get EasyConf running and show how easy it is to use. In the
+         <a href="user/introduction.html">user manual</a> you'll find detailed explanations
+         of all of its <a href="features.html">features</a>.
+      </p>
+    </section>
     <section name="The problem">
       <p>
       	You are developing an application and you have to use a value which may change in the
@@ -109,21 +117,24 @@
     </section>
 
     <section name="More functionality">
-    <p>
-      As your configuration needs grow you'll find other useful features in EasyConf. For example, it is
-      possible to complement or substitute the properties file with an
-      XML file. EasyConf allows any arbitrary XML vocabulary and converts it to Java POJOs (using Digester).
-    </p>
-    <p>
-      In the manual you'll also find how EasyConf supports changing the configuration for different 
-      environments. For example if you need to use some configuration in the local environment and a
-      different one for the production environment. EasyConf supports an unlimitted number of environments.
-    </p>
-    <p>
-      Another interesting feature is to configure a set of components when they are aggregated to form
-      a more complex application. For example if you deploy several portlets which use EasyConf in a portal 
-      you can change the default property values of any or all of the portlets in a single property files.
-    </p>      
+	    <p>
+	      As your configuration needs grow you'll find other useful features in EasyConf. For example, it is
+	      possible to complement or substitute the properties file with an
+	      XML file. EasyConf allows any arbitrary XML vocabulary and converts it to Java POJOs (using Digester).
+	    </p>
+	    <p>
+	      In the manual you'll also find how EasyConf supports changing the configuration for different 
+	      environments. For example if you need to use some configuration in the local environment and a
+	      different one for the production environment. EasyConf supports an unlimitted number of environments.
+	    </p>
+	    <p>
+	      Another interesting feature is to configure a set of components when they are aggregated to form
+	      a more complex application. For example if you deploy several portlets which use EasyConf in a portal 
+	      you can change the default property values of any or all of the portlets in a single property files.
+	    </p>      
+	    <p>
+	      Follow on by reading the <a href="user/introduction.html">user manual</a>.
+	    </p>
     </section>
     
   </body>

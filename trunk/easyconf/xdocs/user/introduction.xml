@@ -1,7 +1,7 @@
 <document>
    <properties>
       <title>User Guide</title>
-      <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
+      <author >Jorge Ferrer</author>
    </properties>
    <body>
       <section name="Introduction to the User Guide">
@@ -98,7 +98,18 @@
                   <!-- multi component, multi environment, simplification -->
                </ul>
             </li>
-            <li>J2EE</li>
+            <li><p>J2EE</p>
+               <ul>
+                  <li>Taglibs</li>
+                  <li>Services (TBD)</li>
+               </ul>
+            </li>
+            <li><p>Specific use cases (TBD)</p>
+               <ul>
+                  <li>Portlets</li>
+                  <li>Hibernate</li>
+               </ul>
+            </li>
          </ul>
          <p> The progress of this manual can be followed viewing the latest <a 
             href="">CVS files</a> </p>

@@ -2,7 +2,7 @@
 
   <properties>
     <title>Welcome to EasyConf</title>
-    <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
+    <author >Jorge Ferrer</author>
   </properties>
 
   <body>
@@ -27,10 +27,16 @@
         which are also stable.
       </p>
       <p>
+         <ul>
+            <li><b>Latest stable version</b>: 0.7.0</li>
+            <li><b>Latest devel version</b>: none</li>
+         </ul>
+      </p>
+      <p>
         Version number has not reached 1.0 yet because we are currently waiting for feedback from
         the community about the <a href="reference/conventions.html">conventions used</a>. Based on this 
-        feedback some of the current conventions may change. Should that happen, changes needed when 
-        updating will be clearly documented.
+        feedback some of the current conventions may change. Should that happen, we will clearly document
+        any changes needed when updating.
       </p>
     </section>
     <section name="Main features">
@@ -38,11 +44,11 @@
 	  The key <a href="user/features.html">features</a> of EasyConf are:
 	  <ol>
         <li><b>Support for <i>typed</i> property files, XML files or a combination of both</b></li>
-	    <li><b>Support for multiple environments</b> (development, integration,
+	     <li><b>Support for multiple environments</b> (development, integration,
   preproduction, production, etc)</li>
-	    <li><b>Support for applications which aggregate several components</b>: for example for portlets
+	     <li><b>Support for applications which aggregate several components</b>: for example for portlets
 	      and portals</li>
-	    <li><b>Easy to remember conventions</b> instead of configuration to simplify usage</li>
+	     <li><b>Easy to remember conventions</b> instead of configuration to simplify usage</li>
 	  </ol>
       </p>
 

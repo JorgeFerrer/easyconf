@@ -1,11 +1,15 @@
 <document>
    <properties>
-      <title>TITLE TITLE</title>
-      <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
+      <title>Support for multiple environments</title>
+      <author >Jorge Ferrer</author>
    </properties>
    <body>
-      <section name="SECTION TITLE">
-         <p> paragraph </p>
+      <section name="What is configuration for multiple environments?">
+         <p>What is it? Mainly for server applications.</p>
+      </section>
+      <section name="How to do it">
+         <p>Using two of the features already explained in previous sections: include-and-override
+            and system properties.</p>
       </section>
    </body>
 </document>

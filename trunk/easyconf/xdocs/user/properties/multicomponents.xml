@@ -1,26 +1,92 @@
 <document>
    <properties>
       <title>Multiple components support</title>
-      <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
+      <author >Jorge Ferrer</author>
    </properties>
    <body>
-      <section name="What's multiple components aggregation?">
-         <p> paragraph </p>
+      <section name="Configuring aggregated components">
+         <p>When you develop from the ground up a complete application you have 
+            complete control over the application configuration. But:</p>
          <ul>
-            <li>Portals aggregate portlets</li>
-            <li>Every application agregates libraries</li>
-            <li>Complex J2EE applications aggregate EJB libraries</li>
-            <li>Custom made frameworks aggregate their own components</li>
+            <li><i>If you develop a configurable component that will be integrated in 
+               other applications</i>: you have to give a default configuration but you
+               also want to provide some method to override that configuration.</li>
+            <li><i>If you are aggregating several external properties</i>: you may want
+               to adapt them to your specific them by changing the default 
+               configuration.</li>
          </ul>
-      </section>
-      <section name="How to use it">
          <p>
-            Use the <tt>global-configuration.properties</tt> file. Prefix the property
-            with the component name:
+            EasyConf has specific functionality to support these necessities in a very
+            simple way. If you are the developer of a component, you can distribute it
+            with a base configuration file (for example <tt>my-component.properties</tt>).
+            It is recommended that you place it so that it will be included in the
+            application classpath. If you distribute the application as a JAR file, just
+            put it in the root of the JAR. If you distribute it as a WAR file, place
+            it in the <tt>WEB-INF/classes</tt> subdirectory. For other kinds of distribution
+            files refer to its documentation to find a place that will be included in
+            the classpath when the component is deployed.
+         </p>
+         <p>
+            On the other side, if you need to aggregate several components <i>which
+            have been configured using EasyConf</i> you can override the the properties
+            of any of them in <i>one single file</i>: <b>global-configuration.properties</b>.
+         </p>    
+         <p>
+            The name of this file is fixed by EasyConf (it is one of its 
+            <a href="/reference/conventions.html">conventions</a>), but you can 
+            include other files using the <tt>include-and-override</tt> special property. This
+            allows you to effectively change its name: just include the file with your desired
+            name and do not set any property in the <tt>global-configuration.properties</tt>.
+         </p>
+         <p>
+            The properties are specified in the <tt>global-configuration.properties</tt> (or any
+            of its included files) in the same way as they are in the base configuration file.
+            But it is possible to prefix the property names with the name of the component
+            to prevent collision of names among different components. The component name is
+            separated from the property name by the <tt>:</tt> character. 
+          </p>
+          <p>
+            For example to override the default value of the property <tt>skin</tt> of the
+            component <i>my-component</i> you should add the following line:
          </p>
          <source>
             my-component:skin=purple
          </source>
+      </section>
+      <section name="A complete example">   
+         <p>
+            You have a portlet named <i>reports</i> which shows data present in a 
+            database table. You use the portlet name as the configuration component name,
+            so you can configure it with the property file named <tt>reports.properties</tt>.
+            It may have the following contents:            
+         </p>
+         <source>
+            database.url=jdbc:mysql://localhost/database
+            table=reports
+            primary-key=reportid
+         </source>   
+         <p>
+            Then you have a second portlet named <i>banner</i> which shows a configured banner,
+            the image can be shown inside a table or by itself. Following the same convention
+            of the previous portlet the configuration is specified in the file
+            <tt>banner.properties</tt>.
+         </p>
+         <source>
+            img=image.jpg
+            url=http://easyconf.sourceforge.net
+            table=false
+         </source>
+         <p>
+            TO BE FINISHED
+         </p>
+      </section>
+      <section name="Use cases">   
+         <ul>
+            <li>Portals which aggregate portlets</li>
+            <li>Every application agregates libraries</li>
+            <li>Complex J2EE applications aggregate EJB libraries</li>
+            <li>Custom made frameworks aggregate their own components</li>
+         </ul>
       </section>
    </body>
 </document>

@@ -1,11 +1,11 @@
 <document>
    <properties>
       <title>Reading properties</title>
-      <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
+      <author >Jorge Ferrer</author>
    </properties>
    <body>
       <section name="Reading properties">
-         <p> paragraph </p>
+         <p>Use the <tt>getXXX()</tt> of the <tt>ComponentConfiguration</tt> class</p>
          <p>What happens if the property is not found? ....</p>
       </section>
       <section name="Automatic conversion">
@@ -13,6 +13,14 @@
       </section>
       <section name="Reading a Class property">
          <p> paragraph </p>
+      </section>
+      <section name="Including other files">
+         <p>Use the <tt>include-and-override</tt> special property. Every properties file can
+            include as many files as wanted. Inclusion is recursive so that included files
+            can include further files.</p>
+         <p>Each time a file is included it will override the properties of the 
+            files including them</p>
+         <p>If an included file is not found it is silently ignored. ...</p>
       </section>
       
    </body>
