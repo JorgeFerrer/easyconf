@@ -44,7 +44,7 @@ public class ConfReaderTest extends TestCase {
     }
 
     protected void setUp() throws Exception {
-        componentConf = ConfReader.getInstance().getComponentConfiguration("test_module");
+        componentConf = ConfReader.getConfiguration("test_module");
     }
 
     protected void tearDown() throws Exception {
@@ -241,16 +241,14 @@ public class ConfReaderTest extends TestCase {
     }
 
     public void testComponentWithoutProperties() {
-        ComponentConfiguration conf = ConfReader.getInstance().
-        	getComponentConfiguration("module_without_properties");
+        ComponentConfiguration conf = ConfReader.getConfiguration("module_without_properties");
         assertNotNull("The properties should not be null", 
                 conf.getProperties());        
 
     }
 
     public void testComponentWithoutXML() {
-        ComponentConfiguration conf = ConfReader.getInstance().
-        	getComponentConfiguration("module_without_xml");
+        ComponentConfiguration conf = ConfReader.getConfiguration("module_without_xml");
         try {
             conf.getConfigurationObject();
             fail("A Configuration exception should have been thrown");
@@ -260,7 +258,7 @@ public class ConfReaderTest extends TestCase {
     public void testComponentWithoutDigesterRules() {
         String name = "module_without_digesterRules";
         try {
-            ConfReader.getInstance().getComponentConfiguration(name);
+            ConfReader.getConfiguration(name);
         } catch (DigesterRulesNotFoundException expected) {
             assertNotNull("The exception should contain the name of the missing file",
                     expected.getDigesterRulesFileName());
@@ -271,15 +269,15 @@ public class ConfReaderTest extends TestCase {
 
     // THIS FUNCTIONALITY DOES NOT WORK ALTHOUGH THE TEST PASSES
     public void testComponentWithDisabledCache() {
-        ComponentConfiguration componentConf1 = ConfReader.getInstance().getComponentConfiguration("test_module");
-        ComponentConfiguration componentConf2 = ConfReader.getInstance().getComponentConfiguration("test_module");
+        ComponentConfiguration componentConf1 = ConfReader.getConfiguration("test_module");
+        ComponentConfiguration componentConf2 = ConfReader.getConfiguration("test_module");
         assertNotSame("The configuration should have been read again",
                       componentConf1, componentConf2);
     }
 
     /** To Run this test you have to execute with -D=easyconf:environment=local */
     public void inactive_testUsingSystemProperties() {
-        ComponentConfiguration componentConf = ConfReader.getInstance().getComponentConfiguration("test_module");
+        ComponentConfiguration componentConf = ConfReader.getConfiguration("test_module");
         String sysProperty = "easyconf:environment";
         assertEquals("The environment was not correctly read from the system property: " + sysProperty,
                      "local",
@@ -292,8 +290,7 @@ public class ConfReaderTest extends TestCase {
     public void bugtestXmlThatUsesNonExistentProperty() {
         String name = "module_with_xml_that_uses_non_existent_property";
         try {
-            ComponentConfiguration conf = ConfReader.getInstance().
-            	getComponentConfiguration(name);
+            ComponentConfiguration conf = ConfReader.getConfiguration(name);
         } catch (InvalidPropertyException expected) {
             assertEquals("Invalid component name in the exception",
                     name, expected.getComponentName());

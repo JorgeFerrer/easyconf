@@ -132,7 +132,7 @@ public class PropertyTag extends BodyTagSupport {
      */
     public int doEndTag() throws JspException {
         Object value = null;
-        ComponentProperties conf = ConfReader.getInstance().getComponentConfiguration(component).
+        ComponentProperties conf = ConfReader.getConfiguration(component).
         	getProperties();
         value = readProperty(conf);
 

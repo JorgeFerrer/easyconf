@@ -17,28 +17,20 @@ package com.germinus.easyconf;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Main class to obtain the configuration of a software component.
  *
- * The main method is <code>getComponentConfiguration</code> which must be
+ * The main method is <code>getConfiguration</code> which must be
  * given the name of a component.
  *
  * @author jferrer@germinus.com
  */
 public class ConfReader {
-	private static final ConfReader instance = new ConfReader();
     private static final Log log = LogFactory.getLog(ConfReader.class);
     private static Map cache = new HashMap();
-
-    public static ConfReader getInstance() {
-        return instance;
-    }
 
     private ConfReader() {
     }
@@ -49,7 +41,7 @@ public class ConfReader {
      * configuration component.
      * @return a <code>ComponentConf</code> instance 
      */
-    public ComponentConfiguration getComponentConfiguration(String componentName) {
+    public static ComponentConfiguration getConfiguration(String componentName) {
         try {
             ComponentConfiguration componentConf = (ComponentConfiguration)
             cache.get(componentName);
@@ -74,7 +66,7 @@ public class ConfReader {
      * library Jakarta Commons Configuration also contains a cache which is not refreshable. This 
      * issue is scheduled to be solved after version 1.0 of such library. 
      */
-    public void refreshComponent(String componentName) {
+    public static void refreshComponent(String componentName) {
         String entryName = componentName;
         Object componentConf = cache.get(entryName);
         if (componentConf != null) {
@@ -89,23 +81,12 @@ public class ConfReader {
      * library Jakarta Commons Configuration also contains a cache which is not refreshable. This 
      * issue is scheduled to be solved after version 1.0 of such library. 
      */
-    public void refreshAll() {
+    public static void refreshAll() {
         cache = new HashMap();
         log.info("Refreshed the configuration of all components");
     }
 
     // ************************** Deprecated methods ***************************
-
-//    /**
-//     * Get the properties based configuration of the given component.
-//     * @deprecated use getComponentConf() instead.
-//     */
-//    public Configuration getConfiguration(String componentName) {
-//        return getComponentConfiguration(componentName).getProperties().
-//        	getConfiguration();
-//    }
-
-
 
 
 }

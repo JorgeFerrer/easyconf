@@ -39,12 +39,12 @@ public class RefreshConfigurationAction extends Action {
         if (dform != null) {
             String componentName = (String) dform.get("componentName");
             if (StringUtils.isBlank(componentName)) {
-                ConfReader.getInstance().refreshAll();
+                ConfReader.refreshAll();
             } else {
-                ConfReader.getInstance().refreshComponent(componentName);
+                ConfReader.refreshComponent(componentName);
             }
         } else {
-            ConfReader.getInstance().refreshAll();
+            ConfReader.refreshAll();
         }
         return mapping.findForward(SUCCESS);
     }
