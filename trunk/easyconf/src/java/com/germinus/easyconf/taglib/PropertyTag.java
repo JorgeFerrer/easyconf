@@ -55,7 +55,7 @@ public class PropertyTag extends BodyTagSupport {
     protected String id = null;
     protected String component = null;
     protected String property = null;
-    protected String type = null;
+    protected String type = "java.lang.String";
     protected String selector1 = "";
     protected String selector2 = "";
     protected String selector3 = "";
@@ -115,7 +115,7 @@ public class PropertyTag extends BodyTagSupport {
     /**
      * @jsp.attribute required="false" rtexprvalue="true"
      */
-    public String getValue() {
+    public String getDefaultValue() {
         return (this.defaultValue);
     }
 
@@ -123,7 +123,7 @@ public class PropertyTag extends BodyTagSupport {
      * Note: currently this is only used if type is String
      * @param defaultValue
      */
-    public void setValue(String defaultValue) {
+    public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
     }
 
@@ -246,17 +246,17 @@ public class PropertyTag extends BodyTagSupport {
     }
 
     private Object readProperty(ComponentProperties conf) throws JspException {
-        String type = this.type;
-        if (StringUtils.isEmpty(type)) {
-            type = "java.lang.String";
-        }
-        Object value = this.defaultValue;
+        Object value;
         if (type.equals("java.util.List")) {
             value = conf.getList(property, getPropertyFilter(), EMPTY_LIST);
         } else if (type.equals("java.lang.Integer")) {
             value = conf.getInteger(property, getPropertyFilter(), new Integer(0));
         } else if (type.equals("java.lang.String")) {
-            value = conf.getString(property, getPropertyFilter(), defaultValue);
+            if (defaultValue != null) {
+                value = conf.getString(property, getPropertyFilter(), defaultValue);
+            } else {
+                value = conf.getString(property, getPropertyFilter());
+            }
         } else if (type.equals("java.lang.Double")) {
             value = new Double(conf.getDouble(property, getPropertyFilter()));
         } else if (type.equals("java.lang.Float")) {
