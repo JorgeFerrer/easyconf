@@ -45,6 +45,8 @@ public class ComponentProperties {
         this.properties = conf;
     }
     
+    // .................. Conversion methods ...................
+    
     public Map toMap() {
         Map props = new HashMap();
         
@@ -55,14 +57,15 @@ public class ComponentProperties {
         }
         return props;
     }
+  
+    public java.util.Properties getProperties(String key) {
+        return properties.getProperties(key);
+    }
+    public Object getProperty(String key) {
+        return properties.getProperty(key);
+    }
 
-//    /** to be removed **/
-//    Configuration getConfiguration() {
-//        return properties;
-//    }
-    
-    
-    // **************** Delegate methods ***************************
+    // ..................... Delegated methods ...............
     
     public boolean containsKey(String key) {
         return properties.containsKey(key);
@@ -71,109 +74,14 @@ public class ComponentProperties {
     public boolean equals(Object obj) {
         return properties.equals(obj);
     }
-    public BigDecimal getBigDecimal(String key) {
-        return properties.getBigDecimal(key);
-    }
-    public BigDecimal getBigDecimal(String key, BigDecimal defaultValue) {
-        return properties.getBigDecimal(key, defaultValue);
-    }
-    public BigInteger getBigInteger(String key) {
-        return properties.getBigInteger(key);
-    }
-    public BigInteger getBigInteger(String key, BigInteger defaultValue) {
-        return properties.getBigInteger(key, defaultValue);
-    }
-    public boolean getBoolean(String key) {
-        return properties.getBoolean(key);
-    }
-    public boolean getBoolean(String key, boolean defaultValue) {
-        return properties.getBoolean(key, defaultValue);
-    }
-    public Boolean getBoolean(String key, Boolean defaultValue)
-            throws NoClassDefFoundError {
-        return properties.getBoolean(key, defaultValue);
-    }
-    public byte getByte(String key) {
-        return properties.getByte(key);
-    }
-    public byte getByte(String key, byte defaultValue) {
-        return properties.getByte(key, defaultValue);
-    }
-    public Byte getByte(String key, Byte defaultValue) {
-        return properties.getByte(key, defaultValue);
-    }
-    public double getDouble(String key) {
-        return properties.getDouble(key);
-    }
-    public double getDouble(String key, double defaultValue) {
-        return properties.getDouble(key, defaultValue);
-    }
-    public Double getDouble(String key, Double defaultValue) {
-        return properties.getDouble(key, defaultValue);
-    }
-    public float getFloat(String key) {
-        return properties.getFloat(key);
-    }
-    public float getFloat(String key, float defaultValue) {
-        return properties.getFloat(key, defaultValue);
-    }
-    public Float getFloat(String key, Float defaultValue) {
-        return properties.getFloat(key, defaultValue);
-    }
-    public int getInt(String key) {
-        return properties.getInt(key);
-    }
-    public int getInt(String key, int defaultValue) {
-        return properties.getInt(key, defaultValue);
-    }
-    public Integer getInteger(String key, Integer defaultValue) {
-        return properties.getInteger(key, defaultValue);
-    }
+
     public Iterator getKeys() {
         return properties.getKeys();
     }
     public Iterator getKeys(String prefix) {
         return properties.getKeys(prefix);
     }
-    public List getList(String key) {
-        return properties.getList(key);
-    }
-    public List getList(String key, List defaultValue) {
-        return properties.getList(key, defaultValue);
-    }
-    public long getLong(String key) {
-        return properties.getLong(key);
-    }
-    public Long getLong(String key, Long defaultValue) {
-        return properties.getLong(key, defaultValue);
-    }
-    public long getLong(String key, long defaultValue) {
-        return properties.getLong(key, defaultValue);
-    }
-    public java.util.Properties getProperties(String key) {
-        return properties.getProperties(key);
-    }
-    public Object getProperty(String key) {
-        return properties.getProperty(key);
-    }
-    public short getShort(String key) {
-        return properties.getShort(key);
-    }
-    public Short getShort(String key, Short defaultValue) {
-        return properties.getShort(key, defaultValue);
-    }
-    public short getShort(String key, short defaultValue) {
-        return properties.getShort(key, defaultValue);
-    }
-    public String getString(String key) {
-        return properties.getString(key);
-    }
-    public String getString(String key, String defaultValue) {
-        return properties.getString(key, defaultValue);
-    }
-    public String[] getStringArray(String key) {
-        return properties.getStringArray(key);
-    }
+
     public int hashCode() {
         return properties.hashCode();
     }
@@ -190,34 +98,13 @@ public class ComponentProperties {
         return properties.toString();
     }
 
-    // ............ Property methods with filter ................
-
-
-    public Float getFloat(String key, Filter filter) {
-        Float value = getFloat(key, filter, null);
-        assertNotNull(key, value);
-        return value;
+    // ..................... BigDecimal ......................
+    
+    public BigDecimal getBigDecimal(String key) {
+        return properties.getBigDecimal(key);
     }
-    public Float getFloat(String key, Filter filter, Float defaultValue) {
-        return (Float) getPropertyWithFilter(key, filter, Float.class, defaultValue);
-    }
-
-    public Integer getInteger(String key, Filter filter) {
-        Integer value = getInteger(key, filter, null);
-        assertNotNull(key, value);
-        return value;
-    }
-    public Integer getInteger(String key, Filter filter, Integer defaultValue) {
-        return (Integer) getPropertyWithFilter(key, filter, Integer.class, defaultValue);
-    }
-
-    public String getString(String key, Filter filter) {
-        String value = getString(key, filter, null);
-        assertNotNull(key, value);
-        return value;
-    }
-    public String getString(String key, Filter filter, String defaultValue) {
-        return (String) getPropertyWithFilter(key, filter, String.class, defaultValue);
+    public BigDecimal getBigDecimal(String key, BigDecimal defaultValue) {
+        return properties.getBigDecimal(key, defaultValue);
     }
 
     public BigDecimal getBigDecimal(String key, Filter filter) {
@@ -229,6 +116,15 @@ public class ComponentProperties {
         return (BigDecimal) getPropertyWithFilter(key, filter, BigDecimal.class, defaultValue);
     }
     
+    // ..................... BigInteger ......................
+    
+    public BigInteger getBigInteger(String key) {
+        return properties.getBigInteger(key);
+    }
+    public BigInteger getBigInteger(String key, BigInteger defaultValue) {
+        return properties.getBigInteger(key, defaultValue);
+    }
+
     public BigInteger getBigInteger(String key, Filter filter) {
         BigInteger value = getBigInteger(key, filter, null);        
         assertNotNull(key, value);
@@ -238,23 +134,135 @@ public class ComponentProperties {
         return (BigInteger) getPropertyWithFilter(key, filter, BigInteger.class, defaultValue);
     }
 
-    public Boolean getBoolean(String key, Filter filter) {
+    // ..................... Boolean ......................
+    
+    public boolean getBoolean(String key) {
+        return properties.getBoolean(key);
+    }
+    public boolean getBoolean(String key, boolean defaultValue) {
+        return properties.getBoolean(key, defaultValue);
+    }
+    public Boolean getBoolean(String key, Boolean defaultValue)
+            throws NoClassDefFoundError {
+        return properties.getBoolean(key, defaultValue);
+    }
+
+    public boolean getBoolean(String key, Filter filter) {
         Boolean value = getBoolean(key, filter, null);        
         assertNotNull(key, value);
-        return value;
+        return value.booleanValue();
     }
     public Boolean getBoolean(String key, Filter filter, Boolean defaultValue)
             throws NoClassDefFoundError {
         return (Boolean) getPropertyWithFilter(key, filter, Boolean.class, defaultValue);
     }
+    public boolean getBoolean(String key, Filter filter, boolean defaultValue) {
+        return getBoolean(key, filter, new Boolean(defaultValue)).booleanValue();
+    }
     
-    public Double getDouble(String key, Filter filter) {
+    // ..................... Byte ......................
+    
+    public byte getByte(String key) {
+        return properties.getByte(key);
+    }
+    public byte getByte(String key, byte defaultValue) {
+        return properties.getByte(key, defaultValue);
+    }
+    public Byte getByte(String key, Byte defaultValue) {
+        return properties.getByte(key, defaultValue);
+    }
+
+    public byte getByte(String key, Filter filter) {
+        Byte value = getByte(key, filter, null);        
+        assertNotNull(key, value);
+        return value.byteValue();
+    }
+    public Byte getByte(String key, Filter filter, Byte defaultValue) {
+        return (Byte) getPropertyWithFilter(key, filter, Byte.class, defaultValue);
+    }
+    public byte getByte(String key, Filter filter, byte defaultValue) {
+        return getByte(key,filter,new Byte(defaultValue)).byteValue();       
+    }
+
+    // ..................... Double ......................
+    
+    public double getDouble(String key) {
+        return properties.getDouble(key);
+    }
+    public double getDouble(String key, double defaultValue) {
+        return properties.getDouble(key, defaultValue);
+    }
+    public Double getDouble(String key, Double defaultValue) {
+        return properties.getDouble(key, defaultValue);
+    }
+
+    public double getDouble(String key, Filter filter) {
         Double value = getDouble(key, filter, null);        
         assertNotNull(key, value);
-        return value;
+        return value.doubleValue();
     }
     public Double getDouble(String key, Filter filter, Double defaultValue) {
         return (Double) getPropertyWithFilter(key, filter, Double.class, defaultValue);
+    }
+    public double getDouble(String key, Filter filter, double defaultValue) {
+        return getDouble(key, filter, new Double(defaultValue)).doubleValue();
+    }
+        
+    // ..................... Float ......................
+    
+    public float getFloat(String key) {
+        return properties.getFloat(key);
+    }
+    public float getFloat(String key, float defaultValue) {
+        return properties.getFloat(key, defaultValue);
+    }
+    public Float getFloat(String key, Float defaultValue) {
+        return properties.getFloat(key, defaultValue);
+    }
+
+    public float getFloat(String key, Filter filter) {
+        Float value = getFloat(key, filter, null);
+        assertNotNull(key, value);
+        return value.floatValue();
+    }
+    public Float getFloat(String key, Filter filter, Float defaultValue) {
+        return (Float) getPropertyWithFilter(key, filter, Float.class, defaultValue);
+    }
+    public float getFloat(String key, Filter filter, float defaultValue) {
+        return getFloat(key, filter, new Float(defaultValue)).floatValue();
+    }
+
+    // ..................... Integer ......................  
+    
+    public int getInt(String key) {
+        return properties.getInt(key);
+    }
+    public int getInt(String key, int defaultValue) {
+        return properties.getInt(key, defaultValue);
+    }
+    public Integer getInteger(String key, Integer defaultValue) {
+        return properties.getInteger(key, defaultValue);
+    }
+
+    public int getInt(String key, Filter filter) {
+        Integer value = getInteger(key, filter, null);
+        assertNotNull(key, value);
+        return value.intValue();
+    }
+    public Integer getInteger(String key, Filter filter, Integer defaultValue) {
+        return (Integer) getPropertyWithFilter(key, filter, Integer.class, defaultValue);
+    }
+    public int getInt(String key, Filter filter, int defaultValue) {
+        return getInteger(key,filter, new Integer(defaultValue)).intValue();
+    }
+
+    // ..................... List ......................  
+
+    public List getList(String key) {
+        return properties.getList(key);
+    }
+    public List getList(String key, List defaultValue) {
+        return properties.getList(key, defaultValue);
     }
 
     public List getList(String key, Filter filter) {
@@ -265,32 +273,97 @@ public class ComponentProperties {
     public List getList(String key, Filter filter, List defaultValue) {
         return (List) getPropertyWithFilter(key, filter, List.class, defaultValue);
     }
+    // ..................... Long ......................  
 
-    public Long getLong(String key, Filter filter) {
+    public long getLong(String key) {
+        return properties.getLong(key);
+    }
+    public Long getLong(String key, Long defaultValue) {
+        return properties.getLong(key, defaultValue);
+    }
+    public long getLong(String key, long defaultValue) {
+        return properties.getLong(key, defaultValue);
+    }
+
+    public long getLong(String key, Filter filter) {
         Long value = getLong(key, filter, null);        
         assertNotNull(key, value);
-        return value;
+        return value.longValue();
     }
     public Long getLong(String key, Filter filter, Long defaultValue) {
         return (Long) getPropertyWithFilter(key, filter, Long.class, defaultValue);
     }
+    public long getLong(String key, Filter filter, long defaultValue) {
+        return getLong(key, filter, new Long(defaultValue)).longValue();
+    }
 
-    public Short getShort(String key, Filter filter) {
+    // ..................... Short ......................  
+
+    public short getShort(String key) {
+        return properties.getShort(key);
+    }
+    public Short getShort(String key, Short defaultValue) {
+        return properties.getShort(key, defaultValue);
+    }
+    public short getShort(String key, short defaultValue) {
+        return properties.getShort(key, defaultValue);
+    }
+
+    public short getShort(String key, Filter filter) {
         Short value = getShort(key, filter, null);        
         assertNotNull(key, value);
-        return value;
+        return value.shortValue();
     }
     public Short getShort(String key, Filter filter, Short defaultValue) {
         return (Short) getPropertyWithFilter(key, filter, Short.class, defaultValue);
     }
+    public short getShort(String key, Filter filter, short defaultValue) {
+        return getShort(key,filter,new Short(defaultValue)).shortValue();
+    }
 
-    public Byte getByte(String key, Filter filter) {
-        Byte value = getByte(key, filter, null);        
+    // ..................... String ......................  
+
+    public String getString(String key) {
+        return properties.getString(key);
+    }
+    public String getString(String key, String defaultValue) {
+        return properties.getString(key, defaultValue);
+    }
+
+    public String getString(String key, Filter filter) {
+        String value = getString(key, filter, null);
         assertNotNull(key, value);
         return value;
     }
-    public Byte getByte(String key, Filter filter, Short defaultValue) {
-        return (Byte) getPropertyWithFilter(key, filter, Byte.class, defaultValue);
+    public String getString(String key, Filter filter, String defaultValue) {
+        return (String) getPropertyWithFilter(key, filter, String.class, defaultValue);
+    }
+
+    // ..................... StringArray ......................  
+
+    public String[] getStringArray(String key) {
+        return properties.getStringArray(key);
+    }
+
+    public String[] getStringArray(String key, Filter filter) {
+        List value = getList(key, filter);
+        if (value == null) {
+            return null;
+        } else {
+            return (String[]) value.toArray(new String[0]);
+        }
+    }
+    public String[] getStringArray(String key, Filter filter, String[] defaultValue) {
+        List defaultList = null;
+        if (defaultValue != null) {
+            defaultList = Arrays.asList(defaultValue);
+        }
+        List value = getList(key, filter, defaultList);
+        if (value == null) {
+            return null;
+        } else {
+            return (String[]) value.toArray(new String[0]);
+        }
     }
 
     // ............ Helper methods for filters ........

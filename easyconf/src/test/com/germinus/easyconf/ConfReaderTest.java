@@ -15,6 +15,8 @@
  */
 package com.germinus.easyconf;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -51,8 +53,8 @@ public class ConfReaderTest extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
-//        suite.addTestSuite(ConfReaderTest.class);
-        suite.addTest(new ConfReaderTest("testFilter"));
+        suite.addTestSuite(ConfReaderTest.class);
+//        suite.addTest(new ConfReaderTest("testFilter"));
         return suite;
     }
 
@@ -72,35 +74,96 @@ public class ConfReaderTest extends TestCase {
 					 getProperties().getString("string-not-overridden"));
     }
     
+    /**
+     * Expected property keys and values:
+     * long-with-filter:selector1.selector2=1234
+     * short-with-filter:selector1.selector2=1234
+     * int-with-filter:selector1.selector2=1234
+     * byte-with-filter:selector1.selector2=123
+     * biginteger-with-filter:selector1.selector2=1234
+     * bigdecimal-with-filter:selector1.selector2=1234
+     * double-with-filter:selector1.selector2=1234
+     * float-with-filter:selector1.selector2=1234
+     * list-with-filter:selector1.selector2=1234,5678
+     * boolean-with-filter:selector1.selector2=false
+     */
     public void testFilterWithDefault() {
         String value = getProperties().getString("property-with-filter",
                                                  Filter.by("selector1", "selector2"),
                                                  "defaultvalue");
-        assertEquals("Invalid value when specifying two selectors",
+        assertEquals("Invalid string value when specifying two selectors",
     				 "selector1-and-selector2", value);
+        assertEquals("Invalid long value when specifying two selectors", 1234, 
+				 	  getProperties().getLong("long-with-filter", Filter.by("selector1", "selector2"), 0l));
+        assertEquals("Invalid short value when specifying two selectors", 1234, 
+			 	  getProperties().getShort("short-with-filter", Filter.by("selector1", "selector2"), (short)0));
+        assertEquals("Invalid int value when specifying two selectors", 1234, 
+			 	  getProperties().getInt("int-with-filter", Filter.by("selector1", "selector2"), 0));
+        assertEquals("Invalid byte value when specifying two selectors", 123, 
+			 	  getProperties().getByte("byte-with-filter", Filter.by("selector1", "selector2"), (byte)0));
+        assertEquals("Invalid BigInteger value when specifying two selectors", new BigInteger("1234"), 
+			 	  getProperties().getBigInteger("biginteger-with-filter", 
+			 	          Filter.by("selector1", "selector2"), new BigInteger("0")));
+        assertEquals("Invalid BigDecimal value when specifying two selectors", new BigDecimal(1234), 
+			 	  getProperties().getBigDecimal("bigdecimal-with-filter", 
+			 	          Filter.by("selector1", "selector2"), new BigDecimal(0d)));
+        assertEquals("Invalid double value when specifying two selectors", 1234d, 
+			 	  getProperties().getDouble("double-with-filter", Filter.by("selector1", "selector2"), 0), 0);
+        assertEquals("Invalid float value when specifying two selectors", 1234f, 
+			 	  getProperties().getFloat("float-with-filter", Filter.by("selector1", "selector2"), 0), 0);
+        assertEquals("Invalid boolean value when specifying two selectors", false, 
+			 	  getProperties().getBoolean("boolean-with-filter", Filter.by("selector1", "selector2"), true));
+        assertEquals("Invalid list value when specifying two selectors", Arrays.asList(new String[] {"1234","5678"}), 
+			 	  getProperties().getList("list-with-filter", Filter.by("selector1", "selector2"), null));
+        assertEquals("Invalid string array value when specifying two selectors", new String[] {"1234","5678"}, 
+			 	  getProperties().getStringArray("list-with-filter", Filter.by("selector1", "selector2"), null));
     }
+
     public void testFilterWithoutDefault() {
-        Object value = null;
         try {
-            value = getProperties().getString("Inexistent property",
-                    Filter.by("selector1", "selector2"));
-            value = getProperties().getList("Inexistent property",
-                    Filter.by("selector1", "selector2"));
-            value = getProperties().getBigDecimal("Inexistent property",
-                    Filter.by("selector1", "selector2"));
-            value = getProperties().getBigInteger("Inexistent property",
-                    Filter.by("selector1", "selector2"));
-            value = getProperties().getLong("Inexistent property",
-                    Filter.by("selector1", "selector2"));
-            value = getProperties().getShort("Inexistent property",
-                    Filter.by("selector1", "selector2"));
-            value = getProperties().getDouble("Inexistent property",
-                    Filter.by("selector1", "selector2"));
-            value = getProperties().getByte("Inexistent property",
-                    Filter.by("selector1", "selector2"));
+            getProperties().getString("Inexistent property", Filter.by("selector1", "selector2"));
             fail("A NoSuchElementException should have been thrown");
-        } catch (NoSuchElementException success) {
-        }
+        } catch (NoSuchElementException success) {}
+        try {
+            getProperties().getLong("Inexistent property", Filter.by("selector1", "selector2"));
+            fail("A NoSuchElementException should have been thrown");
+        } catch (NoSuchElementException success) {}
+        try {
+            getProperties().getShort("Inexistent property", Filter.by("selector1", "selector2"));
+            fail("A NoSuchElementException should have been thrown");
+        } catch (NoSuchElementException success) {}
+        try {
+            getProperties().getInt("Inexistent property", Filter.by("selector1", "selector2"));
+            fail("A NoSuchElementException should have been thrown");
+        } catch (NoSuchElementException success) {}
+        try {
+            getProperties().getByte("Inexistent property", Filter.by("selector1", "selector2"));
+            fail("A NoSuchElementException should have been thrown");
+        } catch (NoSuchElementException success) {}
+        try {
+            getProperties().getBigInteger("Inexistent property", Filter.by("selector1", "selector2"));
+            fail("A NoSuchElementException should have been thrown");
+        } catch (NoSuchElementException success) {}
+        try {
+            getProperties().getBigDecimal("Inexistent property", Filter.by("selector1", "selector2"));
+            fail("A NoSuchElementException should have been thrown");
+        } catch (NoSuchElementException success) {}
+        try {
+            getProperties().getDouble("Inexistent property", Filter.by("selector1", "selector2"));
+            fail("A NoSuchElementException should have been thrown");
+        } catch (NoSuchElementException success) {}
+        try {
+            getProperties().getFloat("Inexistent property", Filter.by("selector1", "selector2"));
+            fail("A NoSuchElementException should have been thrown");
+        } catch (NoSuchElementException success) {}
+        try {
+            getProperties().getList("Inexistent property", Filter.by("selector1", "selector2"));
+            fail("A NoSuchElementException should have been thrown");
+        } catch (NoSuchElementException success) {}
+        try {
+            getProperties().getStringArray("Inexistent property", Filter.by("selector1", "selector2"));
+            fail("A NoSuchElementException should have been thrown");
+        } catch (NoSuchElementException success) {}
     }
 
     public void testReadStringOverriddenInPrj() {
@@ -223,5 +286,14 @@ public class ConfReaderTest extends TestCase {
         return (DatabaseConf) componentConf.getConfigurationObject();
     }
 
+    private void assertEquals(String msg, String[] expected, String[] obtained) {
+        if (expected.length != obtained.length) {
+            fail(msg + ". Expected and obtained arrays length differ");
+        }
+        for (int i = 0; i < expected.length; i++) {
+            assertEquals(msg + ". (" + i + "th element)", expected[i], obtained[i]);
+        }
+    }
+    
 
 }
