@@ -47,6 +47,10 @@
 	    </li>
 	  </ol>
 	</p>
-      </section>
-    </body>
+	<p>
+	For more information about this features check the 
+	<a href="../apidocs/overview-summary.html">Javadoc summary of EasyConf</a>
+	</p>
+   </section>
+   </body>
   </document>
