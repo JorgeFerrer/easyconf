@@ -1,0 +1,56 @@
+<document>
+
+  <properties>
+    <title>Latest changes</title>
+    <author >Jorge Ferrer</author>
+  </properties>
+
+  <body>
+    <section name="Changes in latest stable version (0.7.1)">
+      <p>
+         This is the first version which incorporates additions and changes based on
+         feedback from the users. The most relevant changes are:
+      </p>
+      <ul>
+         <li><p><b>Convention changes</b>:</p>
+            <ul>
+               <li>New format to represent property selectors. Now instead of
+                  <tt>property:selector1.selector2</tt> you should write
+                  <tt>property[selector1][selector2]</tt>. The old convention
+                  was considered confusing for some users and didn't make so clear
+                  that selectors are optional. For more information 
+		            check the section on <a href="user/properties/filters.html">filters</a> 
+                  of the user manual.
+             	</li>
+            </ul>
+         </li>
+         <li>Improved support for system properties. Now system properties can
+            have the name of the component which contain the property as a prefix 
+            if its intent is to override its value. If the prefix is not used
+            the system property will only be considered if the name is not
+            the same as one of an existing property. For more information 
+            check the section on <a href="user/properties/sysproperties.html">system
+               properties</a> of the user manual.</li>
+         <li>A new taglib to access the configuration object from JSPs. For more information 
+            check the section on <a href="user/J2EE/taglibs.html">J2EE taglibs</a> 
+            of the user manual.</li>
+         <li>Included the taglib tld in <tt>easyconf.jar</tt> (inside the <tt>tld</tt> directory). Now
+            this tld is generated using xdoclet</li>
+         <li>Conversion of the properties of a component configuration to a <tt>DynaBean</tt>
+            object</li>
+         <li>Much more documentation</li>
+      </ul>
+    </section>
+    <section name="Older versions">
+      <p>
+         <b>Version 0.7.0</b>
+      </p>
+      <ul>
+         <li>First public release under the Apache License</li>
+         <li>Support for filters</li>
+         <li>Support for system properties</li>
+         <li>Improved support for multiple environments</li>
+      </ul>
+	 </section>
+  </body>
+</document>
