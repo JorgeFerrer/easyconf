@@ -55,22 +55,21 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
      * @return
      */
     protected Object getPropertyDirect(String key) {
-        log.debug("Looking value for property " +key);
         Object value = null;
         if (value == null) {
-            value = globalConf.getProperty(key);
+            value = systemProperties.getProperty(key);
         }
         if (value == null) {
             value = globalConf.getProperty(getPrefix() + key);
+        }
+        if (value == null) {
+            value = globalConf.getProperty(key);
         }
         if (value == null) {
             value = baseConf.getProperty(key);
         }
         if (value == null) {
             value = super.getPropertyDirect(key);
-        }
-        if (value == null) {
-            value = systemProperties.getProperty(key);
         }
         return value;
     }
