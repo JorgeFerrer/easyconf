@@ -52,6 +52,10 @@
          <source>
             my-component:skin=purple
          </source>
+         <p>
+             The following image shows how this process in a diagram form:
+         </p>
+         <img src="../../resources/multi-component.gif"/>
       </section>
       <section name="A complete example">   
          <p>
