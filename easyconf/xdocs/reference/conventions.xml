@@ -2,7 +2,7 @@
 
   <properties>
     <title>Conventions used by EasyConf</title>
-    <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
+    <author >Jorge Ferrer</author>
   </properties>
 
   <body>
@@ -13,15 +13,18 @@
       </p>
       <ul>
         <li>Given a component named <i>my-component</i> its base configuration properties
-            will be obtained from a file named <tt>my-component.properties</tt> and its XML
-            file will be obtained from a file named <tt>my-component.xml</tt></li>
-        <li>For every component a file named <tt>global-configuration.properties</tt> will be
-            read to find overridden property values.</li>
-        <li>The property names of the <tt>global-configuration.properties</tt> file may be prefixed
-            by the name of the component followed by a colon character. For example:
-            <code>
+            will be obtained from a file named <tt>my-component.properties</tt>.</li>
+        <li>Given a component named <i>my-component</i> its XML
+            file will be obtained from a file named <tt>my-component.xml</tt> and the
+            file which defines the mapping from XML to POJOs is obtained from a file
+            named <tt>my-component.digesterRules.xml</tt>.</li>
+        <li>A file named <tt>global-configuration.properties</tt> will be
+            read for every component to find overridden property values. </li>
+        <li>The property names of the <tt>global-configuration.properties</tt> file may (and
+         should) be prefixed with the name of the component followed by a colon character. For example:
+            <source>
               my-component:property-name=property-value
-            </code>
+            </source>
         </li>
         <li>A special property named <tt>include-and-override</tt> can be used to include files. In case 
             of collision of property names the included ones will override the values given in the
@@ -30,9 +33,9 @@
         <li>Filters are formed by a set of property selectors. When converted to a string the selectors
             are separated by a semi-colon and the set is separated from the property value with a 
             colon. Example:
-            <code>
+            <source>
               property-name:selector1.selector2=property-value
-            </code>
+            </source>
         </li>
       </ul>
       <p>

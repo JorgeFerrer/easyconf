@@ -1,10 +1,16 @@
 <document>
    <properties>
-      <title>TITLE TITLE</title>
-      <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
+      <title>Complex mappings</title>
+      <author >Jorge Ferrer</author>
    </properties>
    <body>
-      <section name="SECTION TITLE">
+      <section name="Presenting a complex example">
+         <p> paragraph </p>
+      </section>
+      <section name="Storage of lists of elements">
+         <p>Hashtables vs collections</p>
+      </section>
+      <section name="Firing actions instead of holding the configuration">
          <p> paragraph </p>
       </section>
    </body>

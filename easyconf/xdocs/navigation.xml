@@ -4,15 +4,30 @@
       <menu name="Introduction">
          <item name="Home" href="/index.html" />
          <item name="Quick start guide" href="/quickstart.html" />
+         <item name="License" href="/license.html" />
          <item name="Download" href="/download.html" />
-         <search/>
+         <item name="Roadmap" href="/roadmap.html" />
       </menu>
       <menu name="User Guide">
          <item name="Introduction" href="/user/introduction.html" />
-         <!--
-		<item name="Properties" href="/user/property-files.html" />
-		<item name="XML Files" href="/user/xml-files.html" />
-		-->
+         <item name="Properties" href="/user/properties/using.html" collapse="false">
+            <item name="Using" href="/user/properties/using.html"/>
+            <item name="Sys. Properties" href="/user/properties/sysproperties.html"/>
+            <item name="Filters" href="/user/properties/filters.html"/>
+            <item name="Multi. components" href="/user/properties/multicomponents.html"/>
+            <item name="Multi. environments" href="/user/properties/multienvironments.html"/>
+            <item name="Planned" href="/user/properties/planned.html"/>
+         </item>
+         <item name="XML files" href="/user/xml/using.html" collapse="false">
+            <item name="Using" href="/user/xml/using.html"/>
+            <item name="Variables" href="/user/properties/variables.html"/>
+            <item name="Complex mappings" href="/user/xml/complex-mappings.html"/>
+            <item name="Planned" href="/user/xml/planned.html"/>
+         </item>
+         <item name="J2EE" href="/user/J2EE/taglibs.html" collapse="false">
+            <item name="Taglibs" href="/user/J2EE/taglibs.html"/>
+            <!-- <item name="Services" href="/user/J2EE/services.html"/> -->
+         </item>
       </menu>
       <menu name="Reference">
          <item name="Features" href="/reference/features.html" />
@@ -27,6 +42,7 @@
 		<item name="How to contribute" href="/how-to-contribute.html" />
       </menu>
       -->
+      <search/>
       <footer>
          <A href="http://sourceforge.net/projects/easyconf">
             <IMG src="http://sourceforge.net/sflogo.php?group_id=72748" 
