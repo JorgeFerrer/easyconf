@@ -7,6 +7,7 @@
          <item name="License" href="/license.html" />
          <item name="Download" href="/download.html" />
          <item name="Roadmap" href="/roadmap.html" />
+         <item name="Changelog" href="/changelog.html"/>
       </menu>
       <menu name="User Guide">
          <item name="Introduction" href="/user/introduction.html" />
