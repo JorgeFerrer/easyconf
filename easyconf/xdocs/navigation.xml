@@ -10,13 +10,14 @@
 		<search/>
       </menu>
       <menu name="User Guide">
-		<item name="Features" href="/user/features.html" />
+		<item name="Properties" href="/user/property-files.html" />
 		<!--
 		<item name="Properties" href="/user/property-files.html" />
 		<item name="XML Files" href="/user/xml-files.html" />
 		-->
 	  </menu>
 	  <menu name="Reference">
+		<item name="Features" href="/reference/features.html" />
   	    <item name="Property types" href="/reference/property-types.html"/>
   	    <item name="Property format" href="/reference/property-format.html"/>
 		<item name="File search" href="/reference/file-search.html"/>
