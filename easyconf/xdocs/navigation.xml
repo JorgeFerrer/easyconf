@@ -16,13 +16,11 @@
             <item name="Filters" href="/user/properties/filters.html"/>
             <item name="Multi. components" href="/user/properties/multicomponents.html"/>
             <item name="Multi. environments" href="/user/properties/multienvironments.html"/>
-            <item name="Planned" href="/user/properties/planned.html"/>
          </item>
          <item name="XML files" href="/user/xml/using.html" collapse="false">
             <item name="Using" href="/user/xml/using.html"/>
-            <item name="Variables" href="/user/properties/variables.html"/>
+            <item name="Variables" href="/user/xml/variables.html"/>
             <item name="Complex mappings" href="/user/xml/complex-mappings.html"/>
-            <item name="Planned" href="/user/xml/planned.html"/>
          </item>
          <item name="J2EE" href="/user/J2EE/taglibs.html" collapse="false">
             <item name="Taglibs" href="/user/J2EE/taglibs.html"/>

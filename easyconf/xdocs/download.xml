@@ -10,5 +10,124 @@
 				href="http://sourceforge.net/project/showfiles.php?group_id=131552">file 
 				distribution</a> system. </p>
 		</section>
+		<section name="Maven users">
+                   <p>
+		      Maven users can set a dependency on EasyConf if they have ibiblio on their sites 
+		      list. EasyConf is currently uploaded to ibiblio as version <tt>0.7.0-beta</tt>,
+		      although it is really version <tt>0.7.0</tt>. Here is an example of the dependency 
+				XML that you could use:
+		   </p>
+		   <source>
+			<![CDATA[
+<dependency>
+	<groupId>easyconf</groupId>
+	<artifactId>easyconf</artifactId>
+	<version>0.7.0-beta</version>
+	<url>http://easyconf.sourceforge.net</url>
+</dependency>
+			]]>
+		   </source>
+         <p>
+		      All the dependant libraries can also be obtained from ibiblio. Here is the XML
+		      that you should add for those that are completely necessary:
+		   </p>
+		    <source>
+			<![CDATA[
+<dependency>
+	<groupId>commons-configuration</groupId>
+	<artifactId>commons-configuration</artifactId>
+	<version>1.0</version>
+	<url>http://www.apache.org/</url>
+</dependency>
+
+<dependency>
+	<groupId>commons-collections</groupId>
+	<artifactId>commons-collections</artifactId>
+	<version>3.1</version>
+	<properties>
+	<war.bundle>true</war.bundle>
+	</properties>
+</dependency>
+
+<dependency>
+	<groupId>commons-lang</groupId>
+	<artifactId>commons-lang</artifactId>
+	<version>2.0</version>
+	<properties>
+	<war.bundle>true</war.bundle>
+	</properties>
+</dependency>
+
+<dependency>
+	<groupId>dom4j</groupId>
+	<artifactId>dom4j</artifactId>
+	<version>1.4</version>
+</dependency>
+
+<dependency>
+	<groupId>commons-logging</groupId>
+	<artifactId>commons-logging</artifactId>
+	<version>1.0.4</version>
+	<properties>
+	<war.bundle>true</war.bundle>
+	</properties>
+</dependency>
+
+<dependency>
+	<groupId>commons-digester</groupId>
+	<artifactId>commons-digester</artifactId>
+	<version>1.6</version>
+	<properties>
+	<war.bundle>true</war.bundle>
+	</properties>
+</dependency>
+
+<dependency>
+	<groupId>commons-beanutils</groupId>
+	<artifactId>commons-beanutils-core</artifactId>
+	<version>1.7.0</version>
+	<properties>
+	<war.bundle>true</war.bundle>
+	</properties>
+</dependency>
+
+<dependency>
+	<groupId>commons-beanutils</groupId>
+	<artifactId>commons-beanutils-bean-collections</artifactId>
+	<version>1.7.0</version>
+	<properties>
+	<war.bundle>true</war.bundle>
+	</properties>
+</dependency>
+			]]>
+		   </source>
+         <p>
+			   You'll also need an XML parser. For example you can set a dependency on 
+				Xerces:
+		   </p>
+		   <source>
+			<![CDATA[		
+<dependency>
+	<groupId>xerces</groupId>
+	<artifactId>xerces</artifactId>
+	<version>2.2.1</version>
+	<url>http://xml.apache.org/xerces2-j/</url>
+</dependency>
+			]]>
+		   </source>
+			<p>
+			   EasyConf uses commons-logging to log output. You can set a dependency on
+				log4j if you want to use it as the logger:
+		   </p>
+		   <source>
+			<![CDATA[		
+<dependency>
+	<groupId>log4j</groupId>
+	<artifactId>log4j</artifactId>
+	<version>1.2.8</version>
+</dependency>
+			]]>
+		   </source>
+		</section>
 	</body>
 </document>
