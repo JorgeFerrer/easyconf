@@ -20,8 +20,8 @@
             named <tt>my-component.digesterRules.xml</tt>.</li>
         <li>A file named <tt>global-configuration.properties</tt> will be
             read for every component to find overridden property values. </li>
-        <li>The property names of the <tt>global-configuration.properties</tt> file may (and
-         should) be prefixed with the name of the component followed by a colon character. For example:
+        <li>The property names of the <tt>global-configuration.properties</tt> file may be 
+         prefixed with the name of the component followed by a colon character. For example:
             <source>
               my-component:property-name=property-value
             </source>
@@ -30,11 +30,10 @@
             of collision of property names the included ones will override the values given in the
             file which contains the inclusion instruction. If several <tt>include-and-override</tt> 
             files are used, the last ones will override any previous property values</li>
-        <li>Filters are formed by a set of property selectors. When converted to a string the selectors
-            are separated by a semi-colon and the set is separated from the property value with a 
-            colon. Example:
+        <li>When using filters, property selectors are appended to the property names inside 
+            brackets. Example:
             <source>
-              property-name:selector1.selector2=property-value
+              property-name[selector1][selector2]=property-value
             </source>
         </li>
       </ul>

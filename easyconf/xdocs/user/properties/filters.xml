@@ -11,9 +11,9 @@
             ...
          </p>
          <source>
-            skin:teacher=blue
-            skin:student.secundary=green
-            skin:student=yellow
+            skin[teacher]=blue
+            skin[student][secundary]=green
+            skin[student]=yellow
             skin=grey
          </source>
          <p>

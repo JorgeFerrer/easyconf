@@ -4,9 +4,55 @@
       <author >Jorge Ferrer</author>
    </properties>
    <body>
-      <section name="Reading system properties">
-         <p>Integrated into EasyConf. Useful for overwriting property values.</p>
-         <p>Also used to support multiple environments</p>
+      <section name="Reading system properties">         
+         <p>
+            EasyConf integrates the system properties to unify the sources of 
+            configuration. This feature can be used to override the value of
+            a property existent in a properties file or to define a new
+            property.
+         </p>
+         <p>
+            When used to overwrite a value of an existent property, the property
+            name must be prefixed by the name of the component. For example, if
+            you have in <tt>my-component.properties</tt>:
+         </p>
+         <source>
+            db.type=default
+         </source>
+         <p>
+            You can overwrite this value executing the application with the
+            following command line arguments:
+         </p>
+         <source>
+java -Dmy-component:db.type=oracle MyApp
+			</source>
+         <p>
+            System properties are also available to be used as variables in
+            the properties files. For example:
+         </p>
+         <source>
+users.database.type=${db.type}
+         </source>
+         <p>
+            Specifying system properties that will act as new properties is 
+            useful, for example, when including files. Using this feature
+            you can allow the user to choose the name of the file that
+            will contain properties with overridden values (Rememenber that
+            if the file does not exist it will be silently ignored).
+            For example, if you execute the application with:
+         </p>
+         <source>
+java -Dexternal-file=my-external-file.properties
+			</source>
+         <p>
+            You can include an external file in <tt>my-component.properties</tt> with:
+         </p>
+         <source>
+include-and-override=${external-file}
+         </source>
+         <p>This feature is used to support <a href="multienvironments.html">multiple
+            environemnts</a>
+         </p>
       </section>
    </body>
 </document>

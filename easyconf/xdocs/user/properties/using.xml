@@ -6,9 +6,11 @@
    <body>
       <section name="Reading properties">
          <p>
-            In this section it is assumed that you know how to get the properties
-            of a component. Otherwise, please read the
-             <a href="/user/introduction.html">Introduction</a>.
+            Now that you know how to get the properties of a component (otherwise, 
+            please read the
+             <a href="/user/introduction.html">Introduction</a>) we are ready to
+             start looking at all the functionality related to properties present
+             in EasyConf.
          </p>
          <p>
             The properties are hold in a class called <tt>ComponentProperties</tt>
@@ -17,7 +19,7 @@
             characters you can use:
          </p>
          <source>
-             String skin = getProperties().getString("skin");
+String skin = getProperties().getString("skin");
          </source>
          <p>
              Note: In all the examples it will be assumed that there
@@ -26,10 +28,10 @@
              of this method would be:
          </p>
          <source>
-            private ComponentProperties getProperties() {
-               return ConfReader.getComponent("my-component").getProperties();
-            }
-         </source>
+private ComponentProperties getProperties() {
+   return ConfReader.getComponent("my-component").getProperties();
+}
+			</source>
       </section>
       <section name="Using default values">
           <p>
@@ -38,7 +40,7 @@
               example would be written as:
           </p>
           <source>
-              String skin = getProperties().getString("skin", "blue");
+String skin = getProperties().getString("skin", "blue");
           </source>
           <p>
               If the property <tt>skin</tt> is not found in any of the property
@@ -79,16 +81,16 @@
              of the supported numeric types:
          </p>
          <source>
-             value = getProperties().getBigDecimal("big-decimal");
-             value = getProperties().getBigInteger("big-integer");
-             value = getProperties().getBoolean("boolean");
-             value = getProperties().getByte("byte");
-             value = getProperties().getDouble("double");
-             value = getProperties().getFloat("float");
-             value = getProperties().getInteger("integer");
-             value = getProperties().getLong("long");
-             value = getProperties().getShort("short");
-         </source>
+value = getProperties().getBigDecimal("big-decimal");
+value = getProperties().getBigInteger("big-integer");
+value = getProperties().getBoolean("boolean");
+value = getProperties().getByte("byte");
+value = getProperties().getDouble("double");
+value = getProperties().getFloat("float");
+value = getProperties().getInteger("integer");
+value = getProperties().getLong("long");
+value = getProperties().getShort("short");
+			</source>
          <p>
              If the conversion fails, a runtime <tt>ConversionException</tt> will
              be thrown.
@@ -108,7 +110,7 @@
             the comma character as a separator. Here is an example:
          </p>
          <source>
-            multivaluated=one,two,three
+multivaluated=one,two,three
          </source>
          <p>
             Note that the character next to the comma is not ignored even if it is an space 
@@ -117,8 +119,8 @@
             <tt>getStringArray()</tt> methods:
          </p>
          <source>
-         	List values = getProperties().getList("multivaluated");
-            String[] array = getProperties().getStringArray("multivaluated");
+List values = getProperties().getList("multivaluated");
+String[] array = getProperties().getStringArray("multivaluated");
          </source>
          <p>
             Both methods are pretty similar. The most important property is explained in the
@@ -130,7 +132,7 @@
             Example:
          </p>
          <source>
-            single-valued=one\\,two\\,three
+single-valued=one\\,two\\,three
          </source>   
       </section>
       <section name="Using variables">
@@ -150,23 +152,113 @@
          </p>
          <p>Lets see some examples:</p>
 	      <source>
-      	  supported-currencies=${trusted-currencies},pound
-      	  trusted-currencies=dollar,euro
-           european-currency=euro
-           default-currency=${european-currency}
+supported-currencies=${trusted-currencies},pound
+trusted-currencies=dollar,euro
+european-currency=euro
+default-currency=${european-currency}
          </source>        
 
       </section>
       <section name="Properties with class names">
-         <p>=== CONTINUE HERE ===</p>
+         <p>
+            When an application wants to offer the flexibility to change the implementation
+            of a class it must provide some place where the users can specify the class name.
+            If you are using some Inversion of Control framework such as Spring or 
+            PicoContainer it handles everything, but when those frameworks are not used
+            there is no simple and standard way to configuring class names without running 
+            into trouble. EasyConf aims to fill this gap by giving a special treatment
+            to properties whose value is a class name.
+         </p>
+         <p>
+            For example, if you have a properties file with the following property:
+         </p>
+         <source>
+database-configuration-class=com.germinus.easyconf.example.DatabaseConf
+         </source>
+         <p>
+            You could read it using the <tt>getClass()</tt> method of the 
+               <tt>ComponentProperties class</tt>:
+         </p>
+         <source>
+Class configuredClass = getProperties().getClass("database-configuration-class");
+         </source>
+         <p>
+            The <tt>getClass</tt> method has the usual variants of all other getter methods. So
+            you can specify a default values or a filter. Check the javadocs for further information.
+			</p>
+         <p>
+            But wait!, Java has an static method which can be invoked as <tt>Class.forName(className)</tt>
+            which looks for and loads a <tt>Class</tt> from a class name. That's easy enough,
+            isn't it?. Unfortunately this method has severe limitations which may convert into
+            problems when an application is run in a multithreaded environments or when more than
+            one class loader is used. In those cases using the <tt>getClass</tt> method provided
+            by EasyConf is preferred.
+         </p>
+         <p>
+            For the curious EasyConf searches for the class using two class loaders. The
+            following sequence is used:
+            <ol>
+               <li>Context class loader</li>
+               <li>System class loader</li>
+            </ol>
+            You can also use this functionality directly if you already have the class name. 
+            Take a look at the <tt>locateClass()</tt> method in the
+            <a href="/apidocs/com/germinus/easyconf/ClasspathUtil.html">ClasspathUtil javadoc</a> 
+            documentation for more information. You can also take a look at its
+            <a href="/xref/com/germinus/easyconf/ClasspathUtil.html">ClasspathUtil implementation</a> 
+            for more information about how it works.
+         </p>
       </section>
       <section name="Including other files">
-         <p>Use the <tt>include-and-override</tt> special property. Every properties file can
-            include as many files as wanted. Inclusion is recursive so that included files
-            can include further files.</p>
-         <p>Each time a file is included it will override the properties of the 
-            files including them</p>
-         <p>If an included file is not found it is silently ignored. ...</p>
+         <p>
+            EasyConf allows including other files in its property configuration files. To specify
+            the name of a file to include a special property called <tt>include-and-override</tt>
+            is used. Its name shows the fact that the in case of collision of property names
+            the values of the included file will override the values of other file. Lets see
+            an example of use:
+         </p>           
+         <source>
+include-and-override=external-file.properties
+         </source>
+         <p>
+            The included file will be searched for using the same conventions as all the other
+            configuration files. Recursive file inclusion is supported so this file can also 
+            include other files. Be caution with this to prevent loops.
+         </p>
+         <p>
+            If an included file is not found it is silently ignored. Leveraging this you can
+            set optional extension points to the property files that can be used optionaly
+            by a user of the application to override properties values. Another useful
+            feature is using variables in the names of the files to be included.
+            An example of using this two features can be found in the explanation about 
+            the support for <a href="multienvironments.html">multiple environments</a>.
+            Here is how using a variable would look like:
+         </p>
+         <source>
+include-and-override=mycomponent-${environment.name}.properties
+         </source>
+         <p>
+            Several external files can be included. This can be done either specifying the
+            in comma-separated list or by using several times the <tt>include-and-override</tt>
+            property.
+         </p>
+         <source>
+include-and-override=external-file1.properties,external-file2.properties
+include-and-override=external-file3.properties            
+         </source>
+         <p>
+            In this case the property files will be loaded in the specified order and in
+            case of property name collision the values of the last files loaded will
+            override the previous ones.
+         </p>
+         <p>
+            
+         </p>
+         <p>
+            Note: Commons configuration also has a feature to include external files. EasyConf
+            does not use it to have more control of the included files. For that reason it is not
+            documented here.
+         </p>
       </section>
       
    </body>
