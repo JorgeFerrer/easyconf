@@ -5,24 +5,109 @@
    </properties>
    <body>
       <section name="Reading properties">
-         <p>Use the <tt>getXXX()</tt> of the <tt>ComponentConfiguration</tt> class</p>
-         <p>What happens if the property is not found? ....</p>
+         <p>
+            In this section it is assumed that you know how to get the properties
+            of a component. Otherwise, pleas read the
+             <a href="/user/introduction.html">Introduction</a>.
+         </p>
+         <p>
+            The properties are hold in a class called <tt>ComponentProperties</tt>
+            which has one method for each supported property type. For example
+            to get a property called <tt>skin</tt> which is a string of
+            characters you can use:
+         </p>
+         <source>
+             String skin = getProperties().getString("skin");
+         </source>
+         <p>
+             In this examples and the following it will be assumed that there
+             is a method called <tt>getProperties()</tt> which obtains the
+             properties of a configuration component. A possible implementation
+             of this component would be:
+         </p>
+         <source>
+            private ComponentProperties getProperties() {
+               return ConfReader.getComponent("my-component").getProperties();
+            }
+         </source>
       </section>
-      <section name="Automatic conversion">
-         <p> paragraph </p>
+      <section name="Using default values">
+          <p>
+              All methods to request a property value have an optional parameter
+              to specify a default value. Using this parameter the previous
+              example would be written as:
+          </p>
+          <source>
+              String skin = getProperties().getString("skin", "blue");
+          </source>
+          <p>
+              If the property <tt>skin</tt> is not found in any of the property
+              files associated with the component, <i>blue</i> will be returned.
+          </p>
+          <p>
+              <b>Note</b>: If no default value is specified, EasyConf considers
+              the property mandatory and if it is not found a
+              <tt>NoSuchElementException</tt> is thrown.
+          </p>
+      </section>
+      <section name="Numeric property types">
+         <p>
+            Besides the usual <tt>String</tt> type, EasyConf has included support
+            for automatic conversion to all of Java's numeric types. Native
+            numeric types are supported both in the native and in the class
+            format whenever possible. Here is a complete list of the supported
+            numeric types:
+         </p>
+          <ul>
+            <li>BigDecimal</li>
+            <li>BigInteger</li>
+            <li>Boolean</li>
+            <li>Byte</li>
+            <li>Double</li>
+            <li>Float</li>
+            <li>Integer</li>
+            <li>Long</li>
+            <li>Short</li>
+          </ul>
+         <p>
+             To use the automatic conversion you must know in advance which
+             is the numeric value and use the apropriate <i>getter</i> method
+             of <tt>ComponentProperties</tt>. For example to read a
+             <tt>Short</tt> value the <tt>getShort(...)</tt> method should be
+             used, for a <tt>BigInteger</tt>, use <tt>getBigInteger(...)</tt>,
+             etc.
+         </p>
+         <source>
+             value = getProperties().getBigDecimal("big-decimal");
+             value = getProperties().getBigInteger("big-integer");
+             value = getProperties().getBoolean("boolean");
+             value = getProperties().getByte("byte");
+             value = getProperties().getDouble("double");
+             value = getProperties().getFloat("float");
+             value = getProperties().getInteger("integer");
+             value = getProperties().getLong("long");
+             value = getProperties().getShort("short");
+         </source>
+         <p>
+             If the conversion fails a runtime <tt>ConversionException</tt> will
+             be thrown.
+         </p>
+      </section>
+      <section name="Multivaluated properties">
       </section>
       <section name="Using variables">
+        <p>====== CONTINUE WRITTING HERE ====</p>
          <p> paragraph </p>
 	      <source>
       	  supported-currencies=${trusted-currencies},pound
       	  trusted-currencies=dollar,euro
          </source>        
 
-			<p><b>Known limitations</b>: variables can only be used in properties which will
-			be retrieved with as an <tt>String</tt> or <tt>StringArray</tt>. Otherwise the 
-			variable value will not be resolved</p>
+        <p><b>Known limitations</b>: variables can only be used in properties which will
+        be retrieved with as an <tt>String</tt> or <tt>StringArray</tt>. Otherwise the
+        variable value will not be resolved</p>
       </section>
-      <section name="Reading a Class property">
+      <section name="Properties with class names">
          <p> paragraph </p>
       </section>
       <section name="Including other files">

@@ -6,7 +6,7 @@
    <body>
       <section name="Using XML files for configuration">
          <p>
-				EasyConf handles XML configuration files by <b>converting the XML data           
+			EasyConf handles XML configuration files by <b>converting the XML data
             to Java objects (POJOs)</b>. There no need to work with complex
             DOM objects or alike. The XML structured is converted to POJOs
             that already exist in your project or to ones you create to
@@ -41,31 +41,109 @@
             XML example:
          </p>
          <source>
-            ... the XML ...
+             <![CDATA[
+ <cms>
+     <contentTypes>
+         <contentType
+             id="0"
+             directory="news-notes"
+             name="cms.news.notes.name"
+             dataClass="com.germinus.linde.cvro.model.NewsNoteData"
+             iconFile="ictipo_apunte.gif"
+             include="true"
+             creationFieldSet="0">
+
+             <field id="contentData.title"
+                            name="cms.field.title"
+                            type="text"
+                            maxlength="256"
+                            defaultValue=""
+                            width="90"
+                            height=""
+                            depends="required"
+                            options="">
+              </field>
+                       ........
+         </contentTypes>
+ </cms>
+             ]]>
          </source>
          <p>
             Java classes:
          </p>
          <source>
-            ... first ...
+             <![CDATA[
+public class ContentTypeDefinition {
+
+    private String name;
+    private Long id;
+
+    private String directory;
+    private String dataClass;
+    private String createMapping;
+    private String include;
+    private String iconFile;
+    private String creationFieldSet;
+
+    private List fields;
+
+         // ................ Getters and setters .................
+}            ]]>
          </source>
          <source>
-            .... second ...
+             <![CDATA[
+public class FieldDefinition {
+
+    private String id;
+    private String name;
+    private String type;
+    private String maxlength;
+    private String defaultValue;
+    private String width;
+    private String height;
+    private String depends;
+    private String options;
+
+
+
+    // ................ Getters and setters .................
+}
+            ]]>
          </source>
          <p>
             The mapping file:
          </p>
          <source>
-            ... digester xml rules ...
-         </source>
+            <![CDATA[
+<?xml version="1.0"?>
+
+<digester-rules>
+    <pattern value="cms/contentTypes">
+        <object-create-rule classname="com.germinus.linde.cms.ContentTypeDefinitions"/>
+        <pattern value="contentType">
+            <object-create-rule classname="com.germinus.linde.cms.ContentTypeDefinition"/>
+            <set-properties-rule/>
+            <set-next-rule methodname="addContentTypeDefinition"
+                           paramtype="com.germinus.linde.cms.ContentTypeDefinition"/>
+            <pattern value="field">
+                 <object-create-rule classname="com.germinus.linde.cms.FieldDefinition"/>
+                 <set-properties-rule/>
+                 <set-next-rule methodname="addFieldDefinition"
+                            paramtype="com.germinus.linde.cms.FieldDefinition"/>
+             </pattern>
+        </pattern>
+    </pattern>
+</digester-rules>
+               ]]>
+            </source>
          <p>
             Explanation step by step.
-         </p>         
+         </p>
       </section>
       <section name="XML tips">
          <p>
         		Where possible map elements to classes and attributes to fields of those classes.
-         </p>         
+         </p>
       </section>
    </body>
 </document>

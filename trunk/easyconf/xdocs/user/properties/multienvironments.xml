@@ -10,6 +10,9 @@
       <section name="How to do it">
          <p>Using two of the features already explained in previous sections: include-and-override
             and system properties.</p>
+         <p>
+           <img src="../../resources/multi-environment.gif"/>
+         </p>
       </section>
    </body>
 </document>
