@@ -58,14 +58,28 @@ public class ConfReaderTest extends TestCase {
     }
     
     public void testFilter() {
-        String value = getProperties().getString("property-with-filter",
-                                                 "defaultvalue",
-                                                 Filter.by("selector1", "selector2"));
+        Object value = getProperties().getString("property-with-filter",
+                                                 Filter.by("selector1", "selector2"),
+                                                 "defaultvalue");
         assertEquals("Invalid value when specifying two selectors",
     				 "selector1-and-selector2", value);
         try {
-        value = getProperties().getString("Inexistent property",
-                                          Filter.by("selector1", "selector2"));
+            value = getProperties().getString("Inexistent property",
+                    Filter.by("selector1", "selector2"));
+            value = getProperties().getList("Inexistent property",
+                    Filter.by("selector1", "selector2"));
+            value = getProperties().getBigDecimal("Inexistent property",
+                    Filter.by("selector1", "selector2"));
+            value = getProperties().getBigInteger("Inexistent property",
+                    Filter.by("selector1", "selector2"));
+            value = getProperties().getLong("Inexistent property",
+                    Filter.by("selector1", "selector2"));
+            value = getProperties().getShort("Inexistent property",
+                    Filter.by("selector1", "selector2"));
+            value = getProperties().getDouble("Inexistent property",
+                    Filter.by("selector1", "selector2"));
+            value = getProperties().getByte("Inexistent property",
+                    Filter.by("selector1", "selector2"));
         fail("A NoSuchElementException should have been thrown");
         } catch (NoSuchElementException success) {
         }
