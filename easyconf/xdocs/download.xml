@@ -5,17 +5,29 @@
 	</properties>
 	<body>
 		<section name="Download stable version">
-			<p> Latest stable version is: 0.7.1. Check the <a href="changelog.html">Changelog</a>
+			<p> Latest stable version is: 0.8. Check the <a href="changelog.html">Changelog</a>
             for more information</p>
 			<p> It can be downloaded from SourceForge's <a 
 				href="http://sourceforge.net/project/showfiles.php?group_id=131552">file 
 				distribution</a> system. </p>
+                        <p>
+	                   The following dependent libraries will also
+	                   be needed:
+	                   <ul>
+                              <li>commons-configuration 1.0</li>
+                              <li>commons-collections 3.1</li>
+                              <li>commons-lang 2.0</li>
+                              <li>dom4j 1.4</li>
+                              <li>commons-logging 1.0.4</li>
+                              <li>commons-digester 1.6</li>
+                              <li>commons-beanutils (core and collections) 1.7.0</li>
+	                   </ul>
+                        </p>
 		</section>
 		<section name="Maven users">
                    <p>
 		      Maven users can set a dependency on EasyConf if they have ibiblio on their sites 
-		      list. EasyConf is currently uploaded to ibiblio as version <tt>0.7.0-beta</tt>,
-		      although it is really version <tt>0.7.0</tt>. Here is an example of the dependency 
+		      list. Here is an example of the dependency 
 				XML that you could use:
 		   </p>
 		   <source>
@@ -23,7 +35,7 @@
 <dependency>
 	<groupId>easyconf</groupId>
 	<artifactId>easyconf</artifactId>
-	<version>0.7.0-beta</version>
+	<version>0.8.0</version>
 	<url>http://easyconf.sourceforge.net</url>
 </dependency>
 			]]>
