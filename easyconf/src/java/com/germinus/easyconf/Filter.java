@@ -21,9 +21,8 @@ package com.germinus.easyconf;
  * @author jferrer
  */
 public class Filter {
-    public static final char SELECTOR_SEPARATOR = '.';
-    public static final char FILTER_START = '[';
-    public static final char FILTER_END = ']';
+    public static final char SELECTOR_START = '[';
+    public static final char SELECTOR_END = ']';
 
     private String[] selectors;
 
@@ -71,14 +70,11 @@ public class Filter {
             return "";
         }
         StringBuffer filter = new StringBuffer();
-        filter.append(FILTER_START);
         for (int i = 0; i < n; i++) {
-            if (i != 0) {
-                filter.append(SELECTOR_SEPARATOR);
-            }
+            filter.append(SELECTOR_START);
             filter.append(selectors[i]);
+            filter.append(SELECTOR_END);
         }
-        filter.append(FILTER_END);
         return filter.toString();
     }
 
