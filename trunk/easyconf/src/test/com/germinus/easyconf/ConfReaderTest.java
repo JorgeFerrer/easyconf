@@ -2,6 +2,7 @@ package com.germinus.easyconf;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -35,8 +36,8 @@ public class ConfReaderTest extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTestSuite(ConfReaderTest.class);
-//        suite.addTest(new ConfReaderTest("testAllFilesHaveBeenRead"));
+//        suite.addTestSuite(ConfReaderTest.class);
+        suite.addTest(new ConfReaderTest("testFilter"));
         return suite;
     }
 
@@ -56,6 +57,20 @@ public class ConfReaderTest extends TestCase {
 					 getProperties().getString("string-not-overridden"));
     }
     
+    public void testFilter() {
+        String value = getProperties().getString("property-with-filter",
+                                                 "defaultvalue",
+                                                 Filter.by("selector1", "selector2"));
+        assertEquals("Invalid value when specifying two selectors",
+    				 "selector1-and-selector2", value);
+        try {
+        value = getProperties().getString("Inexistent property",
+                                          Filter.by("selector1", "selector2"));
+        fail("A NoSuchElementException should have been thrown");
+        } catch (NoSuchElementException success) {
+        }
+    }
+
     public void testReadStringOverriddenInPrj() {
     	assertEquals("Invalid value for string-overridden-in-prj", 
     				 "prj", 

@@ -2,12 +2,11 @@ package com.germinus.easyconf;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -22,10 +21,10 @@ import org.apache.commons.configuration.Configuration;
  *
  */
 public class ComponentProperties {
-    private static final char FILTER_SEPARATOR = ':';
 
     Configuration properties;
     public static final String NULL_STRING = null;
+    private static final Log log = LogFactory.getLog(ComponentProperties.class);
 
     ComponentProperties(Configuration conf) {
         this.properties = conf;
@@ -178,11 +177,28 @@ public class ComponentProperties {
 
     // ............ Property methods with filter ................
 
+    final Float nullFloatValue = null;
+    final Integer nullIntegerValue = null;
+    final String nullStringValue = null;
+    final Double nullDoubleValue = null;
+    final Boolean nullBooleanValue = null;
+    final List nullListValue = null;
+    final BigInteger nullBigIntegerValue = null;
+    final BigDecimal nullBigDecimalValue = null;
+    final Byte nullByteValue = null;
+    final Short nullShortValue = null;
+    final Long nullLongValue = null;
+
+    public Float getFloat(String key, Float defaultValue, Filter filter) {
+        return (Float) getPropertyWithFilter(key, filter, Float.class, defaultValue);
+    }
+    public Integer getInteger(String key, Integer defaultValue, Filter filter) {
+        return (Integer) getPropertyWithFilter(key, filter, Integer.class, defaultValue);
+    }
     public String getString(String key, Filter filter) {
         String value = null;
-        for (int i = filter.size(); i > 0; i++) {
-            value = getString(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
-                              NULL_STRING);
+        for (int i = filter.size(); i > 0; i--) {
+            value = properties.getString(key + filter.getFilterSuffix(i));
             if (value != NULL_STRING) {
                 break;
             }
@@ -194,26 +210,14 @@ public class ComponentProperties {
     }
 
     public String getString(String key, String defaultValue, Filter filter) {
-        String value = null;
-        for (int i = filter.size(); i > 0; i++) {
-            value = getString(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
-                              NULL_STRING);
-            if (value != NULL_STRING) {
-                break;
-            }
-        }
-        if (value == null) {
-            value = properties.getString(key, defaultValue);
-        }
-        return value;
+        return (String) getPropertyWithFilter(key, filter, String.class, defaultValue);
     }
 
     public BigDecimal getBigDecimal(String key, Filter filter) {
         BigDecimal value = null;
         final BigDecimal nullValue = null;
-        for (int i = filter.size(); i > 0; i++) {
-            value = getBigDecimal(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
-                                  nullValue);
+        for (int i = filter.size(); i > 0; i--) {
+            value = properties.getBigDecimal(key + filter.getFilterSuffix(i));
             if (value != nullValue) {
                 break;
             }
@@ -224,120 +228,44 @@ public class ComponentProperties {
         return value;
     }
     public BigDecimal getBigDecimal(String key, BigDecimal defaultValue, Filter filter) {
-        BigDecimal value = null;
-        final BigDecimal nullValue = null;
-        for (int i = filter.size(); i > 0; i++) {
-            value = getBigDecimal(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
-                                  nullValue);
-            if (value != nullValue) {
-                break;
-            }
-        }
-        if (value == null) {
-            value = properties.getBigDecimal(key, defaultValue);
-        }
-        return value;
+        return (BigDecimal) getPropertyWithFilter(key, filter, BigDecimal.class, defaultValue);
     }
     public BigInteger getBigInteger(String key, Filter filter) {
-        BigInteger value = null;
-        final BigInteger nullValue = null;
-        for (int i = filter.size(); i > 0; i++) {
-            value = getBigInteger(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
-                                  nullValue);
-            if (value != nullValue) {
-                break;
-            }
+        BigInteger value = getBigInteger(key, nullBigIntegerValue, filter);
+        if (value == nullBigIntegerValue) {
+            throw new NoSuchElementException("Property with key="+key+" and filter="+
+                                             filter+ "was not found");
         }
-        if (value == null) {
-            value = properties.getBigInteger(key);
-        }
+//        BigInteger value = null;
+//        final BigInteger nullValue = null;
+//        for (int i = filter.size(); i > 0; i--) {
+//            value = properties.getBigInteger(key + filter.getFilterSuffix(i));
+//            if (value != nullValue) {
+//                break;
+//            }
+//        }
+//        if (value == null) {
+//            value = properties.getBigInteger(key);
+//        }
         return value;
     }
     public BigInteger getBigInteger(String key, BigInteger defaultValue, Filter filter) {
-        BigInteger value = null;
-        final BigInteger nullValue = null;
-        for (int i = filter.size(); i > 0; i++) {
-            value = getBigInteger(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
-                                  nullValue);
-            if (value != nullValue) {
-                break;
-            }
-        }
-        if (value == null) {
-            value = properties.getBigInteger(key, defaultValue);
-        }
-        return value;
+        return (BigInteger) getPropertyWithFilter(key, filter, BigInteger.class, defaultValue);
     }
 
     public Boolean getBoolean(String key, Boolean defaultValue, Filter filter)
             throws NoClassDefFoundError {
-        Boolean value = null;
-        final Boolean nullValue = null;
-        for (int i = filter.size(); i > 0; i++) {
-            value = getBoolean(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
-                                  nullValue);
-            if (value != nullValue) {
-                break;
-            }
-        }
-        if (value == null) {
-            value = properties.getBoolean(key, defaultValue);
-        }
-        return value;
+        return (Boolean) getPropertyWithFilter(key, filter, Boolean.class, defaultValue);
     }
 
     public Double getDouble(String key, Double defaultValue, Filter filter) {
-        Double value = null;
-        final Double nullValue = null;
-        for (int i = filter.size(); i > 0; i++) {
-            value = getDouble(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
-                                  nullValue);
-            if (value != nullValue) {
-                break;
-            }
-        }
-        if (value == null) {
-            value = properties.getDouble(key, defaultValue);
-        }
-        return value;
+        return (Double) getPropertyWithFilter(key, filter, Double.class, defaultValue);
     }
-    public Float getFloat(String key, Float defaultValue, Filter filter) {
-        Float value = null;
-        final Float nullValue = null;
-        for (int i = filter.size(); i > 0; i++) {
-            value = getFloat(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
-                                  nullValue);
-            if (value != nullValue) {
-                break;
-            }
-        }
-        if (value == null) {
-            value = properties.getFloat(key, defaultValue);
-        }
-        return value;
-    }
-    public Integer getInteger(String key, Integer defaultValue, Filter filter) {
-        Integer value = null;
-        final Integer nullValue = null;
-        for (int i = filter.size(); i > 0; i++) {
-            value = getInteger(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
-                                  nullValue);
-            if (value != nullValue) {
-                break;
-            }
-        }
-        if (value == null) {
-            value = properties.getInteger(key, defaultValue);
-        }
-        return value;
-    }
-    //--
     public List getList(String key, Filter filter) {
         List value = null;
         final List nullValue = null;
-        for (int i = filter.size(); i > 0; i++) {
-            value = getList(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
-                                  nullValue);
+        for (int i = filter.size(); i > 0; i--) {
+            value = properties.getList(key + filter.getFilterSuffix(i));
             if (value != nullValue) {
                 break;
             }
@@ -348,49 +276,107 @@ public class ComponentProperties {
         return value;
     }
     public List getList(String key, List defaultValue, Filter filter) {
-        List value = null;
-        final List nullValue = null;
-        for (int i = filter.size(); i > 0; i++) {
-            value = getList(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
-                                  nullValue);
-            if (value != nullValue) {
-                break;
-            }
-        }
-        if (value == null) {
-            value = properties.getList(key, defaultValue);
-        }
-        return value;
+        return (List) getPropertyWithFilter(key, filter, List.class, defaultValue);
     }
     public Long getLong(String key, Long defaultValue, Filter filter) {
-        Long value = null;
-        final Long nullValue = null;
-        for (int i = filter.size(); i > 0; i++) {
-            value = getLong(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
-                                  nullValue);
-            if (value != nullValue) {
-                break;
-            }
-        }
-        if (value == null) {
-            value = properties.getLong(key, defaultValue);
-        }
-        return value;
+        return (Long) getPropertyWithFilter(key, filter, Long.class, defaultValue);
     }
     public Short getShort(String key, Short defaultValue, Filter filter) {
-        Short value = null;
-        final Short nullValue = null;
-        for (int i = filter.size(); i > 0; i++) {
-            value = getShort(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
-                                  nullValue);
-            if (value != nullValue) {
-                break;
-            }
-        }
-        if (value == null) {
-            value = properties.getShort(key, defaultValue);
+        return (Short) getPropertyWithFilter(key, filter, Short.class, defaultValue);
+    }
+
+    // ............ Helper methods for filters ........
+    public Object getPropertyWithFilter(String key, Filter filter, Class theClass, Object defaultValue) {
+        Object value = null;
+        for (int i = filter.size(); (i >= 0) && (value == null); i--) {
+            value = getTypedPropertyWithDefault(key + filter.getFilterSuffix(i), theClass);
+            log.info("Value for "+key + filter.getFilterSuffix(i) + "=" + value);
         }
         return value;
     }
 
+    public Object getPropertyWithFilter(String key, Filter filter, Class theClass) {
+        Object value = null;
+        for (int i = filter.size(); (i > 0) && (value == null); i--) {
+            value = getTypedPropertyWithDefault(key + filter.getFilterSuffix(i), theClass);
+            log.info("Value for "+key + filter.getFilterSuffix(i) + "=" + value);
+        }
+        if (value == null) {
+            getTypedPropertyWithDefault(key, theClass); //TODO
+        }
+        return value;
+    }
+
+    private Object getTypedPropertyWithDefault(String key, Class theClass) {
+        if (theClass.equals(Float.class)) {
+            return properties.getFloat(key, nullFloatValue);
+
+        } else if (theClass.equals(Integer.class)) {
+            return properties.getInteger(key, nullIntegerValue);
+
+        } else if (theClass.equals(String.class)) {
+            return properties.getString(key, nullStringValue);
+
+        } else if (theClass.equals(Double.class)) {
+            return properties.getDouble(key, nullDoubleValue);
+
+        } else if (theClass.equals(Long.class)) {
+            return properties.getLong(key, nullLongValue);
+
+        } else if (theClass.equals(Boolean.class)) {
+            return properties.getBoolean(key, nullBooleanValue);
+
+        } else if (theClass.equals(List.class)) {
+            return properties.getList(key, nullListValue);
+
+        } else if (theClass.equals(BigInteger.class)) {
+            return properties.getBigInteger(key, nullBigIntegerValue);
+
+        } else if (theClass.equals(BigDecimal.class)) {
+            return properties.getBigDecimal(key, nullBigDecimalValue);
+
+        } else if (theClass.equals(Byte.class)) {
+            return properties.getByte(key, nullByteValue);
+
+        } else if (theClass.equals(Short.class)) {
+            return properties.getShort(key, nullShortValue);
+        }
+        return null;
+    }
+    private Object getTypedProperty(String key, Class theClass) {
+        if (theClass.equals(Float.class)) {
+            return properties.getFloat(key);
+
+        } else if (theClass.equals(Integer.class)) {
+            return properties.getInteger(key);
+
+        } else if (theClass.equals(String.class)) {
+            return properties.getString(key);
+
+        } else if (theClass.equals(Double.class)) {
+            return properties.getDouble(key);
+
+        } else if (theClass.equals(Long.class)) {
+            return properties.getLong(key);
+
+        } else if (theClass.equals(Boolean.class)) {
+            return properties.getBoolean(key);
+
+        } else if (theClass.equals(List.class)) {
+            return properties.getList(key);
+
+        } else if (theClass.equals(BigInteger.class)) {
+            return properties.getBigInteger(key);
+
+        } else if (theClass.equals(BigDecimal.class)) {
+            return properties.getBigDecimal(key);
+
+        } else if (theClass.equals(Byte.class)) {
+            return properties.getByte(key);
+
+        } else if (theClass.equals(Short.class)) {
+            return properties.getShort(key);
+        }
+        return null;
+    }
 }
