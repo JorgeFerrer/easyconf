@@ -22,8 +22,11 @@ import org.apache.commons.configuration.Configuration;
  *
  */
 public class ComponentProperties {
+    private static final char FILTER_SEPARATOR = ':';
+
     Configuration properties;
-    
+    public static final String NULL_STRING = null;
+
     ComponentProperties(Configuration conf) {
         this.properties = conf;
     }
@@ -172,4 +175,222 @@ public class ComponentProperties {
     public String toString() {
         return properties.toString();
     }
+
+    // ............ Property methods with filter ................
+
+    public String getString(String key, Filter filter) {
+        String value = null;
+        for (int i = filter.size(); i > 0; i++) {
+            value = getString(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
+                              NULL_STRING);
+            if (value != NULL_STRING) {
+                break;
+            }
+        }
+        if (value == null) {
+            value = properties.getString(key);
+        }
+        return value;
+    }
+
+    public String getString(String key, String defaultValue, Filter filter) {
+        String value = null;
+        for (int i = filter.size(); i > 0; i++) {
+            value = getString(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
+                              NULL_STRING);
+            if (value != NULL_STRING) {
+                break;
+            }
+        }
+        if (value == null) {
+            value = properties.getString(key, defaultValue);
+        }
+        return value;
+    }
+
+    public BigDecimal getBigDecimal(String key, Filter filter) {
+        BigDecimal value = null;
+        final BigDecimal nullValue = null;
+        for (int i = filter.size(); i > 0; i++) {
+            value = getBigDecimal(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
+                                  nullValue);
+            if (value != nullValue) {
+                break;
+            }
+        }
+        if (value == null) {
+            value = properties.getBigDecimal(key);
+        }
+        return value;
+    }
+    public BigDecimal getBigDecimal(String key, BigDecimal defaultValue, Filter filter) {
+        BigDecimal value = null;
+        final BigDecimal nullValue = null;
+        for (int i = filter.size(); i > 0; i++) {
+            value = getBigDecimal(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
+                                  nullValue);
+            if (value != nullValue) {
+                break;
+            }
+        }
+        if (value == null) {
+            value = properties.getBigDecimal(key, defaultValue);
+        }
+        return value;
+    }
+    public BigInteger getBigInteger(String key, Filter filter) {
+        BigInteger value = null;
+        final BigInteger nullValue = null;
+        for (int i = filter.size(); i > 0; i++) {
+            value = getBigInteger(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
+                                  nullValue);
+            if (value != nullValue) {
+                break;
+            }
+        }
+        if (value == null) {
+            value = properties.getBigInteger(key);
+        }
+        return value;
+    }
+    public BigInteger getBigInteger(String key, BigInteger defaultValue, Filter filter) {
+        BigInteger value = null;
+        final BigInteger nullValue = null;
+        for (int i = filter.size(); i > 0; i++) {
+            value = getBigInteger(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
+                                  nullValue);
+            if (value != nullValue) {
+                break;
+            }
+        }
+        if (value == null) {
+            value = properties.getBigInteger(key, defaultValue);
+        }
+        return value;
+    }
+
+    public Boolean getBoolean(String key, Boolean defaultValue, Filter filter)
+            throws NoClassDefFoundError {
+        Boolean value = null;
+        final Boolean nullValue = null;
+        for (int i = filter.size(); i > 0; i++) {
+            value = getBoolean(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
+                                  nullValue);
+            if (value != nullValue) {
+                break;
+            }
+        }
+        if (value == null) {
+            value = properties.getBoolean(key, defaultValue);
+        }
+        return value;
+    }
+
+    public Double getDouble(String key, Double defaultValue, Filter filter) {
+        Double value = null;
+        final Double nullValue = null;
+        for (int i = filter.size(); i > 0; i++) {
+            value = getDouble(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
+                                  nullValue);
+            if (value != nullValue) {
+                break;
+            }
+        }
+        if (value == null) {
+            value = properties.getDouble(key, defaultValue);
+        }
+        return value;
+    }
+    public Float getFloat(String key, Float defaultValue, Filter filter) {
+        Float value = null;
+        final Float nullValue = null;
+        for (int i = filter.size(); i > 0; i++) {
+            value = getFloat(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
+                                  nullValue);
+            if (value != nullValue) {
+                break;
+            }
+        }
+        if (value == null) {
+            value = properties.getFloat(key, defaultValue);
+        }
+        return value;
+    }
+    public Integer getInteger(String key, Integer defaultValue, Filter filter) {
+        Integer value = null;
+        final Integer nullValue = null;
+        for (int i = filter.size(); i > 0; i++) {
+            value = getInteger(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
+                                  nullValue);
+            if (value != nullValue) {
+                break;
+            }
+        }
+        if (value == null) {
+            value = properties.getInteger(key, defaultValue);
+        }
+        return value;
+    }
+    //--
+    public List getList(String key, Filter filter) {
+        List value = null;
+        final List nullValue = null;
+        for (int i = filter.size(); i > 0; i++) {
+            value = getList(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
+                                  nullValue);
+            if (value != nullValue) {
+                break;
+            }
+        }
+        if (value == null) {
+            value = properties.getList(key);
+        }
+        return value;
+    }
+    public List getList(String key, List defaultValue, Filter filter) {
+        List value = null;
+        final List nullValue = null;
+        for (int i = filter.size(); i > 0; i++) {
+            value = getList(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
+                                  nullValue);
+            if (value != nullValue) {
+                break;
+            }
+        }
+        if (value == null) {
+            value = properties.getList(key, defaultValue);
+        }
+        return value;
+    }
+    public Long getLong(String key, Long defaultValue, Filter filter) {
+        Long value = null;
+        final Long nullValue = null;
+        for (int i = filter.size(); i > 0; i++) {
+            value = getLong(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
+                                  nullValue);
+            if (value != nullValue) {
+                break;
+            }
+        }
+        if (value == null) {
+            value = properties.getLong(key, defaultValue);
+        }
+        return value;
+    }
+    public Short getShort(String key, Short defaultValue, Filter filter) {
+        Short value = null;
+        final Short nullValue = null;
+        for (int i = filter.size(); i > 0; i++) {
+            value = getShort(key + FILTER_SEPARATOR + filter.getFilterFragment(i),
+                                  nullValue);
+            if (value != nullValue) {
+                break;
+            }
+        }
+        if (value == null) {
+            value = properties.getShort(key, defaultValue);
+        }
+        return value;
+    }
+
 }
