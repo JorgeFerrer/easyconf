@@ -1,11 +1,26 @@
 <document>
    <properties>
-      <title>TITLE TITLE</title>
+      <title>Multiple components support</title>
       <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
    </properties>
    <body>
-      <section name="SECTION TITLE">
+      <section name="What's multiple components aggregation?">
          <p> paragraph </p>
+         <ul>
+            <li>Portals aggregate portlets</li>
+            <li>Every application agregates libraries</li>
+            <li>Complex J2EE applications aggregate EJB libraries</li>
+            <li>Custom made frameworks aggregate their own components</li>
+         </ul>
+      </section>
+      <section name="How to use it">
+         <p>
+            Use the <tt>global-configuration.properties</tt> file. Prefix the property
+            with the component name:
+         </p>
+         <source>
+            my-component:skin=purple
+         </source>
       </section>
    </body>
 </document>

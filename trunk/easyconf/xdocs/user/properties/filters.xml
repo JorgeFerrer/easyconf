@@ -1,11 +1,27 @@
 <document>
    <properties>
-      <title>TITLE TITLE</title>
+      <title>Property filters</title>
       <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
    </properties>
    <body>
-      <section name="SECTION TITLE">
-         <p> paragraph </p>
+      <section name="What are property filters?">
+         <p>Formally they are optional sufixes of the property name. But it is easier to
+            understand what they are and why they are useful with an example.</p>
+         <p>
+            ...
+         </p>
+         <source>
+            skin:teacher=blue
+            skin:student.secundary=green
+            skin:student=yellow
+            skin=grey
+         </source>
+         <p>
+            ...
+         </p>
+         <source>
+            getProperties().getString("skin", Filter.by(userType, userSubtype));
+         </source>
       </section>
    </body>
 </document>

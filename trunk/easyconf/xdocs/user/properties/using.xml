@@ -1,11 +1,19 @@
 <document>
    <properties>
-      <title>TITLE TITLE</title>
+      <title>Reading properties</title>
       <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
    </properties>
    <body>
-      <section name="SECTION TITLE">
+      <section name="Reading properties">
+         <p> paragraph </p>
+         <p>What happens if the property is not found? ....</p>
+      </section>
+      <section name="Automatic conversion">
          <p> paragraph </p>
       </section>
+      <section name="Reading a Class property">
+         <p> paragraph </p>
+      </section>
+      
    </body>
 </document>
