@@ -1,27 +1,25 @@
 <project name="EasyConf">
-
-    <title>EasyConf</title>
-
-    <body>
+   <title>EasyConf</title>
+   <body>
       <menu name="Introduction">
-	  	<item name="Home" href="/index.html" />
-		<item name="Quick start guide" href="/quickstart.html" />
-		<item name="Download" href="/download.html" />
-		<search/>
+         <item name="Home" href="/index.html" />
+         <item name="Quick start guide" href="/quickstart.html" />
+         <item name="Download" href="/download.html" />
+         <search/>
       </menu>
       <menu name="User Guide">
-		<item name="Properties" href="/user/property-files.html" />
-		<!--
+         <item name="Introduction" href="/user/introduction.html" />
+         <!--
 		<item name="Properties" href="/user/property-files.html" />
 		<item name="XML Files" href="/user/xml-files.html" />
 		-->
-	  </menu>
-	  <menu name="Reference">
-		<item name="Features" href="/reference/features.html" />
-  	    <item name="Property types" href="/reference/property-types.html"/>
-  	    <item name="Property format" href="/reference/property-format.html"/>
-		<item name="File search" href="/reference/file-search.html"/>
-		<item name="Conventions" href="/reference/conventions.html"/>
+      </menu>
+      <menu name="Reference">
+         <item name="Features" href="/reference/features.html" />
+         <item name="Property types" href="/reference/property-types.html"/>
+         <item name="Property format" href="/reference/property-format.html"/>
+         <item name="File search" href="/reference/file-search.html"/>
+         <item name="Conventions" href="/reference/conventions.html"/>
       </menu>
       <!--
       <menu name="Developers">
@@ -30,9 +28,10 @@
       </menu>
       -->
       <footer>
-    <A href="http://sourceforge.net/projects/easyconf">
-      <IMG src="http://sourceforge.net/sflogo.php?group_id=72748" border="0" alt="sf logo"/>
-    </A>
-   </footer>
-    </body>
-  </project>
+         <A href="http://sourceforge.net/projects/easyconf">
+            <IMG src="http://sourceforge.net/sflogo.php?group_id=72748" 
+               border="0" alt="sf logo"/>
+         </A>
+      </footer>
+   </body>
+</project>

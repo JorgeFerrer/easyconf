@@ -1,0 +1,107 @@
+<document>
+   <properties>
+      <title>User Guide</title>
+      <author email="jorge.ferrer  gmail.com">Jorge Ferrer</author>
+   </properties>
+   <body>
+      <section name="Introduction to the User Guide">
+         <p> EasyConf aims to be as easy to use as possible. If all you want is 
+            to make configurable a constant or a set of constants a single line 
+            of code for each is needed. But it is not much harder when your 
+            necessities grow and you want to use complex XML configuration. </p>
+         <p> This guide provides full documentation of all of EasyConf's 
+            features and points to documentation of the libraries it depends 
+            for further information. </p>
+      </section>
+      <section name="Vision">
+         <p> EasyConf was born from necessity because none of the existing 
+            libraries had all the needed functionality. But it is not our 
+            intent to reimplement what does exist so whenever possible we'll 
+            base its functionality in existing free software libraries. </p>
+      </section>
+      <section name="Configuration concepts">
+         <p> EasyConf organizes the configuration it reads in components. Each 
+            component has its own name and is composed of two parts: </p>
+         <ul>
+            <li>Properties: obtained from property files</li>
+            <li>Configuration object: filled from XML files</li>
+         </ul>
+         <p> A component can have only properties, only a configuration object 
+            or have both. </p>
+         <p> Let's start with the examples. To obtain the configuration of a 
+            component named <i>my-component</i> you have to write the 
+            following code:</p>
+         <source> 
+            CompontentConfiguration conf = ConfReader.getConfiguration("my-component");
+         </source>
+         <p>
+            <a href="../../apidocs/com/germinus/easyconf/ComponentConfiguration.html">ComponentConfiguration</a> 
+            is the class which holds the configuration of <i>my-component</i>. To retrieve the
+         	properties all you have to do is:
+         </p>
+         <source> 
+            CompontentProperties props = conf.getProperties();
+         </source>
+         <p>
+            <a href="../../apidocs/com/germinus/easyconf/ComponentProperties.html">ComponentProperties</a> 
+            contains methods to retrieve properties of any of the 
+            <a href="../reference/property-types.html">supported types</a>. The properties of the 
+            example component will be read from a file called 
+            <tt>my-component.properties</tt>. Later will see that properties can also be read from
+            other complementary sources. 
+         </p>
+         <p>
+            The configuration object can be read using another method of the <tt>conf</tt>
+            object:
+         </p>
+         <source>
+            Object confObj = conf.getConfigurationObject();
+         </source>
+         <p>
+            The configuration object contains a representation of an XML file. The XML file can have
+            any user defined vocabulary, but it must be given the name of the component with
+            <tt>xml</tt> as the extension. In our example it
+            must be called <tt>my-component.xml</tt>. This file will be read and converted to user 
+            defined classes. The conversion is configured in a mapping file which must have 
+            <tt>digesterRules.xml</tt> as its extensions. In our example it should be called 
+            <tt>my-component.digesterRules.xml</tt>
+         </p>
+         <p>
+            Now you that you have the big picture, the next sections will give more details
+            and examples of the features of EasyConf
+         </p>
+      </section>
+      <section name="Work in progress">
+         <p> This manual is a work in progress. Here is the expected table of 
+            contents: </p>
+         <ul>
+            <li>Introduction</li>
+            <li>
+               <p>Properties</p>
+               <ul>
+                  <li>Using</li>
+                  <li>System properties</li>
+                  <li>Filters</li>
+                  <li>Multiple environments</li>
+                  <li>Multiple components</li>
+                  <li>Planned features</li>
+                  <!-- db + LDAP + JNDI, pairs, beans -->
+               </ul>
+            </li>
+            <li>
+               <p>XML Files</p>
+               <ul>
+                  <li>Using</li>
+                  <li>Variables</li>
+                  <li>Complex mappings</li>
+                  <li>Planned features</li>
+                  <!-- multi component, multi environment, simplification -->
+               </ul>
+            </li>
+            <li>J2EE</li>
+         </ul>
+         <p> The progress of this manual can be followed viewing the latest <a 
+            href="">CVS files</a> </p>
+      </section>
+   </body>
+</document>
