@@ -17,7 +17,7 @@
             you have in <tt>my-component.properties</tt>:
          </p>
          <source>
-            db.type=default
+db.type=default
          </source>
          <p>
             You can overwrite this value executing the application with the

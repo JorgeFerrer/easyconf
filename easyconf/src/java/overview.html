@@ -9,20 +9,20 @@ The purpose of easyconf is to provide an easy to use and centralized library to 
 The purpose of easyconf is to provide an easy to use and centralized library
 to access documentation. Its main features are:
 <ol>
- <li>Support for both properties and XML files (or a mix of both)
- <li>Support for changing the configuration for different environments and subprojects
- <li>Support for accessing properties from JSP files
+ <li>Support for both properties and XML files (or a mix of both)</li>
+ <li>Support for changing the configuration for different environments and subprojects</li>
+ <li>Support for accessing properties from JSP files</li>
  <li>Support for several configuration modules (called components) to allow
  different software components running in the same JVM to use separate
- configuration files.
+ configuration files.</li>
 </ol>
 
 <h1>Quick start</h1>
 
 Easyconf consist of a central component
-(ConfReader singleton) that returns the configuration of a given
-component. This class is a singleton and has a
-simple method called <code>getConfiguration</code> which must be
+(ConfReader) that returns the configuration of a given
+component. This class has a static method called <code>getConfiguration</code> 
+which must be
 given the name of a component. The name of the component can be any String
 which can be used to identify it within easyconf.
 
@@ -288,13 +288,5 @@ For more information about the format of the properties read:
 Note that not all the funcionalities of Commons Configuration are
 available in easyconf, particularly the way to read XML as EasyConf
 provides a more powerful mechanism.
-<!-- =============================================
-<h1>Additional features</h1>
-<h2>Support for loading classes</h2>
-The class <code>ClassParameter</code> contains a utility method called
-<code>getNewInstance()</code> which receives a
-<code>¡¡¡Configuration!!!</code> object and the name of a property and
-returns a new Instance ===> REIMPLEMENTAR EN EL FICHERO PROPERTIES
- ============================================= -->
 </body>
 </html>
