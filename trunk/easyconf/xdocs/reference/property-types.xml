@@ -23,8 +23,8 @@
         <li>List</li>
         <li>Long</li>
         <li>Short</li>
-        <li>String</li>
-        <li>StringArray</li>
+        <li>String: supports usage of variables</li>
+        <li>StringArray: supports usage of variables</li>
       </ul>
       </section>
     </body>
