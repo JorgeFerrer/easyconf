@@ -57,6 +57,7 @@ class ConfigurationLoader {
 
     public Object readConfigurationObject(String componentName,
             ComponentProperties properties) throws IOException, SAXException {
+        log.info("Reading the configuration object for " + componentName);
         String rulesFileName = componentName + "." + "digesterRules.xml";
         String confFileName = componentName + ".xml";
 

@@ -55,6 +55,7 @@ public class ConfReaderTest extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(ConfReaderTest.class);
+        suite.addTest(ReloadTest.suite());
 //        suite.addTest(new ConfReaderTest("testUsingSystemProperties"));
 //        suite.addTest(new ConfReaderTest("testUsingSystemPropertiesInIncludes"));
         
