@@ -10,19 +10,19 @@
       </menu>
       <menu name="User Guide">
          <item name="Introduction" href="/user/introduction.html" />
-         <item name="Properties" href="/user/properties/using.html" collapse="false">
+         <item name="Properties" href="/user/properties/using.html" collapse="true">
             <item name="Using" href="/user/properties/using.html"/>
             <item name="Sys. Properties" href="/user/properties/sysproperties.html"/>
             <item name="Filters" href="/user/properties/filters.html"/>
             <item name="Multi. components" href="/user/properties/multicomponents.html"/>
             <item name="Multi. environments" href="/user/properties/multienvironments.html"/>
          </item>
-         <item name="XML files" href="/user/xml/using.html" collapse="false">
+         <item name="XML files" href="/user/xml/using.html" collapse="true">
             <item name="Using" href="/user/xml/using.html"/>
             <item name="Variables" href="/user/xml/variables.html"/>
             <item name="Complex mappings" href="/user/xml/complex-mappings.html"/>
          </item>
-         <item name="J2EE" href="/user/J2EE/taglibs.html" collapse="false">
+         <item name="J2EE" href="/user/J2EE/taglibs.html" collapse="true">
             <item name="Taglibs" href="/user/J2EE/taglibs.html"/>
             <!-- <item name="Services" href="/user/J2EE/services.html"/> -->
          </item>
