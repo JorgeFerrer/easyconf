@@ -21,8 +21,6 @@ package com.germinus.easyconf;
  * @author jferrer
  */
 public class Filter {
-    public static final char SELECTOR_START = '[';
-    public static final char SELECTOR_END = ']';
 
     private String[] selectors;
 
@@ -53,7 +51,7 @@ public class Filter {
      * Example: if the filter has two selectors (bar and foo). Fragments would
      * be:
      * <ul>
-     *  <li>For n=2: "[bar.foo]"
+     *  <li>For n=2: "[bar][foo]"
      *  <li>For n=1: "[bar]"
      *  <li>For n=0: ""
      *  <li>Otherwise: throws IllegalArgumentException
@@ -71,9 +69,9 @@ public class Filter {
         }
         StringBuffer filter = new StringBuffer();
         for (int i = 0; i < n; i++) {
-            filter.append(SELECTOR_START);
+            filter.append(Conventions.SELECTOR_START);
             filter.append(selectors[i]);
-            filter.append(SELECTOR_END);
+            filter.append(Conventions.SELECTOR_END);
         }
         return filter.toString();
     }

@@ -41,12 +41,10 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
     private CompositeConfiguration globalConf = new CompositeConfiguration();
     private String componentName;
     private List loadedFiles = new ArrayList();
-    private Properties systemProperties;
     private boolean baseConfigurationLoaded = false;
 
     public BaseAndGlobalProperties(String componentName) {
         this.componentName = componentName;
-        systemProperties = System.getProperties();
     }
 
     /**
@@ -56,10 +54,9 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
      * @return
      */
     protected Object getPropertyDirect(String key) {
-        log.debug("Looking for property " + key);
         Object value = null;
         if (value == null) {
-            value = systemProperties.getProperty(key);
+            value = System.getProperty(getPrefix() + key);
         }
         if (value == null) {
             value = globalConf.getProperty(getPrefix() + key);
@@ -72,6 +69,9 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
         }
         if (value == null) {
             value = super.getPropertyDirect(key);
+        }
+        if (value == null) {
+            value = System.getProperty(key);
         }
         return value;
     }
@@ -94,8 +94,10 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
 
     private Configuration addFileProperties(String fileName, CompositeConfiguration conf) {
         try {
-            Configuration newConf = new SysPropertiesConfiguration(fileName);
+            SysPropertiesConfiguration newConf = new SysPropertiesConfiguration(fileName);
+            newConf.enableSysProperties();            
             addIncludedFileProperties(newConf, conf);
+            newConf.disableSysProperties();
             conf.addConfiguration(newConf);
             super.addConfiguration(newConf);
             loadedFiles.add(fileName);
@@ -109,7 +111,7 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
     }
 
     private void addIncludedFileProperties(Configuration newConf, CompositeConfiguration conf) {
-        String[] fileNames = newConf.getStringArray(ConfigurationLoader.OVERRIDEN_PROPERTIES_FILES_PROPERTY);
+        String[] fileNames = newConf.getStringArray(Conventions.INCLUDE_PROPERTY);
         for (int i = fileNames.length - 1; i >= 0; i--) {
             String iteratedFileName = fileNames[i];
             log.info("Adding included file: " + iteratedFileName);
