@@ -5,14 +5,15 @@
    </properties>
    <body>
       <section name="Configuring aggregated components">
-         <p>When you develop from the ground up a complete application you have 
-            complete control over the application configuration. But:</p>
+         <p>In some environments you don't have complete control of how
+            the configuration will be changed. This is particularly true
+            in component based environments. This situations can be views
+            from two different poins of view</p>
          <ul>
-            <li><i>If you develop a configurable component that will be integrated in 
-               other applications</i>: you have to give a default configuration but you
-               also want to provide some method to override that configuration.</li>
-            <li><i>If you are aggregating several external properties</i>: you may want
-               to adapt them to your specific them by changing the default 
+            <li><i>Component developer</i>: has to give a default configuration but he
+               also wants to provide some method to override that configuration.</li>
+            <li><i>Component aggregator</i>: wants to adapt the configuration of the
+               components to his specific needs by changing the default 
                configuration.</li>
          </ul>
          <p>
@@ -50,12 +51,24 @@
             component <i>my-component</i> you should add the following line:
          </p>
          <source>
-            my-component:skin=purple
+my-component:skin=purple
          </source>
          <p>
-             The following image shows how this process in a diagram form:
+             The following image shows how this process works in a diagram:
          </p>
          <img src="../../resources/multi-component.gif"/>
+         <p>
+             In blue, a client application asks for the configuration of component 
+             <i>moduleABC</i>. When it asks for a specific property (hidden in 
+             the diagram for simplicity) EasyConf checks if
+             the property is present in <tt>global-configuration.properties</tt> (or any of
+             its included files, of course). If not it will read the values in 
+             <tt>moduleABC.properties</tt>. In red, a different client asks for the 
+             configuration of a different component, <i>moduleXYZ</i>. But once again
+             EasyConf checks first the <i>global-configuration.properties</i> file and
+             only if a property is not found it looks for it in 
+             <tt>moduleXYZ.properties</tt>            
+         </p>
       </section>
       <section name="A complete example">   
          <p>
@@ -65,9 +78,9 @@
             It may have the following contents:            
          </p>
          <source>
-            database.url=jdbc:mysql://localhost/database
-            table=reports
-            primary-key=reportid
+database.url=jdbc:mysql://localhost/database
+table=reports
+primary-key=reportid
          </source>   
          <p>
             Then you have a second portlet named <i>banner</i> which shows a configured banner,
@@ -76,15 +89,41 @@
             <tt>banner.properties</tt>.
          </p>
          <source>
-            img=image.jpg
-            url=http://easyconf.sourceforge.net
-            table=false
+img=image.jpg
+url=http://easyconf.sourceforge.net
+table=false
          </source>
          <p>
-            TO BE FINISHED
+            Both portlets are released and someone chooses to deploy them in her
+            portal, but the default configuration doesn't fit her needs. Because
+            the portlets have been configured using EasyConf he can just override
+            the specific properties needed in a single file: 
+            <tt>global-configuration.properties</tt>. In this case the aggregator
+            wants to set a different <tt>database.url</tt> for the <i>reports</i>
+            portlet and a different <tt>url</tt> for the <i>banner</i> portlet,
+            so he sets the desired properties in the <tt>global-configuration.properties</tt>
+            file as follows:
+         </p>
+         <source>
+reports:database.url=jdbc:mysql://my-db-server/my-database
+banner:url=http://maven.apache.org            
+         </source>
+         <p>
+            It's that simple. The original portlet distribution has not been modified and
+            updates to new releases will cost nothing (unless the property names have changed).
+            Note that prefixing the the property with the component name (reports or banner in
+            this example) is optional, but is highly recommended to avoid name collision.
          </p>
       </section>
       <section name="Use cases">   
+         <p>
+            All component based environments will find this functionality useful. There
+            are other strategies to achieve this behaviour such as providing a method
+            to configure the component passing a <tt>Properties</tt> or a custom made
+            object. EasyConf also allows implementing component configuration this way,
+            but the file based approach is offered for those cases where it is considered
+            more appropriate. Situations in which you may opt to use this approach are:
+         </p>
          <ul>
             <li>Portals which aggregate portlets</li>
             <li>Every application agregates libraries</li>
