@@ -34,10 +34,6 @@ import java.net.URL;
  * @author jferrer
  */
 class ConfigurationLoader {
-    public static final String DEFAULT_ENV = "default";
-    public static final String OVERRIDEN_PROPERTIES_FILES_PROPERTY = "include-and-override";
-    private static final String GLOBAL_CONFIGURATION_FILE = "global-configuration";
-    private static final String ENVIRONMENT_NAME_VARIABLE = "easyconf.env.name";
     private static final Log log = LogFactory.getLog(ConfigurationLoader.class);
 
 
@@ -52,7 +48,7 @@ class ConfigurationLoader {
 
     public ComponentProperties readPropertiesConfiguration(String componentName) {
         BaseAndGlobalProperties properties = new BaseAndGlobalProperties(componentName);
-        properties.addGlobalFileName(GLOBAL_CONFIGURATION_FILE + ".properties");
+        properties.addGlobalFileName(Conventions.GLOBAL_CONFIGURATION_FILE + ".properties");
         properties.addBaseFileName(componentName + ".properties");
 
         log.info("Properties for " + componentName + " loaded from " + properties.loadedFiles());

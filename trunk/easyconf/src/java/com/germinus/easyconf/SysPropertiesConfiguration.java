@@ -8,10 +8,14 @@ import org.apache.commons.logging.LogFactory;
  * Extends properties configuration by adding the system properties to the
  * properties defined in the file
  *
+ * Note: this class is necessary to support using variables in the names
+ * of files being included that refer to system properties
+ * 
  * @author jferrer
  */
 public class SysPropertiesConfiguration extends PropertiesConfiguration {
     private static final Log log = LogFactory.getLog(SysPropertiesConfiguration.class);
+    private boolean sysPropertiesEnabled = false;
 
     public SysPropertiesConfiguration(String fileName)
             throws org.apache.commons.configuration.ConfigurationException {
@@ -27,12 +31,18 @@ public class SysPropertiesConfiguration extends PropertiesConfiguration {
     protected Object getPropertyDirect(String key) {
         Object value = null;
         if (value == null) {
-            value = System.getProperties().getProperty(key);
-        }
-        if (value == null) {
             value = super.getPropertyDirect(key);
         }
-        log.debug(getFileName()+": "+key + "=" + value);        
+        if ((value == null) && (sysPropertiesEnabled)) {
+            value = System.getProperties().getProperty(key);
+        }
         return value;
+    }
+
+    public void enableSysProperties() {
+        sysPropertiesEnabled = true;        
+    }
+    public void disableSysProperties() {
+        sysPropertiesEnabled = false;        
     }
 }

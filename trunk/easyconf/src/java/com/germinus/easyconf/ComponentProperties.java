@@ -19,6 +19,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 
+import org.apache.commons.beanutils.DynaBean;
+import org.apache.commons.configuration.beanutils.ConfigurationDynaBean;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,6 +64,11 @@ public class ComponentProperties {
         }
         return props;
     }
+    
+    public DynaBean toDynaBean() {
+        return new ConfigurationDynaBean(properties);
+    }
+    
   
     public java.util.Properties getProperties(String key) {
         return properties.getProperties(key);
