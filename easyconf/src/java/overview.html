@@ -27,12 +27,11 @@ given the name of a component. The name of the component can be any String
 which can be used to identify it within easyconf.
 
 <h2>Reading the configuration from Java</h2>
-Following is a
-example of how to use this class:
+Following is an example of how to use this class:
 <pre>
 
 ComponentConfiguration conf = ConfReader.getInstance().
-                                getComponentConfiguration("registration");
+                                getComponentConfiguration("my-component");
 
 </pre>
 
@@ -40,13 +39,15 @@ The result is an object with the configuration of the given
 component. The component configuration contains a properties based configuration
 and a XML based configuration. Let's start with the first one. Note that we'll asume from
 now on that we'll be working with the configuration of a component called
-<i>registration</i>.
+<i>my-component</i>.
 <br/>
-The properties are read from a file named after the component name. Following
-the previous example it would read it from <tt>registration.properties</tt>
+The properties are read from a file named after the component name. In our example
+the properties would be read from the file <tt>my-component.properties</tt>
 (later you'll see that other files will also be read to allow a property
-value to be overridden in different environments). The name of the file is
-hidden from the program code. Once you have the <code>ComponentConfiguration</code>
+value to be overridden in different environments). This simple convention hides 
+the name of the file from the program code. 
+<br/>
+Once you have the <code>ComponentConfiguration</code>
 you can just read the property values which are automatically converted to
 integers, booleans, lists, etc. Following are two examples of how to read typed
 properties:
@@ -58,13 +59,13 @@ properties:
 
 On the other hand the XML configuration can be converted to any object
 by filling a digester rules file. The XML configuration of the previous example
-will be read from a file named <tt>registration.xml</tt> and its digester
-rules from <tt>registration.digesterRules.xml</tt>. The XML parsing converts
+will be read from a file named <tt>my-component.xml</tt> and its digester
+rules from <tt>my-component.digesterRules.xml</tt>. The XML parsing converts
 the configuration to a <b>set of user defined object classes</b>. For example
 imagine that we want to configure some databases specifying it's tables and
 types of tables. We define two classes: <code>DatabaseConf</code> and
 <code>Table</code>. Then we write the XML configuration in
-<code>registration.xml</code>, for example:
+<code>my-component.xml</code>, for example:
 <pre>
 &lt;database>
   &lt;tables>
@@ -74,7 +75,7 @@ types of tables. We define two classes: <code>DatabaseConf</code> and
 
 </pre>
 
-Next we write the Digester rules in <code>registration.digesterRules.xml</code>:
+Next we write the Digester rules in <code>my-component.digesterRules.xml</code>:
 <pre>
 &lt;!DOCTYPE digester-rules PUBLIC
    "-//Jakarta Apache //DTD digester-rules XML V1.0//EN"
@@ -96,7 +97,7 @@ object graph because it returns one object which can contain other objects
 inside, which can contain even more objects, etc. Here is an example of code
 of retrieving and using the object graph of the previous XML configuration:
 <pre>
-    DatabaseConf dbconf = (DatabaseConf) conf.getObjectGraph();
+    DatabaseConf dbconf = (DatabaseConf) conf.getConfigurationObject();
     Table firstTable = dbconf.getTables().get(0);
     String tableType = firstTable.getTableType();
 </pre>
@@ -139,7 +140,7 @@ is a self explaining example:
         &lt;/logic:iterate>
 
         &lt;easyconf:property id="registration_disabled"
-                   component="registration"
+                   component="my-component"
                    property="registration.disabled"/>
         &lt;logic:equal name="registration_disabled" value="true">
            &lt;bean:message key="registration.disabled"/>
@@ -296,21 +297,5 @@ The class <code>ClassParameter</code> contains a utility method called
 <code>¡¡¡Configuration!!!</code> object and the name of a property and
 returns a new Instance ===> REIMPLEMENTAR EN EL FICHERO PROPERTIES
  ============================================= -->
-<h1>Underlying libraries</h1>
-Easyconf makes use of several underlying open-source libraries. The main two
-libraries are:
-<ul>
- <li>commons-digester v0.6
- <li>commons-configuration v1.0rc2
-</ul>
-The rest of the dependencies are:
-<ul>
-  <li>commons-collections 3.0
-  <li>commons-lang 2.0
-  <li>commons-logging 1.0.4
-  <li>commons-beanutils-core 1.7.0
-  <li>commons-beanutils-bean-collections 1.7.0
-  <li>An XML parser, for example: xerces 2.2.1
-</ul>
 </body>
 </html>
