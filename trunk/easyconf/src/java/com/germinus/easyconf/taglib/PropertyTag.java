@@ -17,6 +17,7 @@ package com.germinus.easyconf.taglib;
 
 import com.germinus.easyconf.ConfReader;
 import com.germinus.easyconf.ComponentProperties;
+import com.germinus.easyconf.Filter;
 
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.JspException;
@@ -47,6 +48,7 @@ import java.util.ArrayList;
  * &gt;logic:equal name="registration_disabled" value="true">
  *   The registration is disabled
  * &gt;/logic:equal>
+ * @jsp.tag name="property" body-content="empty" tei-class="com.germinus.easyconf.taglib.PropertyTei"
  */
 public class PropertyTag extends BodyTagSupport {
 
@@ -54,9 +56,17 @@ public class PropertyTag extends BodyTagSupport {
     protected String component = null;
     protected String property = null;
     protected String type = null;
+    protected String selector1 = "";
+    protected String selector2 = "";
+    protected String selector3 = "";
+    protected String selector4 = "";
+    protected String selector5 = "";    
     protected String defaultValue = "not-configured";
     private static final List EMPTY_LIST = new ArrayList();
 
+    /**
+     * @jsp.attribute required="true" rtexprvalue="true"
+     */
     public String getId() {
         return (this.id);
     }
@@ -65,6 +75,9 @@ public class PropertyTag extends BodyTagSupport {
         this.id = id;
     }
 
+    /**
+     * @jsp.attribute required="true" rtexprvalue="true"
+     */
     public String getComponent() {
         return component;
     }
@@ -73,6 +86,9 @@ public class PropertyTag extends BodyTagSupport {
         this.component = component;
     }
 
+    /**
+     * @jsp.attribute required="true" rtexprvalue="true"
+     */
     public String getProperty() {
         return (this.property);
     }
@@ -81,16 +97,25 @@ public class PropertyTag extends BodyTagSupport {
         this.property = property;
     }
 
+    /**
+     * @jsp.attribute required="false" rtexprvalue="true"
+     */
     public String getType() {
         return (this.type);
     }
 
+    /**
+     * @jsp.attribute required="false" rtexprvalue="true"
+     */
     public void setType(String type) {
         this.type = type;
     }
 
 
-    public String getDefaultValue() {
+    /**
+     * @jsp.attribute required="false" rtexprvalue="true"
+     */
+    public String getValue() {
         return (this.defaultValue);
     }
 
@@ -102,6 +127,78 @@ public class PropertyTag extends BodyTagSupport {
         this.defaultValue = defaultValue;
     }
 
+    
+    /**
+     * @jsp.attribute required="false" rtexprvalue="true"
+     */
+    public String getSelector1() {
+        return selector1;
+    }
+    public void setSelector1(String selector1) {
+        this.selector1 = selector1;
+    }
+    
+    /**
+     * @jsp.attribute required="false" rtexprvalue="true"
+     */
+    public String getSelector2() {
+        return selector2;
+    }
+    public void setSelector2(String selector2) {
+        this.selector2 = selector2;
+    }
+
+    /**
+     * @jsp.attribute required="false" rtexprvalue="true"
+     */
+    public String getSelector3() {
+        return selector3;
+    }
+    public void setSelector3(String selector3) {
+        this.selector3 = selector3;
+    }
+
+    /**
+     * @jsp.attribute required="false" rtexprvalue="true"
+     */
+    public String getSelector4() {
+        return selector4;
+    }
+    public void setSelector4(String selector4) {
+        this.selector4 = selector4;
+    }
+
+    /**
+     * @jsp.attribute required="false" rtexprvalue="true"
+     */
+    public String getSelector5() {
+        return selector5;
+    }
+    public void setSelector5(String selector5) {
+        this.selector5 = selector5;
+    }
+    
+    private String[] getSelectorArray() {
+        List selectors = new ArrayList();
+        if (StringUtils.isNotEmpty(selector1)) {
+            selectors.add(selector1);
+        }
+        if (StringUtils.isNotEmpty(selector2)) {
+            selectors.add(selector1);
+        }
+        if (StringUtils.isNotEmpty(selector3)) {
+            selectors.add(selector1);
+        }
+        if (StringUtils.isNotEmpty(selector4)) {
+            selectors.add(selector1);
+        }
+        if (StringUtils.isNotEmpty(selector5)) {
+            selectors.add(selector1);
+        }
+        return (String[]) selectors.toArray(new String[0]);
+    }
+    // .................. Taglib methods ..................
+    
     /**
      * Check if we need to evaluate the body of the tag
      *
@@ -132,6 +229,7 @@ public class PropertyTag extends BodyTagSupport {
      */
     public int doEndTag() throws JspException {
         Object value = null;
+        
         ComponentProperties conf = ConfReader.getConfiguration(component).
         	getProperties();
         value = readProperty(conf);
@@ -154,33 +252,37 @@ public class PropertyTag extends BodyTagSupport {
         }
         Object value = this.defaultValue;
         if (type.equals("java.util.List")) {
-            value = conf.getList(property, EMPTY_LIST);
+            value = conf.getList(property, getPropertyFilter(), EMPTY_LIST);
         } else if (type.equals("java.lang.Integer")) {
-            value = conf.getInteger(property, new Integer(0));
+            value = conf.getInteger(property, getPropertyFilter(), new Integer(0));
         } else if (type.equals("java.lang.String")) {
-            value = conf.getString(property, defaultValue);
+            value = conf.getString(property, getPropertyFilter(), defaultValue);
         } else if (type.equals("java.lang.Double")) {
-            value = new Double(conf.getDouble(property));
+            value = new Double(conf.getDouble(property, getPropertyFilter()));
         } else if (type.equals("java.lang.Float")) {
-            value = new Float(conf.getFloat(property));
+            value = new Float(conf.getFloat(property, getPropertyFilter()));
         } else if (type.equals("java.lang.Byte")) {
-            value = new Byte(conf.getByte(property));
+            value = new Byte(conf.getByte(property, getPropertyFilter()));
         } else if (type.equals("java.math.BigDecimal")) {
-            value = conf.getBigDecimal(property);
+            value = conf.getBigDecimal(property, getPropertyFilter());
         } else if (type.equals("java.lang.BigInteger")) {
-            value = conf.getBigInteger(property);
+            value = conf.getBigInteger(property, getPropertyFilter());
         } else if (type.equals("java.lang.Boolean")) {
-            value = new Boolean(conf.getBoolean(property));
+            value = new Boolean(conf.getBoolean(property, getPropertyFilter()));
         } else if (type.equals("java.lang.Short")) {
-            value = new Short(conf.getShort(property));
+            value = new Short(conf.getShort(property, getPropertyFilter()));
         } else if (type.equals("java.lang.Long")) {
-            value = new Long(conf.getLong(property));
+            value = new Long(conf.getLong(property, getPropertyFilter()));
         } else {
                 JspException e = new JspException("Unsupported type: " +type);
                 RequestUtils.saveException(pageContext, e);
                 throw e;
         }
         return value;
+    }
+
+    private Filter getPropertyFilter() {
+        return new Filter(getSelectorArray());
     }
 
     public void release() {

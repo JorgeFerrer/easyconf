@@ -78,6 +78,9 @@
       <version>1.2.8</version>
       <type>jar</type>
       <url>http://www.apache.org/</url>
+      <properties>
+        <unknown>unknown</unknown>
+      </properties>
     </dependency>
     <dependency>
       <groupId>servletapi</groupId>
@@ -170,6 +173,12 @@
       </properties>
     </dependency>
     <dependency>
+      <groupId>xdoclet</groupId>
+      <artifactId>xdoclet</artifactId>
+      <version>1.2.1</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils-core</artifactId>
       <version>1.7.0</version>
@@ -186,6 +195,18 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+    </dependency>
+    <dependency>
+      <groupId>xdoclet</groupId>
+      <artifactId>maven-xdoclet-plugin</artifactId>
+      <version>1.2.1</version>
+      <type>plugin</type>
+    </dependency>
+    <dependency>
+      <groupId>xdoclet</groupId>
+      <artifactId>xdoclet-web-module</artifactId>
+      <version>1.2.1</version>
+      <type>jar</type>
     </dependency>
   </dependencies>
   <!-- build information for the project -->
