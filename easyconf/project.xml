@@ -73,6 +73,16 @@
              <organization>Germinus XXI</organization>
              <timezone>0</timezone>
          </developer>
+      <developer>
+             <name>Ismael Ferrer</name>
+             <id>ifolmedo</id>
+             <email>iferrer@germinus.com</email>
+             <roles>
+                 <role>Project Manager</role>
+             </roles>
+             <organization>Germinus XXI</organization>
+             <timezone>0</timezone>
+         </developer>
   </developers>
 
   <!-- jar files the project is dependent on -->
