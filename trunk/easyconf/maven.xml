@@ -1,5 +1,8 @@
 <project xmlns:deploy="deploy">
 
+  <preGoal name="java:compile">
+     <attainGoal name="xdoclet:webdoclet"/>
+  </preGoal>
   <goal name="dependent-libs">
     <deploy:copy-deps todir="target/dependent-libs"/>
     <zip destfile="target/easyconf-dependent-libs.zip"
