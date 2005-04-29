@@ -53,7 +53,7 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
      * @param key
      * @return
      */
-    protected Object getPropertyDirect(String key) {
+    public Object getProperty(String key) {
         Object value = null;
         if (value == null) {
             value = System.getProperty(getPrefix() + key);
@@ -68,7 +68,7 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
             value = baseConf.getProperty(key);
         }
         if (value == null) {
-            value = super.getPropertyDirect(key);
+            value = super.getProperty(key);
         }
         if (value == null) {
             value = System.getProperty(key);
@@ -103,7 +103,9 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
             loadedFiles.add(fileName);
             return newConf;
         } catch (org.apache.commons.configuration.ConfigurationException e) {
-            throw new ConfigurationException("Error reading file" + fileName, e);
+            log.debug("Configuration source " + fileName + " ignored");
+            return null;
+//            throw new ConfigurationException("Error reading file" + fileName, e);
         } catch (Exception ignore) {
             log.debug("Configuration source " + fileName + " ignored");
             return null;
