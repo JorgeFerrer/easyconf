@@ -30,9 +30,11 @@
  */
 package com.germinus.easyconf;
 
+import java.net.URL;
+
 import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.HierarchicalXMLConfiguration;
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationUtils;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 import junit.framework.Test;
@@ -55,16 +57,19 @@ public class ConfigurationLearningTest extends TestCase {
     }
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTest(new ConfigurationLearningTest("testSubset"));
+        suite.addTest(new ConfigurationLearningTest("testGetFromClasspath"));
         return suite;
     }
-    public void testHierarchicalConfiguration() throws ConfigurationException {
-        HierarchicalXMLConfiguration conf = new HierarchicalXMLConfiguration();
-        conf.load("test_module.xml");
-        assertEquals("Error reading hierarchical property",
-                "users",
-                conf.getString("tables.table(0).name "));
+    public void testGetFromClasspath() throws ConfigurationException {
+        URL result = ConfigurationUtils.locate(null, "test_module.properties");
+        assertNotNull(result);
+        PropertiesConfiguration conf = new PropertiesConfiguration();
+        conf.load("test_module.properties");
+        assertEquals("Error reading properties file from classpath",
+                "test_module",
+                conf.getString("property-only-in-test-module"));
     }
+    
     public void testSubset() {
         Configuration conf = new PropertiesConfiguration();
         conf.setProperty("prefix.key", "value");

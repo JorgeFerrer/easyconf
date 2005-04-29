@@ -28,10 +28,10 @@ public class SysPropertiesConfiguration extends PropertiesConfiguration {
      * @param key
      * @return
      */
-    protected Object getPropertyDirect(String key) {
+    public Object getProperty(String key) {
         Object value = null;
         if (value == null) {
-            value = super.getPropertyDirect(key);
+            value = super.getProperty(key);
         }
         if ((value == null) && (sysPropertiesEnabled)) {
             value = System.getProperties().getProperty(key);
