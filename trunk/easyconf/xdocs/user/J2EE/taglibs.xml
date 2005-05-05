@@ -42,8 +42,9 @@
                   <tt>java.math.BigDecimal</tt>,
                   <tt>java.lang.BigInteger</tt>,
                   <tt>java.lang.Boolean</tt>,
-                  <tt>java.lang.Short</tt> and
-                  <tt>java.lang.Long</tt>. (This attribute is optional).                  
+                  <tt>java.lang.Short</tt>,
+                  <tt>java.lang.Long</tt> and
+                  <tt>java.util.List</tt>. (This attribute is optional).                  
                 </li>
                 <li><b>selector1, selector2, selector3, selector4, selector5</b>: allow setting
                   up to 5 selectors for choosing the value of the property (optional)</li>
