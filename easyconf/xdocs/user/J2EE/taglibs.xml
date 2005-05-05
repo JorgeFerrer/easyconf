@@ -1,30 +1,30 @@
 <document>
    <properties>
-      <title>Taglibs</title>
+      <title>Taglib</title>
       <author >Jorge Ferrer</author>
    </properties>
    <body>
       <section name="Accesing the configuration from JSP files">
          <p>
 				When developing J2EE applications it is sometimes useful to access
-            the configuration directly from JSPs. EasyConf provides two
-            taglibs for this purpose:
+                the configuration directly from JSPs. EasyConf provides two jsp tags 
+                for this purpose:
             <ul>
                <li><tt>property</tt>: to read a single property object of a component</li>
                <li><tt>configurationObject</tt>: to access the configuration object of a 
                   component</li>
             </ul>
-            Both taglibs retrieve an object and make it available to the JSP as a variable
+            Both tags retrieve an object and make it available to the JSP as a variable
             and as a request parameter (ala bean:define tag). You can later use JSTL,
             struts bean tags, or similar methods to print or use the object in any 
             desired way.
 			</p>
          <p>
-            The taglib library definition file (TLD) for this libraries can be found inside
+            The tag library definition file (TLD) for this libraries can be found inside
             the <tt>easyconf-${version}.jar</tt> file, inside the <tt>tld</tt> directory.
          </p>
       </section>
-      <section name="property taglib">         
+      <section name="property tag">         
          <p>
 				<b>Property attributes</b>
             <ul>
@@ -51,7 +51,7 @@
             </ul>
 			</p>
          <p>
-            <b>Example</b>
+            <b>Example (String property)</b>
          </p>
          <source>
             <![CDATA[
@@ -65,8 +65,24 @@
 </logic:equals>
                ]]>            
          </source>
+         <p>
+            <b>Example (java.util.List property)</b>
+         </p>
+         <source>
+            <![CDATA[
+<%@ taglib uri="/WEB-INF/tld/easyconf.tld" prefix="easyconf" %>
+<easyconf:property id="companies"
+                   component="presentation"
+                   property="partner.names"
+                   type="java.util.list"
+                   %>/>
+<logic:iterate id="companyName" name="companies"/>
+  ...
+</logic:iterate>
+               ]]>            
+         </source>
       </section>
-      <section name="configurationObject taglib">
+      <section name="configurationObject tag">
          <p>
 				<b>Property attributes</b>
             <ul>
