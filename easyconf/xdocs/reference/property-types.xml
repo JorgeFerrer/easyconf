@@ -17,6 +17,7 @@
         <li>Boolean</li>
         <li>Byte</li>
         <li>Class: useful for implementing plugins</li>
+        <li>ClassArray: useful for implementing plugin chains</li>
         <li>Double</li>
         <li>Float</li>
         <li>Integer</li>

@@ -70,7 +70,7 @@ public class EasyConfTest extends TestCase {
         assertEquals("An invalid class was loaded", 
                 DatabaseConf.class, theClass);
         theClass = getProperties().getClass("non-existent-property", Table.class);
-        assertEquals("The default class should have been used", 
+        assertSame("The default class should have been used", 
                 Table.class, theClass);
     }
 
@@ -85,6 +85,24 @@ public class EasyConfTest extends TestCase {
             fail("A ClassNotFoundException should have been thrown");
         } catch (ClassNotFoundException success) {        
         }
+    }
+
+    public void testGetClassArray() throws ClassNotFoundException {
+        Class[] defaultClasses = new Class[]{Table.class};
+        String key = "database-configuration-classes";
+        Class[] result = getProperties().getClassArray(key);
+        assertEquals("There should be two classes", 
+                2, result.length);
+        assertEquals("An invalid first class was loaded", 
+                DatabaseConf.class, result[0]);
+        assertEquals("An invalid second class was loaded", 
+                Table.class, result[1]);
+        result = getProperties().getClassArray(key, defaultClasses);
+        assertEquals("The default should be ignored and there should be two classes", 
+                2, result.length);
+        result = getProperties().getClassArray("non-existent-property", defaultClasses);
+        assertSame("The default class should have been used", 
+                defaultClasses, result);
     }
 
     public void testAllFilesHaveBeenRead() {
@@ -345,6 +363,8 @@ public class EasyConfTest extends TestCase {
         assertEquals("The company specific conf should have only 1 table",
                 1, conf.getTables().size());        
     }
+    
+
 
     /**
      * Does not work due to a bug in digester (TODO: confirm)

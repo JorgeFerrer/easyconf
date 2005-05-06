@@ -269,6 +269,60 @@ public class ComponentProperties {
         return ClasspathUtil.locateClass(className);
     }
     
+    
+    // ..................... Class ......................  
+
+    /**
+     * Get an array of <code>Class</code> objects for the class names
+     * specified in the given property
+     * 
+     * @throws ClassNotFoundException if the any of the configured 
+     * classes is not found
+     */
+    public Class[] getClassArray(String key) throws ClassNotFoundException {
+        String[] classNames = getStringArray(key);
+        return ClasspathUtil.locateClasses(classNames);
+    }
+    
+
+    /**
+     * Get an array of <code>Class</code> objects for the class names
+     * specified in the given property. Or the <code>defaultValue</code>
+     * if no value has been given to the property. 
+     * 
+     * @throws ClassNotFoundException if the any of the configured 
+     * classes is not found
+     */
+    public Class[] getClassArray(String key, Class[] defaultValue) throws ClassNotFoundException {
+        String[] defaultStringArrayValue = null;
+        String[] classNames = getStringArray(key, defaultStringArrayValue);
+        if (classNames == defaultStringArrayValue) {
+            return defaultValue;
+        }
+        return ClasspathUtil.locateClasses(classNames);
+    }
+
+    /**
+     * Similar to the previous methods but complementing the property key with the given filter
+     */
+    public Class[] getClassArray(String key, Filter filter) throws ClassNotFoundException {
+        String[] classNames = getStringArray(key, filter);
+        return ClasspathUtil.locateClasses(classNames);
+    }
+    /**
+     * Equivalent to the previous method but giving a default value which will be used if no
+     * value has been specified in the configurations file
+     */
+    public Class[] getClassArray(String key, Filter filter, Class[] defaultValue) 
+    throws ClassNotFoundException {
+        String[] defaultStringArrayValue = null;
+        String[] classNames = getStringArray(key, filter, defaultStringArrayValue);
+        if (classNames == defaultStringArrayValue) {
+            return defaultValue;
+        }
+        return ClasspathUtil.locateClasses(classNames);
+    }
+    
     // ..................... Float ......................
     
     public float getFloat(String key) {
@@ -421,6 +475,19 @@ public class ComponentProperties {
             defaultList = Arrays.asList(defaultValue);
         }
         List value = getList(key, filter, defaultList);
+        if (value == null) {
+            return null;
+        } else {
+            return (String[]) value.toArray(new String[0]);
+        }
+    }
+
+    public String[] getStringArray(String key, String[] defaultValue) {
+        List defaultList = null;
+        if (defaultValue != null) {
+            defaultList = Arrays.asList(defaultValue);
+        }
+        List value = getList(key, defaultList);
         if (value == null) {
             return null;
         } else {

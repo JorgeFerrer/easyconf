@@ -33,7 +33,7 @@ public class ClasspathUtil {
      * Return the Class object of the specified class name by searching the
      * current classpath and the system classpath.
      *
-     * @param name the name of the resource
+     * @param name the name of the class
      *
      * @return the <code>Class</code> instance
      */
@@ -63,6 +63,24 @@ public class ClasspathUtil {
     }
 
     /**
+     * Return an array of Class objects for each of the class names specified. Each
+     * class will be searched for using the <tt>locateClass</tt> method.
+     * If any of the class names does not exist a <tt>ClassNotFoundException</tt>
+     * will be thrown
+     *
+     * @param classNames the names of the classes to load
+     *
+     * @return the <code>Class[]</code> array
+     */
+    public static Class[] locateClasses(String[] classNames) throws ClassNotFoundException {
+        Class[] classes = new Class[classNames.length];
+        for (int i = 0; i < classes.length; i++) {
+            classes[i] = locateClass(classNames[i]);
+        }
+        return classes;
+    }
+
+    /**
      * Return the location of the specified resource by searching the user home
      * directory, the current classpath and the system classpath.
      *
@@ -88,4 +106,5 @@ public class ClasspathUtil {
     public static URL locateResource(String name) {
         return ConfigurationUtils.locate(null, name);
     }
+
 }
