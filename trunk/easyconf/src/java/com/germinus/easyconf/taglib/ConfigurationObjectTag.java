@@ -15,7 +15,7 @@
  */
 package com.germinus.easyconf.taglib;
 
-import com.germinus.easyconf.ConfReader;
+import com.germinus.easyconf.EasyConf;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.JspException;
 import org.apache.struts.util.RequestUtils;
@@ -104,7 +104,7 @@ public class ConfigurationObjectTag extends BodyTagSupport {
      * @exception JspException if a JSP exception has occurred
      */
     public int doEndTag() throws JspException {
-        Object confObj = ConfReader.getConfiguration(component).
+        Object confObj = EasyConf.getConfiguration(component).
         	getConfigurationObject();
        
         if (confObj == null) {

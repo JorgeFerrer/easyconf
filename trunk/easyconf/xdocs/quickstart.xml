@@ -42,7 +42,7 @@
       	with:
       </p>
       <source>
-      	  public static final double EURO_TO_DOLLARS_RATIO = ConfReader.
+      	  public static final double EURO_TO_DOLLARS_RATIO = EasyConf.
       	     getConfiguration("calculator").getProperties().
       	     getDouble("euro-to-dollars");
 
@@ -96,7 +96,7 @@
       	  	getProperties().getBoolean("conversion-allowed");
 
       	  private static ComponentProperties getProperties(double euros) {
-      	     return ConfReader.getConfiguration("calculator").getProperties();
+      	     return Easyconf.getConfiguration("calculator").getProperties();
       	  }
       </source>
       <p>
@@ -109,11 +109,37 @@
       	  conversion-allowed=true
       </source>        
       <p>
-        This example shows a new feature of EasyConf (inherited from Commons Configuration in fact): the 
-        ability to use variables inside the property file. It
-        also shows how handy it is to have automatic conversion of properties to different types
-        Check the complete list of <a href="reference/property-types.html">supported types</a>.
+        This example shows a new feature of EasyConf (inherited from Commons 
+        Configuration in fact): the  ability to use variables inside the 
+        property file. It also shows how handy it is to have automatic 
+        conversion of properties to different types. Check the complete 
+        list of <a href="reference/property-types.html">supported types</a>.
       </p>
+    </section>
+
+    <section name="Configuring an application for an ASP">
+		<p>
+         An ASP or Application Service Provider offers applications to several customers
+         from a single installation. In this environment a single running application 
+         may need to have different configurations depending on the customer that is
+         accessing the application. EasyConf is prepared to configure applications 
+         which are developed to work in this environment.
+      </p>
+      <p>
+         In this situation the application must ask EasyConf for the configuration
+         providing both the component name and a company id. The company id will
+         represent the unique customer id which is currently accesing the application:         
+      </p>
+      <source>
+         Easyconf.getConfiguration("companyA", "calculator").getProperties();
+      </source>
+      <p>
+         The properties for the returned configuration will be read first with 
+         the values of <tt>calculator.properties</tt> as shown in the previous 
+         example. But then if a file called <tt>calculator-companyA.properties</tt>
+         exists it will also be loaded overridding with its values any previously
+         set value.
+      </p>         
     </section>
 
     <section name="More functionality">

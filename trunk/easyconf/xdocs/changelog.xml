@@ -6,7 +6,24 @@
   </properties>
 
   <body>
-    <section name="Changes in latest stable version (0.7.1)">
+    <section name="Changes in latest stable version (0.9.0)">
+      <ul>
+         <li><p><b>Added support for applications for ASPs</b></p></li>
+         <li><p><b>Added method <tt>getClassesArray</tt></b></p></li>         
+         <li><p><b>Migrated to Jakarta Commons Configuration 1.1</b></p></li>
+         <li><p><b>API changes</b>:</p>
+            <ul>
+               <li>The class <tt>ConfReader</tt> was renamed as <tt>EasyConf</tt>. Because of this
+                  change this release is not binary compatible with previous version. You should
+                  change it in your source code and recompile.</li>
+            </ul>
+         </li>
+      </ul>
+    </section>
+    <section name="Older versions">
+      <p>
+         <b>Version 0.8.0</b>
+      </p>
       <p>
          This is the first version which incorporates additions and changes based on
          feedback from the users. The most relevant changes are:
@@ -48,8 +65,6 @@
             </ul></p>           
           </li>
       </ul>
-    </section>
-    <section name="Older versions">
       <p>
          <b>Version 0.7.0</b>
       </p>

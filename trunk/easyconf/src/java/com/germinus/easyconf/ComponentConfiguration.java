@@ -33,11 +33,17 @@ public class ComponentConfiguration {
     private Object configurationObject;
     private String componentName;
     private ConfigurationLoader confManager = new ConfigurationLoader();
+    private String companyId;
 
-    ComponentConfiguration(String componentName) {
-        this.componentName = componentName;
+    public ComponentConfiguration(String componentName) {
+        this(null, componentName);
     }
     
+    public ComponentConfiguration(String companyId, String componentName) {
+        this.companyId = companyId;
+        this.componentName = componentName;
+    }
+
     /**
      * Get the name of the component which is associated with this configuration
      */
@@ -60,7 +66,8 @@ public class ComponentConfiguration {
         }
         try {
             configurationObject = getConfigurationManager().
-                    readConfigurationObject(componentName,
+                    readConfigurationObject(companyId,
+                                            componentName, 
                                             getAvailableProperties());
         } catch (IOException e) {
             throw new ConfigurationException(componentName, "Error reading object configuration", e);
@@ -91,7 +98,7 @@ public class ComponentConfiguration {
             return properties;
         }
         properties = getConfigurationManager().
-                readPropertiesConfiguration(componentName);
+        	readPropertiesConfiguration(companyId, componentName);
         return properties;
     }
 

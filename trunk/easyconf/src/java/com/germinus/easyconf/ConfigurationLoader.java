@@ -37,31 +37,37 @@ class ConfigurationLoader {
     private static final Log log = LogFactory.getLog(ConfigurationLoader.class);
 
 
-//    public ComponentConfiguration readComponentConfiguration(String componentName)
-//            throws IOException, SAXException {
-//        ComponentConfiguration conf = new ComponentConfiguration(componentName);
-//        conf.setProperties(readPropertiesConfiguration(componentName));
-//        conf.setObjectGraph(readConfigurationObject(componentName,
-//                					conf.getProperties()));
-//        return conf;
-//    }
-
-    public ComponentProperties readPropertiesConfiguration(String componentName) {
+    public ComponentProperties readPropertiesConfiguration(String companyId, String componentName) {
         BaseAndGlobalProperties properties = new BaseAndGlobalProperties(componentName);
-        properties.addGlobalFileName(Conventions.GLOBAL_CONFIGURATION_FILE + ".properties");
-        properties.addBaseFileName(componentName + ".properties");
+        properties.addGlobalFileName(Conventions.GLOBAL_CONFIGURATION_FILE + Conventions.SLASH + companyId
+                + Conventions.PROPERTIES_EXTENSION);
+        properties.addGlobalFileName(Conventions.GLOBAL_CONFIGURATION_FILE + 
+                Conventions.PROPERTIES_EXTENSION);
+        properties.addBaseFileName(componentName + Conventions.SLASH + companyId + 
+                Conventions.PROPERTIES_EXTENSION);
+        properties.addBaseFileName(componentName + Conventions.PROPERTIES_EXTENSION);
 
         log.info("Properties for " + componentName + " loaded from " + properties.loadedFiles());
         return new ComponentProperties(properties);
     }
 
-    public Object readConfigurationObject(String componentName,
-            ComponentProperties properties) throws IOException, SAXException {
+    public Object readConfigurationObject(String companyId,
+            String componentName, ComponentProperties properties) 
+    	throws IOException, SAXException {
         log.info("Reading the configuration object for " + componentName);
-        String rulesFileName = componentName + "." + "digesterRules.xml";
-        String confFileName = componentName + ".xml";
+        String rulesFileName = componentName + Conventions.DIGESTERRULES_EXTENSION;
 
-        URL confFile = ClasspathUtil.locateResource(null, confFileName);
+        String confFileName = null;
+        URL confFile = null;
+        if (companyId != null) {
+            confFileName = componentName + Conventions.SLASH + companyId + Conventions.XML_EXTENSION;
+            confFile = ClasspathUtil.locateResource(null, confFileName);
+            log.info("Loaded " + confFileName + ": " + confFile);
+        }
+        if (confFile == null) { 
+	        confFileName = componentName + Conventions.XML_EXTENSION;
+	        confFile = ClasspathUtil.locateResource(null, confFileName);
+        }
         if (confFile == null) {
             throw new FileNotFoundException("File " + confFileName + " not found");
         }

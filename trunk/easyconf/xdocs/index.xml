@@ -51,6 +51,7 @@
 	      and portals</li>
         <li><b>Well documented</b></li>
 	     <li><b>Easy to remember conventions</b> instead of configuration to simplify usage</li>
+        <li><b>Support for Application Service Providers</b></li>
 	  </ol>
      </section>
     </body>

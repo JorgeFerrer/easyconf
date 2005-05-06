@@ -15,7 +15,7 @@
  */
 package com.germinus.easyconf.taglib;
 
-import com.germinus.easyconf.ConfReader;
+import com.germinus.easyconf.EasyConf;
 import com.germinus.easyconf.ComponentProperties;
 import com.germinus.easyconf.Filter;
 
@@ -236,7 +236,7 @@ public class PropertyTag extends BodyTagSupport {
     public int doEndTag() throws JspException {
         Object value = null;
         
-        ComponentProperties conf = ConfReader.getConfiguration(component).
+        ComponentProperties conf = EasyConf.getConfiguration(component).
         	getProperties();
         value = readProperty(conf);
 

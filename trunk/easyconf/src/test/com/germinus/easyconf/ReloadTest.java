@@ -76,7 +76,7 @@ public class ReloadTest extends TestCase {
     }
 
     private ComponentConfiguration getComponentConf() {
-        return ConfReader.getConfiguration("reloaded_module");
+        return EasyConf.getConfiguration("reloaded_module");
     }
 
     private void assertEquals(String msg, String[] expected, String[] obtained) {
