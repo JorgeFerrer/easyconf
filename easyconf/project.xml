@@ -216,7 +216,7 @@
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
     <unitTest>
       <includes>
-        <include>com/germinus/easyconf/ConfReaderTest.java</include>
+        <include>com/germinus/easyconf/EasyConfTest.java</include>
       </includes>
       <resources>
         <resource>

@@ -29,7 +29,7 @@ String skin = getProperties().getString("skin");
          </p>
          <source>
 private ComponentProperties getProperties() {
-   return ConfReader.getComponent("my-component").getProperties();
+   return EasyConf.getComponent("my-component").getProperties();
 }
 			</source>
       </section>

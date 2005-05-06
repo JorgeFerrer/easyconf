@@ -33,8 +33,22 @@
          <p>
             The mapping file follows the 
             <a href="http://jakarta.apache.org/commons/digester/api/org/apache/commons/digester/xmlrules/package-summary.html">markup 
-            language of digester rules</a>. The example of the next section will show 
-            it is not difficult to use at all, although it seems hard to understand at first.
+            language of digester rules</a>. The example of the next sections will show 
+            it is not difficult to use at all.
+         </p>
+         <p>
+            Once the mapping file has been written the resulting object which contains
+            the configuration can be obtained using the <tt>getConfigurationObject()</tt>
+            method of <tt>ComponentConfiguration</tt>. For example:
+         </p>
+         <source>
+            EasyConf.getConfiguration("calculator").getConfigurationObject();
+         </source>
+         <p>
+            In this example the resulting configuration object will be created by
+            reading the contents of the file <tt>calculator.xml</tt> and converting
+            it to java objects according to the rules defined in the file
+            <tt>calculator.digesterRules.xml</tt>
          </p>
       </section>
       <section name="Quick introduction to Digester">
@@ -98,7 +112,7 @@
          <p>
             This XML file is converted to several POJOs. First there is a class called
             <tt>ContentTypeDefinitions</tt> which holds a <tt>List</tt> of the available
-            content types. Each content type is represented by the following class::
+            content types. Each content type is represented by the following class:
          </p>
          <source>
              <![CDATA[
@@ -320,5 +334,29 @@ public class FieldDefinition {
                complex structures.</li>
          </ul>
       </section>
+    <section name="Configuring an application for an ASP">
+		<p>
+         An ASP or Application Service Provider offers applications to several customers
+         from a single installation. In this environment a single running application 
+         may need to have different configurations depending on the customer that is
+         accessing the application. EasyConf is prepared to configure applications 
+         which are developed to work in this environment.
+      </p>
+      <p>
+         In this situation the application must ask EasyConf for the configuration
+         providing both the component name and a company id. The company id will
+         represent the unique customer id which is currently accesing the application:         
+      </p>
+      <source>
+         Easyconf.getConfiguration("companyA", "calculator").getConfigurationObject();
+      </source>
+      <p>
+         In this scenario EasyConf will search for a file called 
+         <tt>calculator-companyA.xml</tt> and load the configuration from it 
+         (as specified in the mapping file calculator.digesterRules.xml). Only
+         if this file does not exist the configuration will be read from
+         <tt>calculator.xml</tt>.
+      </p>         
+    </section>
    </body>
 </document>

@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.germinus.easyconf.ConfReader;
+import com.germinus.easyconf.EasyConf;
 
 /**
  * Refresh the configuration of a given component which uses EasyConf. If
@@ -39,12 +39,12 @@ public class RefreshConfigurationAction extends Action {
         if (dform != null) {
             String componentName = (String) dform.get("componentName");
             if (StringUtils.isBlank(componentName)) {
-                ConfReader.refreshAll();
+                EasyConf.refreshAll();
             } else {
-                ConfReader.refreshComponent(componentName);
+                EasyConf.refreshComponent(componentName);
             }
         } else {
-            ConfReader.refreshAll();
+            EasyConf.refreshAll();
         }
         return mapping.findForward(SUCCESS);
     }

@@ -35,17 +35,17 @@ import org.apache.commons.logging.LogFactory;
  * @author Jorge Ferrer
  * @author Ismael F. Olmedo
  */
-public class ConfReaderTest extends TestCase {
+public class EasyConfTest extends TestCase {
 
-	public static final Log log =  LogFactory.getLog(ConfReaderTest.class);
+	public static final Log log =  LogFactory.getLog(EasyConfTest.class);
 	ComponentConfiguration componentConf;
 
-    public ConfReaderTest(String testName) {
+    public EasyConfTest(String testName) {
         super(testName);
     }
 
     protected void setUp() throws Exception {
-        componentConf = ConfReader.getConfiguration("test_module");
+        componentConf = EasyConf.getConfiguration("test_module");
     }
 
     protected void tearDown() throws Exception {
@@ -54,10 +54,10 @@ public class ConfReaderTest extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTestSuite(ConfReaderTest.class);
+        suite.addTestSuite(EasyConfTest.class);
         suite.addTest(ReloadTest.suite());
-//        suite.addTest(new ConfReaderTest("testUsingSystemProperties"));
-//        suite.addTest(new ConfReaderTest("testUsingSystemPropertiesInIncludes"));
+//        suite.addTest(new EasyconfTest("testUsingSystemProperties"));
+//        suite.addTest(new EasyConfTest("testXMLASPModel"));
         
         return suite;
     }
@@ -243,7 +243,7 @@ public class ConfReaderTest extends TestCase {
     }
 
     public void testComponentWithoutProperties() {
-        ComponentConfiguration conf = ConfReader.getConfiguration("module_without_properties");
+        ComponentConfiguration conf = EasyConf.getConfiguration("module_without_properties");
         try {
             assertNotNull("The properties should not be null",
                 conf.getProperties());
@@ -261,7 +261,7 @@ public class ConfReaderTest extends TestCase {
     }
 
     public void testComponentWithoutXML() {
-        ComponentConfiguration conf = ConfReader.getConfiguration("module_without_xml");
+        ComponentConfiguration conf = EasyConf.getConfiguration("module_without_xml");
         try {
             conf.getConfigurationObject();
             fail("A Configuration exception should have been thrown");
@@ -271,7 +271,7 @@ public class ConfReaderTest extends TestCase {
     public void testComponentWithoutDigesterRules() {
         String name = "module_without_digesterRules";
         try {
-            ConfReader.getConfiguration(name);
+            EasyConf.getConfiguration(name);
         } catch (DigesterRulesNotFoundException expected) {
             assertNotNull("The exception should contain the name of the missing file",
                     expected.getDigesterRulesFileName());
@@ -282,8 +282,8 @@ public class ConfReaderTest extends TestCase {
 
     // THIS FUNCTIONALITY DOES NOT WORK ALTHOUGH THE TEST PASSES
     public void testComponentWithDisabledCache() {
-        ComponentConfiguration componentConf1 = ConfReader.getConfiguration("test_module");
-        ComponentConfiguration componentConf2 = ConfReader.getConfiguration("test_module");
+        ComponentConfiguration componentConf1 = EasyConf.getConfiguration("test_module");
+        ComponentConfiguration componentConf2 = EasyConf.getConfiguration("test_module");
         assertNotSame("The configuration should have been read again",
                       componentConf1, componentConf2);
     }
@@ -322,6 +322,29 @@ public class ConfReaderTest extends TestCase {
                      getProperties().getString("test_module_db"));
         System.setProperty("easyconf-environment", "");
     }
+    
+    public void testPropertiesASPModel() {
+        ComponentProperties props = EasyConf.getConfiguration("exampleCompany", 
+                "test_module").getProperties();
+        assertEquals("The property was not read from the company specific file",
+                "exampleCompany",
+                props.getString("company-name"));
+        assertEquals("The property should have the default value if it is not" +
+        		" overridden by the company specific file",
+        		"test_module",
+        		props.getString("string-not-overridden"));
+        assertEquals("The property was not read from the company specific global file",
+                "exampleCompanyGlobal",
+                props.getString("global-company-name"));
+        
+    }
+    public void testXMLASPModel() {
+        DatabaseConf conf = (DatabaseConf) EasyConf.
+        		getConfiguration("exampleCompany", "test_module").
+        		getConfigurationObject();
+        assertEquals("The company specific conf should have only 1 table",
+                1, conf.getTables().size());        
+    }
 
     /**
      * Does not work due to a bug in digester (TODO: confirm)
@@ -329,7 +352,7 @@ public class ConfReaderTest extends TestCase {
     public void bugtestXmlThatUsesNonExistentProperty() {
         String name = "module_with_xml_that_uses_non_existent_property";
         try {
-            ComponentConfiguration conf = ConfReader.getConfiguration(name);
+            ComponentConfiguration conf = EasyConf.getConfiguration(name);
         } catch (InvalidPropertyException expected) {
             assertEquals("Invalid component name in the exception",
                     name, expected.getComponentName());

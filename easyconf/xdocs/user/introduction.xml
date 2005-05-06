@@ -32,7 +32,7 @@
             component named <i>my-component</i> you have to write the 
             following code:</p>
          <source> 
-            CompontentConfiguration conf = ConfReader.getConfiguration("my-component");
+            CompontentConfiguration conf = EasyConf.getConfiguration("my-component");
          </source>
          <p>
             <a href="../../apidocs/com/germinus/easyconf/ComponentConfiguration.html">ComponentConfiguration</a> 

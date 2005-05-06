@@ -28,11 +28,11 @@ import java.util.Map;
  *
  * @author jferrer@germinus.com
  */
-public class ConfReader {
-    private static final Log log = LogFactory.getLog(ConfReader.class);
+public class EasyConf {
+    private static final Log log = LogFactory.getLog(EasyConf.class);
     private static Map cache = new HashMap();
 
-    private ConfReader() {
+    private EasyConf() {
     }
 
     /**
@@ -58,8 +58,41 @@ public class ConfReader {
         } catch (Exception e) {
             throw new ConfigurationException(componentName, 
                     "Error reading the configuration", e); 
+        }    
+    }
+
+    /**
+     * Get the full configuration of the given component, for the given company.
+     * This method should be used when the application is to be deployed in
+     * an ASP model where several companies want different configurations for
+     * the same running applications
+     * 
+     * 
+     * The configuration will be cached so that next calls will not need
+     * to reload the properties or XML files again.
+     * @param companyId the identifier of the company whose specific 
+     * configuration should be read
+     * @param componentName any String which can be used to identified a
+     * configuration component.
+     * @return a <code>ComponentConf</code> instance 
+     */
+    public static ComponentConfiguration getConfiguration(String companyId, 
+                                                          String componentName) {
+        try {
+            final String cacheKey = companyId + componentName;
+            ComponentConfiguration componentConf = (ComponentConfiguration)
+            cache.get(cacheKey);
+            if ((componentConf == null) || (!componentConf.isCacheEnabled())) {
+                componentConf = new ComponentConfiguration(companyId, componentName);
+                cache.put(cacheKey, componentConf);
+            }
+            return componentConf;
+        } catch (ConfigurationException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ConfigurationException(componentName, 
+                    "Error reading the configuration for " + companyId, e); 
         }
-    
     }
 
     /**

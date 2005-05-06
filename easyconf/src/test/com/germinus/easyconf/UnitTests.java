@@ -40,7 +40,7 @@ public class UnitTests extends TestCase {
     public static TestSuite suite () {
         TestSuite suite = new TestSuite("Junit Tests");
 //        suite.addTestSuite(ConfReaderTest.class);
-        suite.addTest(ConfReaderTest.suite());
+        suite.addTest(EasyConfTest.suite());
         return suite;
     }
 
