@@ -21,6 +21,8 @@ import org.apache.commons.logging.LogFactory;
 
 import java.util.*;
 
+import javax.naming.NamingException;
+
 /**
  * Provides configuration properties from several sources making distintion from:
  * <ul>
@@ -40,11 +42,13 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
     private CompositeConfiguration baseConf = new CompositeConfiguration();
     private CompositeConfiguration globalConf = new CompositeConfiguration();
     private String componentName;
-    private List loadedFiles = new ArrayList();
+    private String companyId;
+    private List loadedSources = new ArrayList();
     private boolean baseConfigurationLoaded = false;
 
-    public BaseAndGlobalProperties(String componentName) {
+    public BaseAndGlobalProperties(String companyId, String componentName) {
         this.componentName = componentName;
+        this.companyId = companyId;
     }
 
     /**
@@ -82,53 +86,78 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
 
 
     public void addBaseFileName(String fileName) {
-        Configuration conf = addFileProperties(fileName, baseConf);
+        Configuration conf = addPropertiesSource(fileName, baseConf);
         if ((conf != null) && (!conf.isEmpty())) {
             baseConfigurationLoaded = true;
         }
     }
 
     public void addGlobalFileName(String fileName) {
-        addFileProperties(fileName, globalConf);
+        addPropertiesSource(fileName, globalConf);
     }
 
-    private Configuration addFileProperties(String fileName, CompositeConfiguration conf) {
+    private Configuration addPropertiesSource(String sourceName, 
+                                              CompositeConfiguration loadedConf) {
         try {
-            SysPropertiesConfiguration newConf = new SysPropertiesConfiguration(fileName);
-            newConf.enableSysProperties();            
-            addIncludedFileProperties(newConf, conf);
-            newConf.disableSysProperties();
-            conf.addConfiguration(newConf);
-            super.addConfiguration(newConf);
-            loadedFiles.add(fileName);
+            Configuration newConf;
+            if (DatasourceURL.isDatasource(sourceName)) {
+                newConf = addDatasourceProperties(sourceName);
+            } else if (JndiURL.isJndi(sourceName)) {
+                newConf = addJndiProperties(sourceName);
+            } else {
+	            newConf = addFileProperties(sourceName, loadedConf);
+            }
+            
+	        loadedConf.addConfiguration(newConf);	        
+	        super.addConfiguration(newConf);
+	        loadedSources.add(sourceName);
             return newConf;
-        } catch (org.apache.commons.configuration.ConfigurationException e) {
-            log.debug("Configuration source " + fileName + " ignored");
-            return null;
-//            throw new ConfigurationException("Error reading file" + fileName, e);
         } catch (Exception ignore) {
-            log.debug("Configuration source " + fileName + " ignored");
+            log.debug("Configuration source " + sourceName + " ignored");
             return null;
         }
     }
 
-    private void addIncludedFileProperties(Configuration newConf, CompositeConfiguration conf) {
+    private Configuration addFileProperties(String sourceName, 
+                                            CompositeConfiguration loadedConf) 
+    	throws ConfigurationException {
+        try {
+	        Configuration newConf = new SysPropertiesConfiguration(sourceName);
+	        ((SysPropertiesConfiguration)newConf).enableSysProperties();            
+	        addIncludedPropertiesSources(newConf, loadedConf);
+	        ((SysPropertiesConfiguration)newConf).disableSysProperties();
+	        return newConf;
+        } catch (org.apache.commons.configuration.ConfigurationException e) {
+            log.debug("Configuration source " + sourceName + " ignored");
+            return null;
+        }
+    }
+
+    //TODO: Add support for ASP applications
+    private Configuration addDatasourceProperties(String datasourcePath) {
+        DatasourceURL dsUrl = new DatasourceURL(datasourcePath, companyId, componentName);
+        return dsUrl.getConfiguration();
+    }
+
+    //TODO: Add support for ASP applications
+    private Configuration addJndiProperties(String sourcePath) {
+        JNDIConfiguration conf = null;
+        JndiURL jndiUrl = new JndiURL(sourcePath, companyId, componentName);
+        return jndiUrl.getConfiguration();
+    }
+
+    private void addIncludedPropertiesSources(Configuration newConf, 
+                                              CompositeConfiguration loadedConf) {
         String[] fileNames = newConf.getStringArray(Conventions.INCLUDE_PROPERTY);
         for (int i = fileNames.length - 1; i >= 0; i--) {
             String iteratedFileName = fileNames[i];
             log.info("Adding included file: " + iteratedFileName);
-            addFileProperties(iteratedFileName, conf);
+            addPropertiesSource(iteratedFileName, loadedConf);
         }
-//        Collections.reverse(fileNames);
-//        Iterator it = fileNames.iterator();
-//        while (it.hasNext()) {
-//            String iteratedFileName = (String) it.next();
-//            addFileProperties(iteratedFileName, conf);
-//        }
     }
 
-    public List loadedFiles() {
-        return loadedFiles;
+    public List loadedSources() {
+        return loadedSources;
     }
 
     public boolean hasBaseConfiguration() {

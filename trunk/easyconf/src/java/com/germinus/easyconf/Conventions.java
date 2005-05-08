@@ -27,10 +27,14 @@ public interface Conventions {
     char SELECTOR_END = ']';
     char DOT = '.';
     char SLASH = '-';
+
     String INCLUDE_PROPERTY = "include-and-override";
     String GLOBAL_CONFIGURATION_FILE = "global-configuration";
+
     String DIGESTERRULES_EXTENSION = ".digesterRules.xml";
     String XML_EXTENSION = ".xml";
     String PROPERTIES_EXTENSION = ".properties";
-    
+
+    String DATASOURCE_PREFIX = "datasource:";
+    String JNDI_PREFIX = "jndi:";
 }

@@ -38,7 +38,7 @@ class ConfigurationLoader {
 
 
     public ComponentProperties readPropertiesConfiguration(String companyId, String componentName) {
-        BaseAndGlobalProperties properties = new BaseAndGlobalProperties(componentName);
+        BaseAndGlobalProperties properties = new BaseAndGlobalProperties(companyId, componentName);
         properties.addGlobalFileName(Conventions.GLOBAL_CONFIGURATION_FILE + Conventions.SLASH + companyId
                 + Conventions.PROPERTIES_EXTENSION);
         properties.addGlobalFileName(Conventions.GLOBAL_CONFIGURATION_FILE + 
@@ -47,7 +47,7 @@ class ConfigurationLoader {
                 Conventions.PROPERTIES_EXTENSION);
         properties.addBaseFileName(componentName + Conventions.PROPERTIES_EXTENSION);
 
-        log.info("Properties for " + componentName + " loaded from " + properties.loadedFiles());
+        log.info("Properties for " + componentName + " loaded from " + properties.loadedSources());
         return new ComponentProperties(properties);
     }
 
