@@ -96,6 +96,12 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
         addPropertiesSource(fileName, globalConf);
     }
 
+    /**
+     * Read the given source of properties and add it to the composite
+     * configuration.
+     * The added configuration will be returned. If it is not found
+     * null will be returned.
+     */
     private Configuration addPropertiesSource(String sourceName, 
                                               CompositeConfiguration loadedConf) {
         try {
@@ -107,10 +113,11 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
             } else {
 	            newConf = addFileProperties(sourceName, loadedConf);
             }
-            
-	        loadedConf.addConfiguration(newConf);	        
-	        super.addConfiguration(newConf);
-	        loadedSources.add(sourceName);
+            if (newConf != null) {
+                loadedConf.addConfiguration(newConf);	        
+                super.addConfiguration(newConf);
+                loadedSources.add(sourceName);
+            }
             return newConf;
         } catch (Exception ignore) {
             log.debug("Configuration source " + sourceName + " ignored");

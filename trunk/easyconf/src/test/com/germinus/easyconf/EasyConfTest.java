@@ -56,8 +56,8 @@ public class EasyConfTest extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(EasyConfTest.class);
         suite.addTest(ReloadTest.suite());
-//        suite.addTest(new EasyconfTest("testUsingSystemProperties"));
-//        suite.addTest(new EasyConfTest("testXMLASPModel"));
+//        suite.addTest(new EasyConfTest("testUsingSystemProperties"));
+//        suite.addTest(new EasyConfTest("testSpecifyingVariables"));
         
         return suite;
     }
@@ -364,7 +364,13 @@ public class EasyConfTest extends TestCase {
                 1, conf.getTables().size());        
     }
     
-
+    public void testSpecifyingVariables() {
+        String result = getProperties().getString("property-with-variable", 
+                Filter.usingVars("exampleVariable", "my-value"));
+        assertEquals("The variable has not been substituted successfully",
+                "my-value",
+                result);
+    }
 
     /**
      * Does not work due to a bug in digester (TODO: confirm)
