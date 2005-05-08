@@ -288,7 +288,7 @@ public class PropertyTag extends BodyTagSupport {
     }
 
     private Filter getPropertyFilter() {
-        return new Filter(getSelectorArray());
+        return Filter.by(getSelectorArray());
     }
 
     public void release() {

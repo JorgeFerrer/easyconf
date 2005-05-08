@@ -21,7 +21,9 @@ import java.util.*;
 
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.configuration.beanutils.ConfigurationDynaBean;
+import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.MapConfiguration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -498,16 +500,30 @@ public class ComponentProperties {
     // ............ Helper methods for filters ........
 
     public Object getPropertyWithFilter(String key, Filter filter, Class theClass, Object defaultValue) {
+        CompositeConfiguration filteredConf = properties;
         Object value = null;
-        for (int i = filter.size(); (i >= 0) && (value == null); i--) {
-            value = getTypedPropertyWithDefault(key + filter.getFilterSuffix(i), theClass);
-            log.info("Value for "+key + filter.getFilterSuffix(i) + "=" + value);
+        for (int i = filter.numOfSelectors(); (i >= 0) && (value == null); i--) {
+            MapConfiguration varsConf = null;
+            if (filter.hasVariables()) {
+                varsConf = new MapConfiguration(filter.getVariables());
+                filteredConf = new CompositeConfiguration();
+                filteredConf.addConfiguration(properties);
+                filteredConf.addConfiguration(varsConf);
+            }
+            value = getTypedPropertyWithDefault(key + filter.getFilterSuffix(i), 
+                    theClass, filteredConf);
+            if (varsConf != null) {
+                properties.removeConfiguration(varsConf);
+            }
+            log.debug("Value for "+key + filter.getFilterSuffix(i) + "=" + value);
         }
         return value;
     }
 
 
-    private Object getTypedPropertyWithDefault(String key, Class theClass) {
+    private static Object getTypedPropertyWithDefault(String key, 
+                                                      Class theClass, 
+                                                      Configuration properties) {
         if (theClass.equals(Float.class)) {
             return properties.getFloat(key, null);
 
