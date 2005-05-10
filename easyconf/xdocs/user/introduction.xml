@@ -28,26 +28,26 @@
          </ul>
          <p> A component can have only properties, only a configuration object 
             or have both. </p>
-         <p> Let's start with the examples. To obtain the configuration of a 
-            component named <i>my-component</i> you have to write the 
+         <p> Let's start with the examples. To obtain the configuration of an 
+             application named <i>my-app</i> you have to write the 
             following code:</p>
          <source> 
-            CompontentConfiguration conf = EasyConf.getConfiguration("my-component");
+            ComponentConfiguration conf = EasyConf.getConfiguration("my-app");
          </source>
          <p>
             <a href="../../apidocs/com/germinus/easyconf/ComponentConfiguration.html">ComponentConfiguration</a> 
-            is the class which holds the configuration of <i>my-component</i>. To retrieve the
+            is the class which holds the configuration of <i>my-app</i>. To retrieve the
          	properties all you have to do is:
          </p>
          <source> 
-            CompontentProperties props = conf.getProperties();
+            ComponentProperties props = conf.getProperties();
          </source>
          <p>
             <a href="../../apidocs/com/germinus/easyconf/ComponentProperties.html">ComponentProperties</a> 
             contains methods to retrieve properties of any of the 
             <a href="../reference/property-types.html">supported types</a>. The properties of the 
             example component will be read from a file called 
-            <tt>my-component.properties</tt>. Later will see that properties can also be read from
+            <tt>my-app.properties</tt>. Later will see that properties can also be read from
             other complementary sources. 
          </p>
          <p>
@@ -61,10 +61,10 @@
             The configuration object contains a representation of an XML file. The XML file can have
             any user defined vocabulary, but it must be given the name of the component with
             <tt>xml</tt> as the extension. In our example it
-            must be called <tt>my-component.xml</tt>. This file will be read and converted to user 
+            must be called <tt>my-app.xml</tt>. This file will be read and converted to user 
             defined classes. The conversion is configured in a mapping file which must have 
             <tt>digesterRules.xml</tt> as its extensions. In our example it should be called 
-            <tt>my-component.digesterRules.xml</tt>
+            <tt>my-app.digesterRules.xml</tt>
          </p>
          <p>
             Now you that you have the big picture, the next sections will give more details
