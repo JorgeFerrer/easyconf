@@ -511,7 +511,7 @@ public class ComponentProperties {
                 filteredConf.addConfiguration(varsConf);
             }
             value = getTypedPropertyWithDefault(key + filter.getFilterSuffix(i), 
-                    theClass, filteredConf);
+                    theClass, filteredConf, defaultValue);
             if (varsConf != null) {
                 properties.removeConfiguration(varsConf);
             }
@@ -523,41 +523,43 @@ public class ComponentProperties {
 
     private static Object getTypedPropertyWithDefault(String key, 
                                                       Class theClass, 
-                                                      Configuration properties) {
+                                                      Configuration properties,
+                                                      Object defaultValue) {
         if (theClass.equals(Float.class)) {
-            return properties.getFloat(key, null);
+            return properties.getFloat(key, (Float)defaultValue);
 
         } else if (theClass.equals(Integer.class)) {
-            return properties.getInteger(key, null);
+            return properties.getInteger(key, (Integer)defaultValue);
 
         } else if (theClass.equals(String.class)) {
-            return properties.getString(key, null);
+            return properties.getString(key, (String)defaultValue);
 
         } else if (theClass.equals(Double.class)) {
-            return properties.getDouble(key, null);
+            return properties.getDouble(key, (Double)defaultValue);
 
         } else if (theClass.equals(Long.class)) {
-            return properties.getLong(key, null);
+            return properties.getLong(key, (Long)defaultValue);
 
         } else if (theClass.equals(Boolean.class)) {
-            return properties.getBoolean(key, null);
+            return properties.getBoolean(key, (Boolean)defaultValue);
 
         } else if (theClass.equals(List.class)) {
-            return properties.getList(key, null);
+            return properties.getList(key, (List)defaultValue);
 
         } else if (theClass.equals(BigInteger.class)) {
-            return properties.getBigInteger(key, null);
+            return properties.getBigInteger(key, (BigInteger)defaultValue);
 
         } else if (theClass.equals(BigDecimal.class)) {
-            return properties.getBigDecimal(key, null);
+            return properties.getBigDecimal(key, (BigDecimal)defaultValue);
 
         } else if (theClass.equals(Byte.class)) {
-            return properties.getByte(key, null);
+            return properties.getByte(key, (Byte)defaultValue);
 
         } else if (theClass.equals(Short.class)) {
-            return properties.getShort(key, null);
+            return properties.getShort(key, (Short)defaultValue);
         }
-        return null;
+        throw new IllegalArgumentException("Class " + theClass + " is not" +
+                                           "supported for properties");
     }
     private void assertNotNull(String key, Object value) {
         if (value == null) {
