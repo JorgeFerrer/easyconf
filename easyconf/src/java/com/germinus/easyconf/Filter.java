@@ -28,6 +28,18 @@ public class Filter {
     private String[] selectors;
     private Map variables;
 
+    // ............. Constructors ................
+    
+    private Filter(String[] selectors) {
+        this.selectors = selectors;
+    }
+    private Filter(Map variables) {
+        this.variables = variables;
+    }
+
+    
+    // ......... static methods ...........
+    
     public static Filter by(String first) {
         return new Filter(new String[]{first});
     }
@@ -53,21 +65,29 @@ public class Filter {
         return new Filter(vars);
     }
 
-    private Filter(String[] selectors) {
-        this.selectors = selectors;
-    }
-    private Filter(Map variables) {
-        this.variables = variables;
-    }
-
+    // .............. instance methods ................
+    
     public boolean hasVariables() {
         return (variables != null) && (!variables.isEmpty());
     }
 
+    public Filter setVariables(Map newVars) {
+        this.variables = newVars;
+        return this;
+    }
     public Map getVariables() {
         return variables;
     }
 
+    public String[] getSelectors() {
+        return selectors;
+    }
+    
+    public Filter setSelectors(String[] newSelectors) {
+        this.selectors = newSelectors;
+        return this;
+    }
+    
     public int numOfSelectors() {
         if (selectors == null) {
             return 0;

@@ -23,6 +23,7 @@ import org.apache.commons.configuration.DatabaseConfiguration;
 
 /**
  * Represents the URL to a datasource as specified in a properties file
+ * TODO: Add support for ASP applications
  *
  * @author  Jorge Ferrer
  * @version $Revision$
