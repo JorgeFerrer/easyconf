@@ -372,6 +372,12 @@ public class EasyConfTest extends TestCase {
                 result);
     }
 
+    public void testSetProperty() {
+        getProperties().setProperty("new-property", "new-value");
+        assertEquals("The property has not been stored",
+                "new-value",
+                getProperties().getProperty("new-property"));
+    }
     /**
      * Does not work due to a bug in digester (TODO: confirm)
      */

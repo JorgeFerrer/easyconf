@@ -21,8 +21,6 @@ import org.apache.commons.logging.LogFactory;
 
 import java.util.*;
 
-import javax.naming.NamingException;
-
 /**
  * Provides configuration properties from several sources making distintion from:
  * <ul>
@@ -140,13 +138,12 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
         }
     }
 
-    //TODO: Add support for ASP applications
     private Configuration addDatasourceProperties(String datasourcePath) {
         DatasourceURL dsUrl = new DatasourceURL(datasourcePath, companyId, componentName);
         return dsUrl.getConfiguration();
     }
 
-    //TODO: Add support for ASP applications
+    
     private Configuration addJndiProperties(String sourcePath) {
         JNDIConfiguration conf = null;
         JndiURL jndiUrl = new JndiURL(sourcePath, companyId, componentName);
