@@ -89,8 +89,13 @@ getProperties().getString("external-app.url",
              programatically using variable based filters
 			</p>            
          <p>
-            Filters based on selectors and filters based on variables can be combined. Check the
-            Javadocs for more information.
+            Filters based on selectors and filters based on variables can be combined. An example would be:
+            <source>
+getProperties().getString("external-app.url", 
+								  Filter.by(appName).setVariables("host", host, "port", port));
+               
+            </source>
+            Check the Javadocs for more information.
          </p>
       </section>
    </body>
