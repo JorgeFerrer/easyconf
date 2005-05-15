@@ -56,12 +56,28 @@ public class Filter {
         return new Filter(selectors);
     }
 
-    public static Filter usingVars(String var1, String value1) {
+    public static Filter usingVariables(String var1, String value1) {
         Map vars = new HashMap();
         vars.put(var1, value1);
         return new Filter(vars);
     }
-    public static Filter usingVars(Map vars) {
+    public static Filter usingVariables(String var1, String value1, 
+                                        String var2, String value2) {
+        Map vars = new HashMap();
+        vars.put(var1, value1);
+        vars.put(var2, value2);
+        return new Filter(vars);
+    }
+    public static Filter usingVariables(String var1, String value1, 
+                                        String var2, String value2,
+                                        String var3, String value3) {
+        Map vars = new HashMap();
+        vars.put(var1, value1);
+        vars.put(var2, value2);
+        vars.put(var3, value3);
+        return new Filter(vars);
+    }
+    public static Filter usingVariables(Map vars) {
         return new Filter(vars);
     }
 
