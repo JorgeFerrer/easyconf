@@ -34,13 +34,14 @@ import java.util.*;
  * @author jferrer
  */
 public class BaseAndGlobalProperties extends CompositeConfiguration {
-    private static final SystemConfiguration SYS_CONFIGURATION = new SystemConfiguration();
     private static final String PREFIX_SEPARATOR = ":";
     private static final Log log = LogFactory.getLog(BaseAndGlobalProperties.class);
 
     private CompositeConfiguration baseConf = new CompositeConfiguration();
     private CompositeConfiguration globalConf = new CompositeConfiguration();
-    private Configuration prefixedSystemConfiguration = null;
+    private SystemConfiguration systemConfiguration = new SystemConfiguration();
+    private Configuration prefixedSystemConfiguration = new SubsetConfiguration
+    	(systemConfiguration, getPrefix(), null);
     private String componentName;
     private String companyId;
     private List loadedSources = new ArrayList();
@@ -60,6 +61,7 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
     public Object getProperty(String key) {
         Object value = null;
         if (value == null) {
+            //value = prefixedSystemConfiguration.getProperty(key);
             value = System.getProperty(getPrefix() + key);
         }
         if (value == null) {
@@ -75,6 +77,7 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
             value = super.getProperty(key);
         }
         if (value == null) {
+            //value = systemConfiguration.getProperty(key);
             value = System.getProperty(key);
         }
         return value;
@@ -153,26 +156,15 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
     private void addIncludedPropertiesSources(Configuration newConf, 
                                               CompositeConfiguration loadedConf) {
         CompositeConfiguration tempConf = new CompositeConfiguration();
-        Configuration subset = getPrefixedSystemConfiguration();
-        tempConf.addConfiguration(subset);
+        tempConf.addConfiguration(prefixedSystemConfiguration);
         tempConf.addConfiguration(newConf);
-        tempConf.addConfiguration(SYS_CONFIGURATION);
-        System.out.println("======" + SYS_CONFIGURATION);
-        System.out.println("======" + subset);
-        System.out.println("Property: " + System.getProperty("test_module:easyconf-environment"));;
+        tempConf.addConfiguration(systemConfiguration);
         String[] fileNames = tempConf.getStringArray(Conventions.INCLUDE_PROPERTY);
         for (int i = fileNames.length - 1; i >= 0; i--) {
             String iteratedFileName = fileNames[i];
             log.info("Adding included file: " + iteratedFileName);
             addPropertiesSource(iteratedFileName, loadedConf);
         }
-    }
-
-    private Configuration getPrefixedSystemConfiguration() {
-        if (prefixedSystemConfiguration == null) {
-            prefixedSystemConfiguration = new SubsetConfiguration(SYS_CONFIGURATION, getPrefix(), null);
-        }
-        return prefixedSystemConfiguration;
     }
 
     public List loadedSources() {
