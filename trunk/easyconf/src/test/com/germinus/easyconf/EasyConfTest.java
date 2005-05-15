@@ -377,6 +377,10 @@ public class EasyConfTest extends TestCase {
         assertEquals("The property has not been stored",
                 "new-value",
                 getProperties().getProperty("new-property"));
+        getProperties().setProperty("string-not-overridden", "new-value");
+        assertEquals("The new value for an existent property has not been stored",
+                "new-value",
+                getProperties().getProperty("string-not-overridden"));
     }
     /**
      * Does not work due to a bug in digester (TODO: confirm)
