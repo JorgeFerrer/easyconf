@@ -60,6 +60,7 @@ public class ReloadTest extends TestCase {
         File file1 = new File("target/test-classes/reloaded_module1.xml");
         File file2 = new File("target/test-classes/reloaded_module2.xml");
         File dest= new File("target/test-classes/reloaded_module.xml");
+        dest.delete();
         boolean hecho=file1.renameTo(dest);        
         DatabaseConf conf1 = getConfigurationObject();
         assertEquals("After the first read there should be 1 table", 1,
