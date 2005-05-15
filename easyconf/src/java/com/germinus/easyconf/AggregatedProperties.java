@@ -33,9 +33,9 @@ import java.util.*;
  * 
  * @author jferrer
  */
-public class BaseAndGlobalProperties extends CompositeConfiguration {
+public class AggregatedProperties extends CompositeConfiguration {
     private static final String PREFIX_SEPARATOR = ":";
-    private static final Log log = LogFactory.getLog(BaseAndGlobalProperties.class);
+    private static final Log log = LogFactory.getLog(AggregatedProperties.class);
 
     private CompositeConfiguration baseConf = new CompositeConfiguration();
     private CompositeConfiguration globalConf = new CompositeConfiguration();
@@ -47,7 +47,7 @@ public class BaseAndGlobalProperties extends CompositeConfiguration {
     private List loadedSources = new ArrayList();
     private boolean baseConfigurationLoaded = false;
 
-    public BaseAndGlobalProperties(String companyId, String componentName) {
+    public AggregatedProperties(String companyId, String componentName) {
         this.componentName = componentName;
         this.companyId = companyId;
     }

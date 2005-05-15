@@ -38,7 +38,7 @@ class ConfigurationLoader {
 
 
     public ComponentProperties readPropertiesConfiguration(String companyId, String componentName) {
-        BaseAndGlobalProperties properties = new BaseAndGlobalProperties(companyId, componentName);
+        AggregatedProperties properties = new AggregatedProperties(companyId, componentName);
         properties.addGlobalFileName(Conventions.GLOBAL_CONFIGURATION_FILE + Conventions.SLASH + companyId
                 + Conventions.PROPERTIES_EXTENSION);
         properties.addGlobalFileName(Conventions.GLOBAL_CONFIGURATION_FILE + 
