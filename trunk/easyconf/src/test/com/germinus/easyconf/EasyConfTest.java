@@ -56,7 +56,7 @@ public class EasyConfTest extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(EasyConfTest.class);
         suite.addTest(ReloadTest.suite());
-//        suite.addTest(new EasyConfTest("testUsingSystemProperties"));
+//        suite.addTest(new EasyConfTest("testUsingSystemPropertiesInIncludes"));
 //        suite.addTest(new EasyConfTest("testSpecifyingVariables"));
         
         return suite;
@@ -335,10 +335,15 @@ public class EasyConfTest extends TestCase {
 
     public void testUsingSystemPropertiesInIncludes() {
         System.setProperty("easyconf-environment", "local");
+        System.setProperty("test_module:easyconf-environment", "local");
         assertEquals("The file with a sysproperty in the name was not loaded",
                      "mysql",
                      getProperties().getString("test_module_db"));
+        assertEquals("The file with a prefixed sysproperty in the name was not loaded",
+                     "mysql2",
+                     getProperties().getString("test_module_db2"));
         System.setProperty("easyconf-environment", "");
+        System.setProperty("test_environment:easyconf-environment", "");
     }
     
     public void testPropertiesASPModel() {
