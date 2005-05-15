@@ -371,7 +371,7 @@ public class EasyConfTest extends TestCase {
     
     public void testSpecifyingVariables() {
         String result = getProperties().getString("property-with-variable", 
-                Filter.usingVars("exampleVariable", "my-value"));
+                Filter.usingVariables("exampleVariable", "my-value"));
         assertEquals("The variable has not been substituted successfully",
                 "my-value",
                 result);

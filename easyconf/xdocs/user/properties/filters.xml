@@ -52,5 +52,46 @@ skin=grey
                the Filter class</a> for more information
          </p>
       </section>
+      <section name="Variable based filters">
+         <p>
+            <b>New on version 0.9</b>
+         </p>
+         <p>
+            While the above functionality is enough for most cases, sometimes it is desired
+            to have value of the property which depends on a value only known by the running
+            application. For example a servlet may wish to configure a URL but make it dependent
+            on the current host name and port. EasyConf supports this functionality though a
+            special type of filter. To implement the previous example the properties file should
+            have:
+            <source>
+external-app.url=http://${host}:${port}/external-app
+				</source>
+             When this property is read the application can provide the values of the <tt>host</tt>
+             and <tt>port</tt> variables:
+             <source>
+Map hostAndPort = new HashMap();
+hostAndPort.put("host", host);
+hostAndPort.put("port", port);
+getProperties().getString("external-app.url", Filter.usingVariables(hostAndPort));
+             </source>
+             The variable values can be provided in any bean that implements the 
+             <tt>java.util.Map</tt> interface. Besides there are conveniency methods
+             for cases with three or less variables. Using them the previous example
+             could be rewriten as:
+             <source>
+getProperties().getString("external-app.url", 
+								  Filter.usingVariables("host", host, "port", port));
+             </source>
+             If a property's value has a variable and its value is not provided. The variable
+             string (<tt>${variableName}</tt>) will be returned instead. On the other hand,
+             the name of a variable can be the same as the key of another property. In that case
+             the value of the property will be used if the variable is not given a value 
+             programatically using variable based filters
+			</p>            
+         <p>
+            Filters based on selectors and filters based on variables can be combined. Check the
+            Javadocs for more information.
+         </p>
+      </section>
    </body>
 </document>
