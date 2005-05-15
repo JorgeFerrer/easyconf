@@ -33,9 +33,9 @@ public class SysPropertiesConfiguration extends PropertiesConfiguration {
         if (value == null) {
             value = super.getProperty(key);
         }
-        if ((value == null) && (sysPropertiesEnabled)) {
-            value = System.getProperties().getProperty(key);
-        }
+//        if ((value == null) && (sysPropertiesEnabled)) {
+//            value = System.getProperties().getProperty(key);
+//        }
         return value;
     }
 
