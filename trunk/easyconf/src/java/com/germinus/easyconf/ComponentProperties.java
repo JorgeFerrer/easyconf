@@ -46,11 +46,11 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ComponentProperties {
 
-    BaseAndGlobalProperties properties;
+    AggregatedProperties properties;
     public static final String NULL_STRING = null;
     private static final Log log = LogFactory.getLog(ComponentProperties.class);
 
-    ComponentProperties(BaseAndGlobalProperties conf) {
+    ComponentProperties(AggregatedProperties conf) {
         this.properties = conf;
     }
     
@@ -571,4 +571,20 @@ public class ComponentProperties {
     public boolean hasBaseConfiguration() {
         return properties.hasBaseConfiguration();
     }
+    
+    /**
+     * Get a list of the sources which have been loaded for this component
+     */
+    public List getLoadedSources() {
+        return properties.loadedSources();
+    }
+    
+    public void setThrowExceptionOnMissing(boolean throwExceptionOnMissing) {
+        properties.setThrowExceptionOnMissing(throwExceptionOnMissing);
+    }
+
+//    public boolean getThrowExceptionOnMissing() {
+//        return properties.getThrowExceptionOnMissing();
+//    }
 }
+
