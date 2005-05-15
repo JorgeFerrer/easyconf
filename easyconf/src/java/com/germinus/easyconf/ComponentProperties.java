@@ -23,6 +23,8 @@ import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.configuration.beanutils.ConfigurationDynaBean;
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationConverter;
+import org.apache.commons.configuration.DataConfiguration;
 import org.apache.commons.configuration.MapConfiguration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -55,26 +57,65 @@ public class ComponentProperties {
     }
     
     // .................. Conversion methods ...................
-    
+
+    /**
+     * Returns a decorator of the configuration that implements the Map interface.
+     * Note that any changes made to this decorator 
+     * will be made to the original configuration and viceversa.
+     * @return a <code>java.util.Map</code> instance 
+     */
     public Map toMap() {
-        Map props = new HashMap();
-        
-        Iterator it = properties.getKeys();
-        while (it.hasNext()) {
-            String key = (String) it.next();
-            props.put(key, properties.getProperty(key));
-        }
-        return props;
+        return ConfigurationConverter.getMap(properties);
     }
     
+    /**
+     * Returns a decorator of the configuration that can be used as a DynaBean.
+     * Note that any changes made to this decorator 
+     * will be made to the original configuration and viceversa.
+     * @return a <code>DynaBean</code> instance 
+     */
     public DynaBean toDynaBean() {
         return new ConfigurationDynaBean(properties);
     }
     
-  
-    public java.util.Properties getProperties(String key) {
-        return properties.getProperties(key);
+    /**
+     * Returns a decorator of the configuration of type 
+     * <tt>org.apache.commons.configuration.Configuration</tt>
+     * Note that any changes made to this decorator 
+     * will be made to the original configuration and viceversa.
+     * @return a <code>Configuration</code> instance 
+     */
+    public Configuration toConfiguration() {
+        return properties;
     }
+    
+    /**
+     * Returns a decorator of the configuration of type 
+     * <tt>org.apache.commons.configuration.DataConfiguration</tt>.
+     * This decorator has many extra methods for retrieving typed
+     * properties such as color, URL, locale, Calendar and lists and
+     * array of any of these types.
+     * 
+     * Note that any changes made to this decorator 
+     * will be made to the original configuration and viceversa.
+     * @return a <code>DataConfiguration</code> instance 
+     */
+    public DataConfiguration toDataConfiguration() {
+        return new DataConfiguration(properties);
+    }
+  
+    /**
+     * Returns a <b>copy</b> of the configuration into a 
+     * <tt>java.util.Properties</tt> class. Multivalued properties will
+     * be converted to comma-separated strings.
+     * Any changes made to the configuration will <b>not</b>be available to 
+     * the Properties and viceversa.
+     * @return a <code>Properties</code> instance 
+     */
+    public java.util.Properties getProperties() {
+        return ConfigurationConverter.getProperties(properties);
+    }
+    
     public Object getProperty(String key) {
         return properties.getProperty(key);
     }
