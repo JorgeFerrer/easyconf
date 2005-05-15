@@ -60,11 +60,14 @@ public class ReloadTest extends TestCase {
         File file1 = new File("target/test-classes/reloaded_module1.xml");
         File file2 = new File("target/test-classes/reloaded_module2.xml");
         File dest= new File("target/test-classes/reloaded_module.xml");
-        file1.renameTo(dest);
+        boolean hecho=file1.renameTo(dest);        
         DatabaseConf conf1 = getConfigurationObject();
         assertEquals("After the first read there should be 1 table", 1,
                 conf1.getTables().size());
-        file2.renameTo(dest);
+        //In some Operating Systems deleting must be executed prior to move in order
+        //to work correctly.
+        dest.delete();
+        hecho=file2.renameTo(dest);
         DatabaseConf conf2 = getConfigurationObject();
         assertEquals("After the reload there should be 2 tables", 2,
                 conf2.getTables().size());
