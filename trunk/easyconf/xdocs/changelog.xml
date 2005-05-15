@@ -8,14 +8,28 @@
   <body>
     <section name="Changes in latest stable version (0.9.0)">
       <ul>
-         <li><p><b>Added support for applications for ASPs</b></p></li>
-         <li><p><b>Added method <tt>getClassesArray</tt></b></p></li>         
-         <li><p><b>Migrated to Jakarta Commons Configuration 1.1</b></p></li>
+         <li><p><b>Added support for applications for ASPs</b>: A single running applications
+            can service several companies/organizations and each may have its own configuration
+            of the application</p></li>
+         <li><p><b>Added method <tt>getClassesArray</tt></b></p></li>        
+         <li><p><b>Improved support for converting properties to other objects</b>: For example
+            now it can be converted to a 
+            <tt><a href="http://jakarta.apache.org/commons/configuration/apidocs/org/apache/commons/configuration/DataConfiguration.html">DataConfiguration</a></tt> 
+            to support properties of the following types: color, URL, locale, Calendar and lists and
+            array of any of these types </p></li>
+         <li><p><b>Added preliminary support for retrieving properties from JNDI and a database (through
+            a Datasource). This support is still under testing to fine tune cache issues.</b></p></li>         
+         <li><p><b>Migrated to Jakarta Commons Configuration 1.1</b>: which has made possible some of the
+            above improvements</p></li>
          <li><p><b>API changes</b>:</p>
             <ul>
                <li>The class <tt>ConfReader</tt> was renamed as <tt>EasyConf</tt>. Because of this
                   change this release is not binary compatible with previous version. You should
                   change it in your source code and recompile.</li>
+               <li>The <tt>getProperties(String key)</tt> method of <tt>ComponentProperties</tt>
+                  has been changed to <tt>getProperties()</tt> which returns a Properties decorator
+                  of the properties. The previous functionality can still be obtained by using the
+                  <tt>subset(key)</tt> method and then the <tt>getProperties()</tt> method.</li>
             </ul>
          </li>
       </ul>
