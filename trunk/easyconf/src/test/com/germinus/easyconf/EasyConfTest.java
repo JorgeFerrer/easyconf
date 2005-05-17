@@ -28,6 +28,8 @@ import junit.framework.Test;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.germinus.easyconf.jmx.JMXTest;
+
 /**
  * System Test of the whole functionality of easyconf.
  * Note that it depends on external files
@@ -56,6 +58,7 @@ public class EasyConfTest extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(EasyConfTest.class);
         suite.addTest(ReloadTest.suite());
+        suite.addTestSuite(JMXTest.class);
 //        suite.addTest(new EasyConfTest("testStringValueWithCommas"));
 //        suite.addTest(new EasyConfTest("testSpecifyingVariables"));
         
