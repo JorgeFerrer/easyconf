@@ -20,8 +20,9 @@ import javax.management.AttributeList;
 import javax.management.AttributeNotFoundException;
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.InstanceNotFoundException;
-import javax.management.InvalidAttributeValueException;
 import javax.management.MBeanException;
+import javax.management.MBeanInfo;
+import javax.management.MBeanOperationInfo;
 import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
@@ -29,7 +30,6 @@ import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
-import javax.management.ReflectionException;
 
 import com.germinus.easyconf.jmx.ComponentConfigurationDynamicMBean;
 
@@ -145,6 +145,12 @@ public class JMXTest extends TestCase {
 		}
 		value=mbeanServer.getAttribute(testMBeanName,STRING_NOT_OVERRIDEN);
 		assertEquals("Adding an existing property must not change its value",STRING_NOT_OVERRIDEN_VALUE,value);		
+	}
+	
+	public void testDynamicMBeanOperationInfo() throws Exception{
+		MBeanInfo info=mbeanServer.getMBeanInfo(testMBeanName);
+		MBeanOperationInfo[] operations=info.getOperations();
+		assertEquals("Incorrect number of operations returned by getMBeanInfo",3,operations.length);
 	}
 	
 	protected void assertAttribute(String attributeName,Object attributeValue,Attribute attribute){
