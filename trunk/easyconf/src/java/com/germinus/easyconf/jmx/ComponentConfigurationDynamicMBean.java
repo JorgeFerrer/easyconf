@@ -15,6 +15,7 @@
  */
 package com.germinus.easyconf.jmx;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,8 +34,8 @@ import javax.management.MBeanConstructorInfo;
 import javax.management.MBeanException;
 import javax.management.MBeanInfo;
 import javax.management.MBeanOperationInfo;
+import javax.management.MBeanParameterInfo;
 import javax.management.ReflectionException;
-import javax.naming.OperationNotSupportedException;
 
 import com.germinus.easyconf.ComponentConfiguration;
 import com.germinus.easyconf.ComponentProperties;
@@ -53,11 +54,23 @@ public class ComponentConfigurationDynamicMBean implements DynamicMBean {
 	public static final String[] RELOAD_OPERATION_SIGNATURE = new String[0];	
 	public static final String[] NEW_PROPERTY_OPERATION_SIGNATURE_1 = new String[]{String.class.toString()};
 	public static final String[] NEW_PROPERTY_OPERATION_SIGNATURE_2 = new String[]{String.class.toString(),Object.class.toString()};
+	private static final String NEW_PROPERTY_OPERATION_DESCRIPTION_1 =
+		"Add new property to the Configuration Component. The Param is the property name. Must not"+
+		" exists another property with the same name.";
+	private static final String NEW_PROPERTY_OPERATION_DESCRIPTION_2 = NEW_PROPERTY_OPERATION_DESCRIPTION_1+ 
+		" The second param is the initial value of the new property";
+	private static final String RELOAD_OPERATION_DESCRIPTION = 
+		"Reloads the configuration";
+	private static final String CONSTRUCTOR_DESCRIPTION_1 = 
+		"Constructs new MBean with the configuration of the named Component";
 	private String componentName;
 	private ComponentConfiguration componentConfiguration;
 	private MBeanAttributeInfo[] attributesInfo;	
 	private Map modifiedProperties;
 	private Map newPropeties;
+	private MBeanOperationInfo[] operationInfo;
+	private MBeanConstructorInfo[] constructorsInfo;
+
 	
 	
 	
@@ -161,15 +174,15 @@ public class ComponentConfigurationDynamicMBean implements DynamicMBean {
 			return null;
 		}
 		if (operationName.equals(NEW_PROPERTY_OPERATION_NAME)){
-			if (signature.equals(NEW_PROPERTY_OPERATION_SIGNATURE_1))
+			if (signature.length==1)
 				newProperty((String)params[0]);
-			else if (signature.equals(NEW_PROPERTY_OPERATION_SIGNATURE_2))
+			else if (signature.length==2)
 				newProperty((String)params[0],params[1]);
 			else
-				throw new MBeanException(new OperationNotSupportedException(),"Operation not found in MBEan: "+operationName+"("+signature+")");
+				throw new MBeanException(new IllegalArgumentException("Operation not found in MBEan: "+operationName+"("+signature+")"));
 			return null;
 		}
-		throw new MBeanException(new OperationNotSupportedException(),"Operation not found in MBEan: "+operationName+"("+signature+")");
+		throw new MBeanException(new IllegalArgumentException("Operation not found in MBEan: "+operationName+"("+signature+")"));
 	}
 	
 	//***** Implementations of the MBean's operations *****//
@@ -197,12 +210,12 @@ public class ComponentConfigurationDynamicMBean implements DynamicMBean {
 				this.getClass().toString(),
 				"Easyconf component: "+this.componentName,
 				getAttributeInfo(),
-				new MBeanConstructorInfo[0],
-				new MBeanOperationInfo[0],
+				getConsturctorsInfo(),
+				getOperationInfo(),
 				null);
 	}
 	
-	private MBeanAttributeInfo[] getAttributeInfo(){
+	protected MBeanAttributeInfo[] getAttributeInfo(){
 		if (attributesInfo==null){
 			ComponentProperties properties=componentConfiguration.getProperties();
 			List auxList=new ArrayList();			
@@ -224,6 +237,55 @@ public class ComponentConfigurationDynamicMBean implements DynamicMBean {
 			}
 		}
 		return this.attributesInfo;
+	}
+	
+	protected MBeanOperationInfo[] getOperationInfo(){
+		if (operationInfo==null){
+			operationInfo = new MBeanOperationInfo[]{
+				new MBeanOperationInfo(NEW_PROPERTY_OPERATION_NAME,
+					NEW_PROPERTY_OPERATION_DESCRIPTION_1,
+					//Parameters
+					new MBeanParameterInfo[]{
+						new MBeanParameterInfo("propertyName",String.class.getName(),"Name of the new property")						
+					},
+					void.class.getName(),
+					MBeanOperationInfo.ACTION
+				),
+				new MBeanOperationInfo(NEW_PROPERTY_OPERATION_NAME,
+					NEW_PROPERTY_OPERATION_DESCRIPTION_2,
+					//Parameters
+					new MBeanParameterInfo[]{
+						new MBeanParameterInfo("propertyName",String.class.getName(),"Name of the new property"),
+						new MBeanParameterInfo("value",Object.class.getName(),"Initial value of the new property")
+					},
+					void.class.getName(),
+					MBeanOperationInfo.ACTION
+				),
+				new MBeanOperationInfo(RELOAD_OPERATION_NAME,
+					RELOAD_OPERATION_DESCRIPTION,
+					//Parameters
+					new MBeanParameterInfo[]{},
+					void.class.getName(),
+					MBeanOperationInfo.ACTION
+				)								
+			};
+			                                       	
+		}
+		return operationInfo;
+	}
+	
+	protected MBeanConstructorInfo[] getConsturctorsInfo(){
+		if (constructorsInfo==null){
+			Constructor constructor=null;
+			try {
+				constructor = this.getClass().getConstructor(new Class[]{String.class});
+			} catch (Exception e) {
+			}
+			constructorsInfo=new MBeanConstructorInfo[]{
+					new MBeanConstructorInfo(CONSTRUCTOR_DESCRIPTION_1,constructor)
+			};
+		}
+		return constructorsInfo;
 	}
 	
 	
