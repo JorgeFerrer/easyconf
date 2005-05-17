@@ -56,7 +56,7 @@ public class EasyConfTest extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(EasyConfTest.class);
         suite.addTest(ReloadTest.suite());
-//        suite.addTest(new EasyConfTest("testUsingSystemPropertiesInIncludes"));
+//        suite.addTest(new EasyConfTest("testStringValueWithCommas"));
 //        suite.addTest(new EasyConfTest("testSpecifyingVariables"));
         
         return suite;
@@ -387,6 +387,13 @@ public class EasyConfTest extends TestCase {
                 "new-value",
                 getProperties().getProperty("string-not-overridden"));
     }
+	
+	public void testStringValueWithCommas() {
+		String value = getProperties().getString("database-configuration-classes");
+		assertEquals("Invalid string value",
+				"com.germinus.easyconf.DatabaseConf,com.germinus.easyconf.Table",
+				value);
+	}
     /**
      * Does not work due to a bug in digester (TODO: confirm)
      */

@@ -482,10 +482,39 @@ public class ComponentProperties {
     
     // ..................... String ......................  
 
+	/**
+	 * Get the String value of the given key. If it contains a list
+	 * of values, they will be serialized to a comma-separated format
+	 * (use getList or getStringArray if you want separated list items)
+	 */
     public String getString(String key) {
-        return properties.getString(key);
+		Object value = properties.getProperty(key);
+		String result;
+		if (value instanceof String) {
+			result = (String) value;
+		} else if (value instanceof List) {
+			result = listToString((List) value);
+		} else {
+			result = properties.getString(key);
+		}
+		return result;
     }
-    public String getString(String key, String defaultValue) {
+
+	protected String listToString(List list) {
+        StringBuffer property = new StringBuffer();
+        Iterator it = list.iterator();
+        while (it.hasNext())
+        {
+            property.append(String.valueOf(it.next()));
+            if (it.hasNext())
+            {
+                property.append(",");
+            }
+        }
+		return property.toString();
+	}
+
+	public String getString(String key, String defaultValue) {
         return properties.getString(key, defaultValue);
     }
 
