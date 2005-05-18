@@ -48,7 +48,7 @@ public class EasyConf {
         try {
             ComponentConfiguration componentConf = (ComponentConfiguration)
             cache.get(componentName);
-            if ((componentConf == null) || (!componentConf.isCacheEnabled())) {
+            if (componentConf == null) {
                 componentConf = new ComponentConfiguration(componentName);
                 cache.put(componentName, componentConf);
             }
@@ -82,7 +82,7 @@ public class EasyConf {
             final String cacheKey = companyId + componentName;
             ComponentConfiguration componentConf = (ComponentConfiguration)
             cache.get(cacheKey);
-            if ((componentConf == null) || (!componentConf.isCacheEnabled())) {
+            if (componentConf == null) {
                 componentConf = new ComponentConfiguration(companyId, componentName);
                 cache.put(cacheKey, componentConf);
             }

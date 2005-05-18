@@ -37,4 +37,6 @@ public interface Conventions {
 
     String DATASOURCE_PREFIX = "datasource:";
     String JNDI_PREFIX = "jndi:";
+
+    String RELOAD_DELAY_PROPERTY = "easyconf:reload-delay";
 }

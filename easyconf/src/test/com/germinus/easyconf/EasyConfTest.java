@@ -48,9 +48,13 @@ public class EasyConfTest extends TestCase {
 
     protected void setUp() throws Exception {
         componentConf = EasyConf.getConfiguration("test_module");
+        System.setProperty("easyconf-environment", "local");
+        System.setProperty("test_module:easyconf-environment", "local");
     }
 
     protected void tearDown() throws Exception {
+        System.setProperty("easyconf-environment", "BAD-BAD-BAD");
+        System.setProperty("test_environment:easyconf-environment", "BAD-BAD-BAD");
     }
 
 
@@ -301,14 +305,6 @@ public class EasyConfTest extends TestCase {
         }
     }
 
-    // THIS FUNCTIONALITY DOES NOT WORK ALTHOUGH THE TEST PASSES
-    public void testComponentWithDisabledCache() {
-        ComponentConfiguration componentConf1 = EasyConf.getConfiguration("test_module");
-        ComponentConfiguration componentConf2 = EasyConf.getConfiguration("test_module");
-        assertNotSame("The configuration should have been read again",
-                      componentConf1, componentConf2);
-    }
-
     public void testUsingSystemProperties() {
 //        System.setProperty("easyconf-environment", "local");
 //        assertEquals("The environment was not correctly read from the system property",
@@ -337,18 +333,18 @@ public class EasyConfTest extends TestCase {
     }
 
     public void testUsingSystemPropertiesInIncludes() {
-        System.setProperty("easyconf-environment", "local");
-        System.setProperty("test_module:easyconf-environment", "local");
-        assertEquals("The file with a sysproperty in the name was not loaded",
-                     "mysql",
-                     getProperties().getString("test_module_db"));
-        assertEquals("The file with a prefixed sysproperty in the name was not loaded",
-                     "mysql2",
-                     getProperties().getString("test_module_db2"));
-        System.setProperty("easyconf-environment", "");
-        System.setProperty("test_environment:easyconf-environment", "");
+        assertContains("The file with a sysproperty in the name was not loaded",
+                "test_module-local.properties", getProperties().getLoadedSources());
+        assertContains("The file with a prefixed sysproperty in the name was not loaded",
+                "test_module-local2.properties", getProperties().getLoadedSources());
+                
     }
     
+    private void assertContains(String msg, Object item, List list) {
+        assertTrue(msg + ". " + item + " is not included in " + list,
+                list.contains(item));
+    }
+
     public void testPropertiesASPModel() {
         ComponentProperties props = EasyConf.getConfiguration("exampleCompany", 
                 "test_module").getProperties();

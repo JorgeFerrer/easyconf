@@ -16,9 +16,12 @@
 package com.germinus.easyconf;
 
 import org.apache.commons.configuration.*;
+import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.io.File;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -123,22 +126,53 @@ public class AggregatedProperties extends CompositeConfiguration {
             }
             return newConf;
         } catch (Exception ignore) {
-            log.debug("Configuration source " + sourceName + " ignored");
+            if (log.isDebugEnabled()) {
+                log.debug("Configuration source " + sourceName + " ignored");
+            }
             return null;
         }
     }
 
-    private Configuration addFileProperties(String sourceName, 
+    private Configuration addFileProperties(String fileName, 
                                             CompositeConfiguration loadedConf) 
     	throws ConfigurationException {
         try {
-	        Configuration newConf = new PropertiesConfiguration(sourceName);
+	        FileConfiguration newConf = new PropertiesConfiguration(fileName);
+	        newConf.getURL().getPath();
+	        log.debug("Adding file: " + newConf.getURL());
+
+	        // Next line is to solve a bug in Commons configuration
+	        URL sourceURL = newConf.getURL();
+	        if (sourceURL.getProtocol().equals("file")) {
+	            newConf.setBasePath(new File(sourceURL.getPath()).getParent());
+	        }
+	        
+	        FileChangedReloadingStrategy reloadingStrategy = buildReloadingStrategy(loadedConf, newConf);
+            newConf.setReloadingStrategy(reloadingStrategy);
 	        addIncludedPropertiesSources(newConf, loadedConf);
 	        return newConf;
         } catch (org.apache.commons.configuration.ConfigurationException e) {
-            log.debug("Configuration source " + sourceName + " ignored");
+            if (log.isDebugEnabled()) {
+                log.debug("Configuration source " + fileName + " ignored");
+            }
             return null;
         }
+    }
+
+    protected FileChangedReloadingStrategy buildReloadingStrategy
+    	(CompositeConfiguration loadedConf, FileConfiguration newConf) {
+        FileChangedReloadingStrategy reloadingStrategy = new FileChangedReloadingStrategy();
+        Long delay = newConf.getLong(Conventions.RELOAD_DELAY_PROPERTY, null);
+        if (delay == null) {
+            delay = loadedConf.getLong(Conventions.RELOAD_DELAY_PROPERTY, null);	            
+        }
+        if (delay != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Setting reload delay to " + delay);
+            }
+            reloadingStrategy.setRefreshDelay(delay.longValue());
+        }
+        return reloadingStrategy;
     }
 
     private Configuration addDatasourceProperties(String datasourcePath) {
@@ -162,7 +196,6 @@ public class AggregatedProperties extends CompositeConfiguration {
         String[] fileNames = tempConf.getStringArray(Conventions.INCLUDE_PROPERTY);
         for (int i = fileNames.length - 1; i >= 0; i--) {
             String iteratedFileName = fileNames[i];
-            log.info("Adding included file: " + iteratedFileName);
             addPropertiesSource(iteratedFileName, loadedConf);
         }
     }
