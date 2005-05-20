@@ -18,6 +18,7 @@ package com.germinus.easyconf;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -61,8 +62,8 @@ public class EasyConfTest extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(EasyConfTest.class);
-        suite.addTest(ReloadTest.suite());
         suite.addTestSuite(JMXTest.class);
+        suite.addTest(ReloadTest.suite());
 //        suite.addTest(new EasyConfTest("testStringValueWithCommas"));
 //        suite.addTest(new EasyConfTest("testSpecifyingVariables"));
         
@@ -340,9 +341,19 @@ public class EasyConfTest extends TestCase {
                 
     }
     
-    private void assertContains(String msg, Object item, List list) {
+    private void assertContains(String msg, String item, List list) {
+        boolean contained = list.contains(item);
+        if (!contained) {
+            for (Iterator it = list.iterator(); it.hasNext();) {
+                String url = (String) it.next();
+                if (url.endsWith("/" + item)) {
+                    contained = true;
+                    break;
+                }
+            }
+        }
         assertTrue(msg + ". " + item + " is not included in " + list,
-                list.contains(item));
+                contained);
     }
 
     public void testPropertiesASPModel() {
