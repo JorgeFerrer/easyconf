@@ -122,7 +122,12 @@ public class AggregatedProperties extends CompositeConfiguration {
             if (newConf != null) {
                 loadedConf.addConfiguration(newConf);	        
                 super.addConfiguration(newConf);
-                loadedSources.add(sourceName);
+                if (newConf instanceof AbstractFileConfiguration) {
+                    loadedSources.add(((AbstractFileConfiguration) newConf).
+                            getURL().toString());
+                } else {
+                    loadedSources.add(sourceName);
+                }
             }
             return newConf;
         } catch (Exception ignore) {
