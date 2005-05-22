@@ -153,9 +153,10 @@ public class AggregatedProperties extends CompositeConfiguration {
                 	new FileConfigurationChangedReloadingStrategy();
                 if (log.isDebugEnabled()) {
                     log.debug("File " + fileURL + " will be reloaded every " 
-                            + delay + " milliseconds");
+                            + delay + " seconds");
                 }
-                reloadingStrategy.setRefreshDelay(delay.longValue());
+                long milliseconds = delay.longValue() * 1000;
+                reloadingStrategy.setRefreshDelay(milliseconds);
                 newConf.setReloadingStrategy(reloadingStrategy);
             }
        
