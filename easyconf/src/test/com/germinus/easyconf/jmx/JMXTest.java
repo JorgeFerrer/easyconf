@@ -31,6 +31,8 @@ import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
 
+import com.germinus.easyconf.ComponentConfiguration;
+import com.germinus.easyconf.EasyConf;
 import com.germinus.easyconf.jmx.ComponentConfigurationDynamicMBean;
 
 import junit.framework.TestCase;
@@ -52,6 +54,7 @@ public class JMXTest extends TestCase {
 	private static final String NEW_ATTRIBUTE = "com.germinus.easyconf.JMXTest.NEW_ATTRIBUTE";
 	private MBeanServer mbeanServer;
 	private ObjectName testMBeanName;
+	private ObjectName reloadedMBeanName;
 	private static final String WHATEVER_VALUE = "WHATEVER";
 		
 	
@@ -170,24 +173,35 @@ public class JMXTest extends TestCase {
 	 */
 	protected void setUp() throws Exception {		
 		mbeanServer=MBeanServerFactory.newMBeanServer();
-		registerMBean();
+		registerMBeans();
 	}
 	
-	protected void registerMBean() {
-		ComponentConfigurationDynamicMBean confMBean = new ComponentConfigurationDynamicMBean(
-				STRING_NOT_OVERRIDEN_VALUE);
-		assertNotNull("MBean not created properly", confMBean);
-		assertNotNull("Error creating ComponentConfiguration", confMBean
+	protected void registerMBeans() {
+		ComponentConfiguration componentConfiguration=EasyConf.getConfiguration("test_module");		
+		ComponentConfigurationDynamicMBean confMBean = new ComponentConfigurationDynamicMBean(componentConfiguration);
+		ComponentConfigurationDynamicMBean confMBean2 = new ComponentConfigurationDynamicMBean("reloadedModule");
+		assertNotNull("MBean not created properly with ComponentConfiguration constructor", confMBean);
+		assertNotNull("MBean not created properly with String constructor", confMBean2);
+		assertNotNull("Error creating ComponentConfiguration", confMBean2
 				.getComponentConfiguration());		
 		try {
-			testMBeanName = new ObjectName(JMX_NAME_PREFIX + STRING_NOT_OVERRIDEN_VALUE);
+			testMBeanName = new ObjectName(JMX_NAME_PREFIX + "test_module");
 		} catch (MalformedObjectNameException e1) {
-			fail("Malformed JMX name: " + JMX_NAME_PREFIX + STRING_NOT_OVERRIDEN_VALUE);
+			fail("Malformed JMX name: " + JMX_NAME_PREFIX + "test_module");
+		}
+		try {
+			reloadedMBeanName = new ObjectName(JMX_NAME_PREFIX + "reloadedModule");
+		} catch (MalformedObjectNameException e1) {
+			fail("Malformed JMX name: " + JMX_NAME_PREFIX + "reloadedModule");
 		}
 		assertNotNull("JMX ObjectName not created porperly", testMBeanName);
+		assertNotNull("JMX ObjectName not created porperly", reloadedMBeanName);
 		try {
 			ObjectInstance instance = mbeanServer.registerMBean(confMBean,
 					testMBeanName);
+			assertNotNull("Object Instance not created properly", instance);
+			instance = mbeanServer.registerMBean(confMBean,
+					reloadedMBeanName);
 			assertNotNull("Object Instance not created properly", instance);
 		} catch (InstanceAlreadyExistsException e) {
 		} catch (MBeanRegistrationException e) {
