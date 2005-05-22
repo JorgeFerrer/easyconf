@@ -16,9 +16,13 @@
 package com.germinus.easyconf;
 
 import org.apache.commons.configuration.*;
+import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
+import org.apache.commons.configuration.reloading.InvariantReloadingStrategy;
+import org.apache.commons.configuration.reloading.ReloadingStrategy;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -140,23 +144,21 @@ public class AggregatedProperties extends CompositeConfiguration {
     	throws ConfigurationException {
         try {
 	        FileConfiguration newConf = new PropertiesConfiguration(fileName);
-	        newConf.getURL().getPath();
-	        log.debug("Adding file: " + newConf.getURL());
+	        URL fileURL = newConf.getURL();
+	        log.debug("Adding file: " + fileURL);
 
-	        // Next line is to solve a bug in Commons configuration
-//	        URL sourceURL = newConf.getURL();
-//	        if (sourceURL.getProtocol().equals("file")) {
-//	            newConf.setBasePath(new File(sourceURL.getPath()).getParent());
-//	        } else if (sourceURL.getProtocol().equals("jar")) {
-//	            String path = sourceURL.getPath();
-//	            String jarFilePath = path.substring(0, path.indexOf('!'));
-//	            String propertiesFileName = path.substring(path.indexOf('!') + 2);
-//	            //There is no way to make it work, the following method should exist!!!!
-//	            //newConf.setFile(newFile(jarFilePath));
-//	        }
-	        
-	        FileConfigurationChangedReloadingStrategy reloadingStrategy = buildReloadingStrategy(loadedConf, newConf);
-            newConf.setReloadingStrategy(reloadingStrategy);
+	        Long delay = getReloadDelay(loadedConf, newConf);
+            if (delay != null) {
+                FileChangedReloadingStrategy reloadingStrategy =
+                	new FileConfigurationChangedReloadingStrategy();
+                if (log.isDebugEnabled()) {
+                    log.debug("File " + fileURL + " will be reloaded every " 
+                            + delay + " milliseconds");
+                }
+                reloadingStrategy.setRefreshDelay(delay.longValue());
+                newConf.setReloadingStrategy(reloadingStrategy);
+            }
+       
 	        addIncludedPropertiesSources(newConf, loadedConf);
 	        return newConf;
         } catch (org.apache.commons.configuration.ConfigurationException e) {
@@ -167,20 +169,12 @@ public class AggregatedProperties extends CompositeConfiguration {
         }
     }
 
-    protected FileConfigurationChangedReloadingStrategy buildReloadingStrategy
-    	(CompositeConfiguration loadedConf, FileConfiguration newConf) {
-        FileConfigurationChangedReloadingStrategy reloadingStrategy = new FileConfigurationChangedReloadingStrategy();
+    private Long getReloadDelay(CompositeConfiguration loadedConf, FileConfiguration newConf) {
         Long delay = newConf.getLong(Conventions.RELOAD_DELAY_PROPERTY, null);
         if (delay == null) {
             delay = loadedConf.getLong(Conventions.RELOAD_DELAY_PROPERTY, null);	            
         }
-        if (delay != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Setting reload delay to " + delay);
-            }
-            reloadingStrategy.setRefreshDelay(delay.longValue());
-        }
-        return reloadingStrategy;
+        return delay;
     }
 
     private Configuration addDatasourceProperties(String datasourcePath) {
