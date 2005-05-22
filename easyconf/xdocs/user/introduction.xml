@@ -104,6 +104,12 @@
                   <li>Services (TBD)</li>
                </ul>
             </li>
+            <li><p>JMX</p>
+            	<ul>
+                  <li>JMX and Configuration</li>
+                  <li>JMX and EasyConf</li>
+               </ul>
+            </li>
             <li><p>Specific use cases (TBD)</p>
                <ul>
                   <li>Portlets</li>
