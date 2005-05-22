@@ -16,6 +16,7 @@
 package com.germinus.easyconf;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -33,7 +34,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ReloadTest extends TestCase {
 
-	public static final Log log =  LogFactory.getLog(ReloadTest.class);
+    public static final Log log = LogFactory.getLog(ReloadTest.class);
 
     public ReloadTest(String testName) {
         super(testName);
@@ -45,13 +46,11 @@ public class ReloadTest extends TestCase {
     protected void tearDown() throws Exception {
     }
 
-
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(ReloadTest.class);
         return suite;
     }
-
 
     // .............. Test methods ....................
 
@@ -62,40 +61,66 @@ public class ReloadTest extends TestCase {
     public void ignore_testReloadXmlFile() {
         File file1 = new File("target/test-classes/reloaded_module1.xml");
         File file2 = new File("target/test-classes/reloaded_module2.xml");
-        File dest= new File("target/test-classes/reloaded_module.xml");
+        File dest = new File("target/test-classes/reloaded_module.xml");
         dest.delete();
-        boolean hecho=file1.renameTo(dest);        
+        boolean hecho = file1.renameTo(dest);
         DatabaseConf conf1 = getConfigurationObject();
-        assertEquals("After the first read there should be 1 table", 1,
-                conf1.getTables().size());
+        assertEquals("After the first read there should be 1 table", 1, conf1
+                .getTables().size());
         dest.delete();
-        hecho=file2.renameTo(dest);
-        //In some Operating Systems deleting must be executed prior to move in order
+        hecho = file2.renameTo(dest);
+        //In some Operating Systems deleting must be executed prior to move in
+        // order
         //to work correctly.
         dest.delete();
-        hecho=file2.renameTo(dest);
+        hecho = file2.renameTo(dest);
         DatabaseConf conf2 = getConfigurationObject();
-        assertEquals("After the reload there should be 2 tables", 2,
-                conf2.getTables().size());
+        assertEquals("After the reload there should be 2 tables", 2, conf2
+                .getTables().size());
     }
 
-    public void testReloadPropertiesFile() throws IOException, InterruptedException {
+    public void testReloadPropertiesFile() throws IOException,
+            InterruptedException {
+        File dest = new File(System.getProperty("user.home")
+                + "/user-conf.properties");
         Properties props = new Properties();
         props.setProperty("reloaded-key", "value1");
-        File dest= new File(System.getProperty("user.home")+"/user-conf.properties");
         FileUtil.write(dest, props);
-        System.out.println("First value: " + FileUtil.read(dest));
-        assertEquals("After the first read the value should be value1", "value1",
-                getComponentConf().getProperties().getString("reloaded-key"));
+
+        assertEquals("After the first read the value should be value1",
+                "value1", getComponentConf().getProperties().getString(
+                        "reloaded-key"));
         props.setProperty("reloaded-key", "value2");
         Thread.sleep(1000);
         FileUtil.write(dest, props);
-        System.out.println("Expected second value: " + FileUtil.read(dest));
-        System.out.println("Obtained second value: " + 
-                getComponentConf().getProperties().getString("reloaded-key"));
-        assertEquals("After the first read the value should be value2", "value2",
-                getComponentConf().getProperties().getString("reloaded-key"));
+        assertEquals("After the first read the value should be value2",
+                "value2", getComponentConf().getProperties().getString(
+                        "reloaded-key"));
         dest.delete();
+    }
+
+    /**
+     * I haven't found how to automate this test using maven
+     */
+    public void unautomated_testReloadPropertiesFileInsideJAR() throws IOException,
+            InterruptedException {
+//        System.setProperty("test.classpath.dir", "target/test-classes");
+//        Properties props = new Properties();
+//        props.setProperty("jar-reloaded-key", "value1");
+//        File dest = new File(System.getProperty("test.classpath.dir")
+//                + "/test-conf.jar");
+//        FileUtil.writeAsJAR(dest, "jar-conf.properties", props);
+        assertEquals("After the first read the value should be value1",
+                "value1", getComponentConf().getProperties().getString(
+                        "jar-reloaded-key"));
+//        props.setProperty("jar-reloaded-key", "value2");
+        System.out.println("Please, switch JAR files before 5 seconds...");
+        Thread.sleep(5000);
+//        FileUtil.writeAsJAR(dest, "user-conf.properties", props);
+        assertEquals("After the first read the value should be value2",
+                "value2", getComponentConf().getProperties().getString(
+                        "jar-reloaded-key"));
+//        dest.delete();
     }
 
     // .............. Helper methods ...................
@@ -113,9 +138,9 @@ public class ReloadTest extends TestCase {
             fail(msg + ". Expected and obtained arrays length differ");
         }
         for (int i = 0; i < expected.length; i++) {
-            assertEquals(msg + ". (" + i + "th element)", expected[i], obtained[i]);
+            assertEquals(msg + ". (" + i + "th element)", expected[i],
+                    obtained[i]);
         }
     }
-    
 
 }

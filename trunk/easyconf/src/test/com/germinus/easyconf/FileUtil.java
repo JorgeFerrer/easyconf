@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -382,6 +384,15 @@ public class FileUtil {
 
         return sb.toString();
 }
+
+    public static void writeAsJAR(File dest, String propsFileName, Properties props) 
+    	throws FileNotFoundException, IOException {
+        JarOutputStream out = new JarOutputStream(new FileOutputStream(dest));
+        JarEntry propertiesFile = new JarEntry(propsFileName);
+        propertiesFile.setExtra(propertiesToString(props).getBytes());
+        out.putNextEntry(propertiesFile);
+        out.close();        
+    }
 
 
 }

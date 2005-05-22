@@ -186,6 +186,12 @@
       <type>jar</type>
     </dependency>
     <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils-core</artifactId>
       <version>1.7.0</version>
@@ -227,12 +233,12 @@
       <version>2.1.1</version>
       <type>jar</type>
     </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <type>jar</type>
-    </dependency>
+<!--    <dependency>  -->
+<!--      <groupId>test-conf</groupId>  -->
+<!--      <artifactId>test-conf</artifactId>  -->
+<!--      <version>1.0</version>  -->
+<!--      <type>jar</type>  -->
+<!--    </dependency>  -->
   </dependencies>
   <!-- build information for the project -->
   <build>
