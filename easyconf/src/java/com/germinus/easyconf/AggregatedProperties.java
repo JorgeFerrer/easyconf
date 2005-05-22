@@ -16,7 +16,6 @@
 package com.germinus.easyconf;
 
 import org.apache.commons.configuration.*;
-import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -147,12 +146,18 @@ public class AggregatedProperties extends CompositeConfiguration {
 	        log.debug("Adding file: " + newConf.getURL());
 
 	        // Next line is to solve a bug in Commons configuration
-	        URL sourceURL = newConf.getURL();
-	        if (sourceURL.getProtocol().equals("file")) {
-	            newConf.setBasePath(new File(sourceURL.getPath()).getParent());
-	        }
+//	        URL sourceURL = newConf.getURL();
+//	        if (sourceURL.getProtocol().equals("file")) {
+//	            newConf.setBasePath(new File(sourceURL.getPath()).getParent());
+//	        } else if (sourceURL.getProtocol().equals("jar")) {
+//	            String path = sourceURL.getPath();
+//	            String jarFilePath = path.substring(0, path.indexOf('!'));
+//	            String propertiesFileName = path.substring(path.indexOf('!') + 2);
+//	            //There is no way to make it work, the following method should exist!!!!
+//	            //newConf.setFile(newFile(jarFilePath));
+//	        }
 	        
-	        FileChangedReloadingStrategy reloadingStrategy = buildReloadingStrategy(loadedConf, newConf);
+	        ConfigurationChangedReloadingStrategy reloadingStrategy = buildReloadingStrategy(loadedConf, newConf);
             newConf.setReloadingStrategy(reloadingStrategy);
 	        addIncludedPropertiesSources(newConf, loadedConf);
 	        return newConf;
@@ -164,9 +169,9 @@ public class AggregatedProperties extends CompositeConfiguration {
         }
     }
 
-    protected FileChangedReloadingStrategy buildReloadingStrategy
+    protected ConfigurationChangedReloadingStrategy buildReloadingStrategy
     	(CompositeConfiguration loadedConf, FileConfiguration newConf) {
-        FileChangedReloadingStrategy reloadingStrategy = new FileChangedReloadingStrategy();
+        ConfigurationChangedReloadingStrategy reloadingStrategy = new ConfigurationChangedReloadingStrategy();
         Long delay = newConf.getLong(Conventions.RELOAD_DELAY_PROPERTY, null);
         if (delay == null) {
             delay = loadedConf.getLong(Conventions.RELOAD_DELAY_PROPERTY, null);	            
