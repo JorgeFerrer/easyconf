@@ -38,9 +38,26 @@ public class ReloadTest extends TestCase {
     private static final String CONFIGURATION_DIR = "target/test-classes";
     private static final String COMPONENT_NAME = "reload_module";
     public static final Log log = LogFactory.getLog(ReloadTest.class);
+    private static final String XML_1 = "<database><tables><table tableType=" +
+    		"\"table1\"><name>users</name></table></tables></database>";
+    private static final String XML_2 = "<database><tables><table tableType=" +
+    		"\"table1\"><name>users</name></table>" +
+    		"<table tableType=\"table2\"><name>users</name></table></tables></database>";
+    private static final String DIGESTER_RULES = "<digester-rules><pattern value=\"database\">"+
+    	"<object-create-rule classname=\"com.germinus.easyconf.DatabaseConf\"/>"+
+    	"<pattern value=\"tables/table\">"+
+    	"<object-create-rule classname=\"com.germinus.easyconf.Table\"/>"+
+    	"<set-properties-rule/>"+
+    	"<set-next-rule methodname=\"addTable\" paramtype=\"com.germinus.easyconf.Table\"/>"+
+    	"</pattern>"+
+    	"</pattern>"+
+    	"</digester-rules>";
+
 
     File baseConf; 
     File includedFile1;
+    File xmlConf;
+    File rules;
     
     public ReloadTest(String testName) {
         super(testName);
@@ -59,10 +76,17 @@ public class ReloadTest extends TestCase {
         props1.setProperty(Conventions.RELOAD_DELAY_PROPERTY, "1");
         props1.setProperty("reloaded-key", "value1");
         FileUtil.write(includedFile1, props1);
-    }
+
+        xmlConf = new File(CONFIGURATION_DIR + "/" + COMPONENT_NAME  + ".xml");
+        FileUtil.write(xmlConf, XML_1);
+        rules = new File(CONFIGURATION_DIR + "/" + COMPONENT_NAME  + Conventions.DIGESTERRULES_EXTENSION);
+        FileUtil.write(rules, DIGESTER_RULES);
+}
     protected void tearDown() throws Exception {
         baseConf.delete();
         includedFile1.delete();
+        xmlConf.delete();
+        rules.delete();
     }
 
     public static Test suite() {
@@ -73,23 +97,19 @@ public class ReloadTest extends TestCase {
 
     // .............. Test methods ....................
 
-    String XML_1 = "<database><tables><table tableType=\"table1\"><name>users</name></table></tables></database>";
-    String XML_2 = "<database><tables><table tableType=\"table1\"><name>users</name></table>" +
-    		"<table tableType=\"table2\"><name>users</name></table></tables></database>";
 
     /**
      * Assumes that reloaded_module1.xml has 1 table and reloaded_module2.xml
      * has two tables.
      * @throws IOException
+     * @throws InterruptedException
      */
-    public void ignore_testReloadXmlFile() throws IOException {
-        File dest = new File(CONFIGURATION_DIR + "/reloaded_module.xml");
-        FileUtil.write(dest, XML_1);
+    public void testReloadXmlFile() throws IOException, InterruptedException {
         DatabaseConf conf1 = getConfigurationObject();
         assertEquals("After the first read there should be 1 table", 1, conf1
                 .getTables().size());
-
-        FileUtil.write(dest, XML_2);
+        Thread.sleep(1100);
+        FileUtil.write(xmlConf, XML_2);
         DatabaseConf conf2 = getConfigurationObject();
         assertEquals("After the reload there should be 2 tables", 2, conf2
                 .getTables().size());
@@ -107,7 +127,6 @@ public class ReloadTest extends TestCase {
         dest.delete();
         Thread.sleep(1100);
         FileUtil.write(dest, newProps);        
-        System.out.println("Sleep finished");
         assertEquals("The file has not been reloaded!!",
                 "value2", getComponentConf().getProperties().getString(
                         "reloaded-key"));
@@ -136,7 +155,6 @@ public class ReloadTest extends TestCase {
         
         Thread.sleep(1100);
         FileUtil.write(dest, newProps);
-        System.out.println("Sleep finished");
         assertEquals("The file has been reloaded!!",
                 "value4", getComponentConf().getProperties().getString(
                         "reloaded-key"));
@@ -151,20 +169,20 @@ public class ReloadTest extends TestCase {
 //        System.setProperty("test.classpath.dir", "target/test-classes");
 //        Properties props = new Properties();
 //        props.setProperty("jar-reloaded-key", "value1");
-//        File dest = new File(System.getProperty("test.classpath.dir")
+//        File xmlConf = new File(System.getProperty("test.classpath.dir")
 //                + "/test-conf.jar");
-//        FileUtil.writeAsJAR(dest, "jar-conf.properties", props);
+//        FileUtil.writeAsJAR(xmlConf, "jar-conf.properties", props);
         assertEquals("After the first read the value should be value1",
                 "value1", getComponentConf().getProperties().getString(
                         "jar-reloaded-key"));
 //        props.setProperty("jar-reloaded-key", "value2");
         System.out.println("Please, switch JAR files before 5 seconds...");
         Thread.sleep(5000);
-//        FileUtil.writeAsJAR(dest, "user-conf.properties", props);
+//        FileUtil.writeAsJAR(xmlConf, "user-conf.properties", props);
         assertEquals("After the first read the value should be value2",
                 "value2", getComponentConf().getProperties().getString(
                         "jar-reloaded-key"));
-//        dest.delete();
+//        xmlConf.delete();
     }
 
     // .............. Helper methods ...................

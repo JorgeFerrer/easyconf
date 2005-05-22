@@ -31,14 +31,22 @@ import org.apache.commons.logging.LogFactory;
  */
 public class FileConfigurationChangedReloadingStrategy extends
         FileChangedReloadingStrategy {
-    URL sourceURL;
+    private URL sourceURL;
     private static final Log log = LogFactory.getLog(FileConfigurationChangedReloadingStrategy.class);
     
     public void setConfiguration(FileConfiguration configuration) {
         super.setConfiguration(configuration);
-        sourceURL = configuration.getURL();
+        setSourceURL(configuration.getURL());
      }
     
+    protected void setSourceURL(URL url) {
+        sourceURL = url;        
+    }
+    
+    protected URL getSourceURL() {
+        return sourceURL;
+    }
+
     /**
      * Update the last modified time.
      */

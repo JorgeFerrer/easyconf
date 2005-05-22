@@ -653,6 +653,19 @@ public class ComponentProperties {
         properties.setThrowExceptionOnMissing(throwExceptionOnMissing);
     }
 
+    /**
+     * Returned the configured delay period for this component or null if
+     * reloading is not being performed
+     */
+    public Long getDelayPeriod() {
+        Long nullLong = null;
+        return getLong(Conventions.RELOAD_DELAY_PROPERTY, nullLong);
+    }
+
+    public String getComponentName() {
+        return properties.getComponentName();
+    }
+
 //    public boolean getThrowExceptionOnMissing() {
 //        return properties.getThrowExceptionOnMissing();
 //    }

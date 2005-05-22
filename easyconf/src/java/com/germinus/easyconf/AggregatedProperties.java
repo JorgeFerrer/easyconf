@@ -210,4 +210,8 @@ public class AggregatedProperties extends CompositeConfiguration {
     public boolean hasBaseConfiguration() {
         return baseConfigurationLoaded;
     }
+
+    public String getComponentName() {
+        return componentName;
+    }
 }
