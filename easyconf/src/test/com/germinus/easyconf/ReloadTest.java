@@ -34,16 +34,35 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ReloadTest extends TestCase {
 
+    private static final String INCLUDED_FILE_1 = "user-conf.properties";
+    private static final String CONFIGURATION_DIR = "target/test-classes";
+    private static final String COMPONENT_NAME = "reload_module";
     public static final Log log = LogFactory.getLog(ReloadTest.class);
 
+    File baseConf; 
+    File includedFile1;
+    
     public ReloadTest(String testName) {
         super(testName);
     }
 
     protected void setUp() throws Exception {
-    }
+        baseConf = new File(CONFIGURATION_DIR+ "/" + COMPONENT_NAME + ".properties");
+        Properties props = new Properties();
+        props.setProperty(Conventions.INCLUDE_PROPERTY, 
+                INCLUDED_FILE_1 + ", jar-conf.properties");
+        props.setProperty("reloaded-key", "invalid-value");
 
+        FileUtil.write(baseConf, props);
+        includedFile1 = new File(CONFIGURATION_DIR + "/" + INCLUDED_FILE_1);
+        Properties props1 = new Properties();
+        props1.setProperty(Conventions.RELOAD_DELAY_PROPERTY, "1");
+        props1.setProperty("reloaded-key", "value1");
+        FileUtil.write(includedFile1, props1);
+    }
     protected void tearDown() throws Exception {
+        baseConf.delete();
+        includedFile1.delete();
     }
 
     public static Test suite() {
@@ -54,47 +73,72 @@ public class ReloadTest extends TestCase {
 
     // .............. Test methods ....................
 
+    String XML_1 = "<database><tables><table tableType=\"table1\"><name>users</name></table></tables></database>";
+    String XML_2 = "<database><tables><table tableType=\"table1\"><name>users</name></table>" +
+    		"<table tableType=\"table2\"><name>users</name></table></tables></database>";
+
     /**
      * Assumes that reloaded_module1.xml has 1 table and reloaded_module2.xml
      * has two tables.
+     * @throws IOException
      */
-    public void ignore_testReloadXmlFile() {
-        File file1 = new File("target/test-classes/reloaded_module1.xml");
-        File file2 = new File("target/test-classes/reloaded_module2.xml");
-        File dest = new File("target/test-classes/reloaded_module.xml");
-        dest.delete();
-        boolean hecho = file1.renameTo(dest);
+    public void ignore_testReloadXmlFile() throws IOException {
+        File dest = new File(CONFIGURATION_DIR + "/reloaded_module.xml");
+        FileUtil.write(dest, XML_1);
         DatabaseConf conf1 = getConfigurationObject();
         assertEquals("After the first read there should be 1 table", 1, conf1
                 .getTables().size());
-        dest.delete();
-        hecho = file2.renameTo(dest);
-        //In some Operating Systems deleting must be executed prior to move in
-        // order
-        //to work correctly.
-        dest.delete();
-        hecho = file2.renameTo(dest);
+
+        FileUtil.write(dest, XML_2);
         DatabaseConf conf2 = getConfigurationObject();
         assertEquals("After the reload there should be 2 tables", 2, conf2
                 .getTables().size());
     }
 
-    public void testReloadPropertiesFile() throws IOException,
+    public void testPropertiesReloading() throws IOException,
             InterruptedException {
-        File dest = new File(System.getProperty("user.home")
-                + "/user-conf.properties");
-        Properties props = new Properties();
-        props.setProperty("reloaded-key", "value1");
-        FileUtil.write(dest, props);
-
-        assertEquals("After the first read the value should be value1",
+        File dest = includedFile1;
+        assertEquals("The first file wasn't read correctly",
                 "value1", getComponentConf().getProperties().getString(
                         "reloaded-key"));
-        props.setProperty("reloaded-key", "value2");
-        Thread.sleep(1000);
-        FileUtil.write(dest, props);
-        assertEquals("After the first read the value should be value2",
+
+        Properties newProps = new Properties();
+        newProps.setProperty("reloaded-key", "value2");
+        dest.delete();
+        Thread.sleep(1100);
+        FileUtil.write(dest, newProps);        
+        System.out.println("Sleep finished");
+        assertEquals("The file has not been reloaded!!",
                 "value2", getComponentConf().getProperties().getString(
+                        "reloaded-key"));
+
+    }
+
+    /** 
+     * If the property Conventions.RELOAD_DELAY_PROPERTY is not 
+     * used the file should not be reloaded
+     */
+    public void testDontReloadPropertiesFile() throws IOException,
+    	InterruptedException {
+        File dest = includedFile1;
+        Properties propsWithoutReloading = new Properties();
+        propsWithoutReloading.setProperty("reloaded-key", "value3");
+        Thread.sleep(1100);
+        FileUtil.write(dest, propsWithoutReloading);
+
+        assertEquals("The first file wasn't read correctly",
+                "value3", getComponentConf().getProperties().getString(
+                        "reloaded-key"));
+        Properties newProps = new Properties();
+        newProps.setProperty("reloaded-key", "value4");
+        // Setting the delay now should not affect as it won't be read
+        newProps.setProperty(Conventions.RELOAD_DELAY_PROPERTY, "1");
+        
+        Thread.sleep(1100);
+        FileUtil.write(dest, newProps);
+        System.out.println("Sleep finished");
+        assertEquals("The file has been reloaded!!",
+                "value4", getComponentConf().getProperties().getString(
                         "reloaded-key"));
         dest.delete();
     }
@@ -130,7 +174,7 @@ public class ReloadTest extends TestCase {
     }
 
     private ComponentConfiguration getComponentConf() {
-        return EasyConf.getConfiguration("reloaded_module");
+        return EasyConf.getConfiguration(COMPONENT_NAME);
     }
 
     private void assertEquals(String msg, String[] expected, String[] obtained) {

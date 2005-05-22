@@ -56,9 +56,11 @@ public class FileConfigurationChangedReloadingStrategy extends
             log.debug("Checking if " + file + " has changed");
         }
         if (!file.exists()) {
+            log.debug("File does not exist");
             return false;
         }
 
+        log.debug("Check: " + file.lastModified() + " > " + lastModified);
         return (file.lastModified() > lastModified);
         
     }

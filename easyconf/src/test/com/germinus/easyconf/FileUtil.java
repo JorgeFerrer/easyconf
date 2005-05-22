@@ -350,6 +350,7 @@ public class FileUtil {
 
 		bw.flush();
 		bw.write(s);
+		bw.flush();
 
 		bw.close();
 	}
