@@ -30,10 +30,10 @@ import java.io.IOException;
 public class ComponentConfiguration {
 
     private ComponentProperties properties;
-    private Object configurationObject;
     private String componentName;
     private ConfigurationLoader confManager = new ConfigurationLoader();
     private String companyId;
+    private ConfigurationObjectCache configurationObjectCache;
 
     public ComponentConfiguration(String componentName) {
         this(null, componentName);
@@ -61,11 +61,11 @@ public class ComponentConfiguration {
      * @throws ConfigurationException if the object graph cannot be read
      */
     public Object getConfigurationObject() {
-        if (configurationObject != null) {
-            return configurationObject;
+        if (configurationObjectCache != null) {
+            return configurationObjectCache.getConfigurationObject();
         }
         try {
-            configurationObject = getConfigurationManager().
+            configurationObjectCache = getConfigurationManager().
                     readConfigurationObject(companyId,
                                             componentName, 
                                             getAvailableProperties());
@@ -74,7 +74,7 @@ public class ComponentConfiguration {
         } catch (SAXException e) {
             throw new ConfigurationException(componentName, "Error parsing the XML file", e);
         }
-        return configurationObject;
+        return configurationObjectCache.getConfigurationObject();
     }
 
     private ConfigurationLoader getConfigurationManager() {

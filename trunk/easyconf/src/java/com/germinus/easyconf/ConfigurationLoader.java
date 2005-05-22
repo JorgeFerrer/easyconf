@@ -55,11 +55,10 @@ class ConfigurationLoader {
         return new ComponentProperties(properties);
     }
 
-    public Object readConfigurationObject(String companyId,
+    public ConfigurationObjectCache readConfigurationObject(String companyId,
             String componentName, ComponentProperties properties) 
     	throws IOException, SAXException {
         log.info("Reading the configuration object for " + componentName);
-        String rulesFileName = componentName + Conventions.DIGESTERRULES_EXTENSION;
 
         String confFileName = null;
         URL confFile = null;
@@ -75,6 +74,25 @@ class ConfigurationLoader {
         if (confFile == null) {
             throw new FileNotFoundException("File " + confFileName + " not found");
         }
+        Object confObj = loadXMLFile(confFile, properties);
+        ConfigurationObjectCache result = new ConfigurationObjectCache(confObj, confFile, properties);
+        Long delay = properties.getDelayPeriod();
+        if (delay != null) {
+            result.setReloadingStrategy(
+                    new FileURLChangedReloadingStrategy(confFile, delay.longValue()));
+        }
+        return result;
+
+    }
+
+    /**
+     * Read an XML file and return an Object representation of its contents
+     */	
+    Object loadXMLFile(URL confFileUrl, ComponentProperties properties) 
+    	throws IOException, SAXException {
+        log.debug("Loading XML file: " + confFileUrl);
+        String componentName = properties.getComponentName();
+        String rulesFileName = componentName + Conventions.DIGESTERRULES_EXTENSION;
         URL digesterRulesUrl = ClasspathUtil.locateResource(rulesFileName);
         if (digesterRulesUrl == null) {
             throw new DigesterRulesNotFoundException(componentName,
@@ -83,19 +101,19 @@ class ConfigurationLoader {
         Digester digester = DigesterLoader.createDigester(digesterRulesUrl);
         digester.setUseContextClassLoader(true);
         digester.setValidating(false);
-
+        
         MultiVariableExpander expander = new MultiVariableExpander();
         expander.addSource("$", properties.toMap());
         Substitutor substitutor = new VariableSubstitutor(expander);
         digester.setSubstitutor(substitutor);
-
+        
         try {
-            Object objConf = digester.parse(confFile.openStream());
-            log.info("Read configuration from " + confFileName);
-            return objConf;
+            Object confObj = digester.parse(confFileUrl.openStream());
+            log.info("Read configuration from " + confFileUrl);
+            return confObj;
         } catch (IllegalArgumentException e) {
             //FIXME: it does not catch the exception
-            throw new InvalidPropertyException(componentName, e);
+            throw new InvalidPropertyException(properties.getComponentName(), e);
         }
     }
 
