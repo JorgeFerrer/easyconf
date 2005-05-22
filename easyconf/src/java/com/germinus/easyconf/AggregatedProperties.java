@@ -19,8 +19,6 @@ import org.apache.commons.configuration.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.io.File;
-import java.net.URL;
 import java.util.*;
 
 /**
@@ -157,7 +155,7 @@ public class AggregatedProperties extends CompositeConfiguration {
 //	            //newConf.setFile(newFile(jarFilePath));
 //	        }
 	        
-	        ConfigurationChangedReloadingStrategy reloadingStrategy = buildReloadingStrategy(loadedConf, newConf);
+	        FileConfigurationChangedReloadingStrategy reloadingStrategy = buildReloadingStrategy(loadedConf, newConf);
             newConf.setReloadingStrategy(reloadingStrategy);
 	        addIncludedPropertiesSources(newConf, loadedConf);
 	        return newConf;
@@ -169,9 +167,9 @@ public class AggregatedProperties extends CompositeConfiguration {
         }
     }
 
-    protected ConfigurationChangedReloadingStrategy buildReloadingStrategy
+    protected FileConfigurationChangedReloadingStrategy buildReloadingStrategy
     	(CompositeConfiguration loadedConf, FileConfiguration newConf) {
-        ConfigurationChangedReloadingStrategy reloadingStrategy = new ConfigurationChangedReloadingStrategy();
+        FileConfigurationChangedReloadingStrategy reloadingStrategy = new FileConfigurationChangedReloadingStrategy();
         Long delay = newConf.getLong(Conventions.RELOAD_DELAY_PROPERTY, null);
         if (delay == null) {
             delay = loadedConf.getLong(Conventions.RELOAD_DELAY_PROPERTY, null);	            
