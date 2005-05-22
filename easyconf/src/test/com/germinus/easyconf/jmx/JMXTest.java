@@ -46,15 +46,17 @@ import junit.framework.TestCase;
  */
 public class JMXTest extends TestCase {
 	private static final String JMX_NAME_PREFIX = "easyconf:component=";
+	private static final String JMX_TEST_MODULE = "jmx_module";
+	private static final String TEST_MODULE = "test_module";
 	private static final String STRING_NOT_OVERRIDEN = "string-not-overridden";
-	private static final String STRING_NOT_OVERRIDEN_VALUE = "test_module";
+	private static final String STRING_NOT_OVERRIDEN_VALUE = "jmx_module";
 	private static final String STRING_OVERRIDEN_IN_PRJ = "string-overridden-in-prj";
 	private static final String STRING_OVERRIDEN_IN_PRJ_VALUE = "prj";
 	private static final String NON_EXISTENT_ATTRIBUTE = "com.germinus.easyconf.JMXTest.NON_EXISTENT_ATTRIBUTE";
 	private static final String NEW_ATTRIBUTE = "com.germinus.easyconf.JMXTest.NEW_ATTRIBUTE";
 	private MBeanServer mbeanServer;
 	private ObjectName testMBeanName;
-	private ObjectName reloadedMBeanName;
+	private ObjectName testMBeanName2;
 	private static final String WHATEVER_VALUE = "WHATEVER";
 		
 	
@@ -89,7 +91,7 @@ public class JMXTest extends TestCase {
 	}
 	
 	public void testDynamicMBeanSetAttribute() throws Exception{
-		final String STRING_NOT_OVERRIDEN_NEW_VALUE="test_module_new_value";
+		final String STRING_NOT_OVERRIDEN_NEW_VALUE="jmx_module_new_value";
 		Attribute oldAttribute=new Attribute(STRING_NOT_OVERRIDEN,STRING_NOT_OVERRIDEN_NEW_VALUE);
 		mbeanServer.setAttribute(testMBeanName,oldAttribute);
 		Object newValue=mbeanServer.getAttribute(testMBeanName,STRING_NOT_OVERRIDEN);
@@ -177,37 +179,47 @@ public class JMXTest extends TestCase {
 	}
 	
 	protected void registerMBeans() {
-		ComponentConfiguration componentConfiguration=EasyConf.getConfiguration("test_module");		
-		ComponentConfigurationDynamicMBean confMBean = new ComponentConfigurationDynamicMBean(componentConfiguration);
-		ComponentConfigurationDynamicMBean confMBean2 = new ComponentConfigurationDynamicMBean("reloadedModule");
+		ComponentConfiguration componentConfiguration =
+			EasyConf.getConfiguration(JMX_TEST_MODULE);		
+		ComponentConfigurationDynamicMBean confMBean = 
+			new ComponentConfigurationDynamicMBean(componentConfiguration);
+		ComponentConfigurationDynamicMBean confMBean2 = 
+			new ComponentConfigurationDynamicMBean(JMX_TEST_MODULE);
 		assertNotNull("MBean not created properly with ComponentConfiguration constructor", confMBean);
 		assertNotNull("MBean not created properly with String constructor", confMBean2);
 		assertNotNull("Error creating ComponentConfiguration", confMBean2
 				.getComponentConfiguration());		
 		try {
-			testMBeanName = new ObjectName(JMX_NAME_PREFIX + "test_module");
+			testMBeanName = new ObjectName(JMX_NAME_PREFIX + "jmx_module");
+		} catch (MalformedObjectNameException e1) {
+			fail("Malformed JMX name: " + JMX_NAME_PREFIX + "jmx_module");
+		}
+		try {
+			testMBeanName2 = new ObjectName(JMX_NAME_PREFIX + "test_module");
 		} catch (MalformedObjectNameException e1) {
 			fail("Malformed JMX name: " + JMX_NAME_PREFIX + "test_module");
 		}
-		try {
-			reloadedMBeanName = new ObjectName(JMX_NAME_PREFIX + "reloadedModule");
-		} catch (MalformedObjectNameException e1) {
-			fail("Malformed JMX name: " + JMX_NAME_PREFIX + "reloadedModule");
-		}
 		assertNotNull("JMX ObjectName not created porperly", testMBeanName);
-		assertNotNull("JMX ObjectName not created porperly", reloadedMBeanName);
+		assertNotNull("JMX ObjectName not created porperly", testMBeanName2);
 		try {
 			ObjectInstance instance = mbeanServer.registerMBean(confMBean,
 					testMBeanName);
-			assertNotNull("Object Instance not created properly", instance);
-			instance = mbeanServer.registerMBean(confMBean,
-					reloadedMBeanName);
 			assertNotNull("Object Instance not created properly", instance);
 		} catch (InstanceAlreadyExistsException e) {
 		} catch (MBeanRegistrationException e) {
 			fail("Mbean not registerd properly");
 		} catch (NotCompliantMBeanException e) {
-			fail("Not Mbean compliant: " + e.getLocalizedMessage());
+			fail("Not Mbean compliant(confMBean): " + e.getLocalizedMessage());
+		}
+		try {
+			ObjectInstance instance = mbeanServer.registerMBean(confMBean2,
+					testMBeanName2);
+			assertNotNull("Object Instance not created properly", instance);
+		} catch (InstanceAlreadyExistsException e) {
+		} catch (MBeanRegistrationException e) {
+			fail("Mbean not registerd properly");
+		} catch (NotCompliantMBeanException e) {
+			fail("Not Mbean compliant(confMBean2): " + e.getLocalizedMessage());
 		}
 	}
 }
