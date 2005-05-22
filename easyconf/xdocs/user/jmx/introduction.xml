@@ -1,0 +1,122 @@
+<document>
+   <properties>
+      <title>User Guide</title>
+      <author >Alvaro Gonzalez</author>
+   </properties>
+   <body>
+   	<section name="JMX and Configuration">
+   	<p>
+   	The Java Management Extensions (JMX) technology is an open technology for 
+   	management and monitoring that can be deployed wherever management and 
+   	monitoring are needed. By design, this standard is suitable for adapting 
+   	legacy systems, implementing new management and monitoring solutions and 
+   	plugging into those of the future.
+   	</p>
+   	<p>
+   	The JMX specification provides Java developers across all industries with
+	the means to instrument Java code, create smart Java agents, implement 
+	distributed management middleware and managers, and smoothly integrate 
+	these solutions into existing management and monitoring systems.
+	</p>
+	<p>
+	Instrumentation is made by means of managed beans or MBeans. The components
+	of these MBeans are:
+	<ul>
+		<li>Attributes</li>
+		<li>Operations</li>
+		<li>Constructors</li>
+		<li>Notifications</li>
+	</ul>
+	If a MBean represents an instrumentation of a system, subsytem or 
+	component, the Attributes could be seen as its properties and by
+	extensions its configuration. The most widely extended use of MBeas
+	is the configuration of the different components of a large system.
+	(See for example 
+	<a href="http://docs.jboss.org/jbossas/jboss4guide/r1/html/ch2.chapter.html">
+	JBoss JMX Microkernel</a>)
+	</p>
+   	</section>
+   	<section name="EasyConf and JMX">
+   	<b>Since version: 0.9</b>
+   	<p>
+   	There are several ways which EasyConf could make use of JMX. The first
+   	one and more obvious is providing a MBean whose attributes are the properties
+   	of some <a href="../../apidocs/com/germinus/easyconf/ComponentConfiguration.html">
+   	ComponentConfiguration</a>. This MBean has also some useful operations to
+   	add a new property ann to reload the configuration from its source.
+    </p>
+    <p>
+   	This MBean is implemented as a DynamicMBean of the JMX specification. 
+   	Its fully qualified name is 
+   	<a href="../../apidocs/com/germinus/easyconf/jmx/ComponentConfigurationDynamicMBean.html">
+   	<tt>com.germinus.easyconf.jmx.ComponentConfigurationDynamicMBean</tt></a>.
+   	Here is an example of use of this MBean:
+   	<source>
+ComponentConfiguration componentConfiguration=EasyConf.getConfiguration("some_module");
+ComponentConfigurationDynamicMBean confMBean = 
+  new ComponentConfigurationDynamicMBean(componentConfiguration);
+ObjectName moduleMBeanName = new ObjectName(JMX_NAME_PREFIX + "some_module");
+try{
+  mbeanServer.registerMBean(confMBean,testMBeanName);
+} catch (InstanceAlreadyExistsException e) {
+  ...
+} catch (MBeanRegistrationException e) {
+  ...
+} catch (NotCompliantMBeanException e) {
+  ...
+}
+   	</source>
+   	Or you can skip the first line delegating the configuration loading to the
+   	MBean, simply by passing it the module name:
+   	<source>
+ComponentConfigurationDynamicMBean confMBean = 
+  new ComponentConfigurationDynamicMBean("some_module");
+   	</source>
+   	Now we have the ComponentConfiguration for module <tt>some_module</tt> 
+   	registerd in the MBean Server. Later, we can retrieve the value of some
+   	property simply querying the MBean server:
+   	<source>
+try {			
+  Object property=mbeanServer.getAttribute(moduleMBeanName,SOME_PROPERTY);
+  String propertyString=(String)property;
+} catch (AttributeNotFoundException e2) {
+  ...
+} catch (InstanceNotFoundException e2) {
+  ...
+} catch (MBeanException e2) {
+  ...
+}   		
+   	</source>
+   	Notice how the module is referenced in the MBean Server through an
+   	ObjectName <tt>moduleMBeanName</tt>. This name must be unique in all
+   	the MBean Server otherwise an <code>InstanceAlreadyExistsException</code>
+   	is launched when trying to register a new MBean with that name.
+   	</p>
+   	<p>
+   	There are methods for retrieving several properties at the same time:
+   	<source>
+AttributeList attributes=
+  mbeanServer.getAttributes(
+    moduleMBeanName,
+    new String[]{PROPERTY_ONE,PROPERTY_TWO,SOME_OTHER_PROPERTY});
+   	</source>
+   	</p>
+   	<p>
+   	Furthermore this MBean provides the possibility to change some property
+   	value, although this new value is only available in memory until the JVM
+   	finishes. <tt>(<b>TODO:</b> Persist ComponentConfiguration changes)</tt>
+   	</p>
+   	<p>
+   	This can be achieved with the method <tt>setAttribute</tt>
+   	<source>
+...
+Attribute changedAttribute=
+  new Attribute(SOME_PROPERTY,"new_value");
+mbeanServer.setAttribute(moduleMBeanName,changedAttribute);   	
+   	</source>
+   	The next time you invoke the <tt>getAttribute</tt> for this attribute 
+   	and this MBean the value <tt>new_value</tt> will be returned.
+   	</p>
+   	</section>
+   </body>
+</document>
