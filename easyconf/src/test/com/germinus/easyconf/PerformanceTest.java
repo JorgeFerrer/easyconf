@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 
 public class PerformanceTest extends TestCase {
 
-    private static final int REPETITIONS = 1000; //100000;
+    private static final int REPETITIONS = 10000;
 	private static final String CONFIGURATION_DIR = "target/test-classes";
     private static final String COMPONENT_NAME = "performance-test";
     private static final String COMPONENT_NAME_2 = "performance-test-2";

@@ -490,14 +490,13 @@ public class ComponentProperties {
     public String getString(String key) {
 		Object value = properties.getProperty(key);
 		String result;
-		if (value instanceof String) {
-			result = (String) value;
-		} else if (value instanceof List) {
+		if (value instanceof List) {
 			result = listToString((List) value);
 		} else {
 			result = properties.getString(key);
 		}
 		return result;
+//		return properties.getString(key);
     }
 
 	protected String listToString(List list) {

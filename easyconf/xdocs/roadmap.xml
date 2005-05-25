@@ -20,9 +20,9 @@
             <b>Planned features for property files</b>
          </p>
          <ul>
-            <li>Reloading</li>
-            <li>Properties in database</li>
-            <li>Properties in JNDI</li>
+            <li>Reloading (done in version 0.9.0)</li>
+            <li>Properties in database (beta implementation in version 0.9.0)</li>
+            <li>Properties in JNDI (beta implementation in version 0.9.0)</li>
             <li>New property type: name-value pairs</li>
           </ul>   
          <p>
@@ -44,7 +44,7 @@
          </p>
          <ul>
             <li>Storage of XML files in a database</li>
-            <li>Reloading</li>
+            <li>Reloading (done in version 0.9.0)</li>
          </ul>
          <p>
            <b>Finish the reload configuration service</b>

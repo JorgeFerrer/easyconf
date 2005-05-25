@@ -10,7 +10,7 @@
   <name>Easyconf library</name>
   <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-SNAPSHOT -->
-  <currentVersion>0.9.0rc1</currentVersion>
+  <currentVersion>0.9.0rc2</currentVersion>
   <organization>
     <name>EasyConf team</name>
     <url>http://www.sourceforge.net/projects/easyconf</url>
@@ -191,6 +191,12 @@
       <version>3.8.1</version>
       <type>jar</type>
     </dependency>
+    <!--    <dependency>  -->
+    <!--      <groupId>test-conf</groupId>  -->
+    <!--      <artifactId>test-conf</artifactId>  -->
+    <!--      <version>1.0</version>  -->
+    <!--      <type>jar</type>  -->
+    <!--    </dependency>  -->
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils-core</artifactId>
@@ -233,12 +239,6 @@
       <version>2.1.1</version>
       <type>jar</type>
     </dependency>
-<!--    <dependency>  -->
-<!--      <groupId>test-conf</groupId>  -->
-<!--      <artifactId>test-conf</artifactId>  -->
-<!--      <version>1.0</version>  -->
-<!--      <type>jar</type>  -->
-<!--    </dependency>  -->
   </dependencies>
   <!-- build information for the project -->
   <build>
