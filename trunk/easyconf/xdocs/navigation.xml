@@ -27,7 +27,7 @@
             <item name="Taglibs" href="/user/J2EE/taglibs.html"/>
             <!-- <item name="Services" href="/user/J2EE/services.html"/> -->
          </item>
-         <item name="JMX" href="/user/JMX/introduction.html" collapse="true">
+         <item name="JMX" href="/user/jmx/introduction.html" collapse="true">
          </item>
       </menu>
       <menu name="Reference">
