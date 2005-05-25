@@ -57,19 +57,15 @@ public class FileConfigurationChangedReloadingStrategy extends
     /**
      * Check if the configuration has changed since the last time it was loaded.
      */
-    protected boolean hasChanged()
-    {
+    protected boolean hasChanged() {
         File file = getFile();
-        if (log.isDebugEnabled()) {
-            log.debug("Checking if " + file + " has changed");
-        }
         if (!file.exists()) {
             log.debug("File does not exist");
             return false;
         }
-
-        log.debug("Check: " + file.lastModified() + " > " + lastModified);
-        return (file.lastModified() > lastModified);
+        boolean result = (file.lastModified() > lastModified);
+		lastChecked = System.currentTimeMillis();
+		return result;
         
     }
 
