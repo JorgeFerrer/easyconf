@@ -398,13 +398,21 @@ public class EasyConfTest extends TestCase {
                 getProperties().getProperty("string-not-overridden"));
     }
 	
-	public void testStringValueWithCommas() {
+	public void testStringListAsString() {
 		String value = getProperties().getString("database-configuration-classes");
 		assertEquals("Invalid string value",
 				"com.germinus.easyconf.DatabaseConf,com.germinus.easyconf.Table",
 				value);
 	}
-    /**
+
+	public void testNumberListAsString() {
+		String value = getProperties().getString("some-numbers");
+		assertEquals("Invalid string value",
+				"1,2,3,4,5",
+				value);
+	}
+
+	/**
      * Does not work due to a bug in digester (TODO: confirm)
      */
     public void bugtestXmlThatUsesNonExistentProperty() {

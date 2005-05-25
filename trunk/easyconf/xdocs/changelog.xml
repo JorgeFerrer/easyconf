@@ -6,7 +6,11 @@
   </properties>
 
   <body>
-    <section name="Changes in latest stable version (0.9.0)">
+    <section name="Changes in version 0.9.0">
+      <p>
+         Note: version 0.9.0 has not been released yet, but this changes are already present in 
+         version 0.9.0rc2
+      </p>
       <ul>
          <li><p><b>Added support for applications for ASPs</b>: A single running applications
             can service several companies/organizations and each may have its own configuration
