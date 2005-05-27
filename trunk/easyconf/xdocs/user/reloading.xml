@@ -1,0 +1,95 @@
+<document>
+   <properties>
+      <title>Reloading of configuration files</title>
+      <author >Jorge Ferrer</author>
+   </properties>
+   <body>
+      <section name="Reloading of configuration files">
+         <p>
+            EasyConf supports automatic reloading of configuration files when 
+            they change in a very efficient way. Many people wish they could
+            make changes to the configuration of an application without having
+            to restart it, but this is usually discarded for performance 
+            reasons (at least for applications which are on production servers). 
+            EasyConf now offers easy access to this functionality
+            without any significant performance delay.
+			</p>
+         <p>
+            This functionality comes disabled by default and can be activated
+            either for one component or for all of them. The activation is done
+            through a special property called <tt>easyconf:reload-delay</tt>.
+            This property sets how often (in seconds) EasyConf should check 
+            if a file has changed.
+			</p>
+         <p>
+            To configure a component called <tt>my-app</tt> so that it is reloaded
+            when it changes edit the file <tt>my-app.properties</tt> (or any of the 
+            files it includes) and add the following property:
+            <source>
+               easyconf:reload-delay=5
+            </source>
+            By adding this line EasyConf will check every 5 seconds (at most) if the file 
+            has changed. If so it will reload its contents. Note that the actual check will
+            be done lazyly, only when a method to retrieve a property or the component configuration 
+            is called. Until one of these methods is not called EasyConf 
+            will not check if the file has changed (no matter how much time passes).
+            In other words this means that no extra threads are used as they could cause 
+            problems in some environments.
+         </p>
+         <p>
+            It is also possible activate and control the automatic reloading by setting
+            this property in <tt>global-configuration.properties</tt> (or any of the 
+            files it includes). If the property is set in this file it will be applied to
+            all of the components.
+         </p>
+         <p>
+            Changes in XML files are also automatically reloaded when a reload delay
+            is provided. The reload delay is provided as explained in the previous
+            paragraphs. So to automatically reload the file <tt>my-app.xml</tt> 
+            it will be necesary to set the <tt>easyconf:reload-delay</tt> property
+            in the file <tt>my-app.properties</tt> (or any of the files it includes)
+            or <tt>global-configuration.properties</tt> (or any of the 
+            files it includes)
+         </p>
+      </section>
+      <section name="Limitations">
+         <p>
+            Automatic reloading is performed file by file, so new files will not be detected. Including
+            a new file using the <tt>include-and-override</tt> property won't work either.
+         </p>
+         <p>
+            To overcome these limitations you can use the method 
+               <tt>EasyConf.refreshComponent(componentName)</tt>, but you will have to call it manually.
+         </p>
+      </section>
+      <section name="How does it work?">
+         <p>
+            EasyConf leverages the infrastructure provided by Jakarta Commons Configurations.
+            Each file read is attached a <tt>ReloadingStrategy</tt>. Each time the <tt>getProperty()</tt>
+            method (or any of its typed equivalents) is called the strategy is asked if the configuration
+            has changed. The first time the strategy will query the file system for the date when
+            the file was last changed. If it is newer than the last time the file was loaded then it is
+            reloaded. The strategy keeps track of two timestamps:
+            <ul>
+               <li>lastChecked: the last time that the last modification time of the file was retrieved
+                  from the file system</li>
+               <li>lastModified: the last time the file was loaded</li>
+            </ul>
+            Each time the strategy is asked if the file has changed it compares the lastChecked timestamp
+            plus the reload delay to the current time (calculated as <tt>System.currentTimeMillis()</tt>).
+            If the current time is bigger then the last modification time of a file is retrieved. If it
+            is bigger than the <tt>lastModified</tt> timestamp then it will be reloaded.
+         </p>
+         <p>
+            Note that EasyConf has its own <tt>ReloadingStrategy</tt> as there are some performance issues
+            with the version that comes with Commons configurations. A fix has already been sent to them
+            so that in future versions we will be able to use it.
+         </p>
+         <p>
+            To implement the reloading of XML files, when a configuration object is built using digester
+            it is stored in a wrapper along with a specific <tt>ReloadingStrategy</tt>. This 
+            strategy works in the same way as has been explained for properties files.
+         </p>   
+      </section>
+   </body>
+</document>
