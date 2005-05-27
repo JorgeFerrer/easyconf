@@ -13,14 +13,12 @@
          <p>
             To have access to the Servlet services it is necessary to add the
             necessary configuration to the <tt>web.xml</tt> file of the application.
-            It is strongly recommended that the apropriate permisions are specify
-            to prevent unauthorized access to those services.
+            It is strongly recommended that the apropriate permisions are specified
+            to prevent unauthorized access to these services.
          </p>
          <p>
             To have access to the Struts Action services it is necessary to add 
             a mapping to the <tt>struts.xml</tt> file of the application.
-            It is up to you to define a JSP page which shows the results in a nice
-            way. (More documentation needed here).
          </p>
          <p>
             Currently there is only one service, the refresh configuration service.
@@ -39,13 +37,22 @@
             will be deleted from the cache.
          </p>
          <p>
-            Not that all this service does is to delete cache entries. The 
+            Note this service will delete cache entries and the 
             configuration will actually be reloaded on a one by one basis
             the next time the applications asks for the configuration of
             some component.
          </p>
          <p>
-            <b>Note:</b> This service has only been implemented as a Struts action
+            <b>Controlling the output</b>
+            <ul>
+               <li><b>Struts action</b>: The struts action returns <tt>SUCCESS</tt> as 
+               a forward always. It is left to you to create the JSP page that will create the
+               HTML to be returned to the user when this action is called.</li>
+               <li><b>Servlet</b>: The servlet returns a very basic HTML response to the user
+                  with a message in english. You can modify this response by subclassing
+                  the servlet and overriding the method
+                  <tt>writeSuccessResponse(HttpServletResponse response, String componentName)</tt></li>
+            </ul>
          </p>
       </section>
    </body>
