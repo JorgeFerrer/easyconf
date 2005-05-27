@@ -10,19 +10,24 @@
 			<p> It can be downloaded from SourceForge's <a 
 				href="http://sourceforge.net/project/showfiles.php?group_id=131552">file 
 				distribution</a> system. </p>
-                        <p>
-	                   The following dependent libraries will also
-	                   be needed:
-	                   <ul>
-                              <li>commons-configuration 1.0</li>
-                              <li>commons-collections 3.1</li>
-                              <li>commons-lang 2.0</li>
-                              <li>dom4j 1.4</li>
-                              <li>commons-logging 1.0.4</li>
-                              <li>commons-digester 1.6</li>
-                              <li>commons-beanutils (core and collections) 1.7.0</li>
-	                   </ul>
-                        </p>
+          <p>
+                The following dependent libraries will also
+                be needed:
+                <ul>
+                        <li>commons-configuration 1.1</li>
+                        <li>commons-collections 3.1</li>
+                        <li>commons-lang 2.0</li>
+                        <li>dom4j 1.4</li>
+                        <li>commons-logging 1.0.4</li>
+                        <li>commons-digester 1.6</li>
+                        <li>commons-beanutils (core and collections) 1.7.0</li>
+                </ul>
+                To use the JMX features the following extra libraries are needed:
+                <ul>
+                  <li>mx4j-jmx 2.1.1</li>
+                  <li>mx4j-impl 2.1.1</li>
+                </ul>
+          </p>
 		</section>
 		<section name="Maven users">
                    <p>
@@ -49,7 +54,7 @@
 <dependency>
 	<groupId>commons-configuration</groupId>
 	<artifactId>commons-configuration</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 	<url>http://www.apache.org/</url>
 </dependency>
 
@@ -111,6 +116,21 @@
 	<properties>
 	<war.bundle>true</war.bundle>
 	</properties>
+</dependency>
+
+<!-- The following are needed only for the JMX functionality -->
+<dependency>
+   <groupId>mx4j</groupId>
+   <artifactId>mx4j-jmx</artifactId>
+   <version>2.1.1</version>
+   <type>jar</type>
+</dependency>
+
+<dependency>
+   <groupId>mx4j</groupId>
+   <artifactId>mx4j-impl</artifactId>
+   <version>2.1.1</version>
+   <type>jar</type>
 </dependency>
 			]]>
 		   </source>
