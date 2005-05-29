@@ -54,12 +54,15 @@
       </section>
       <section name="Limitations">
          <p>
-            Automatic reloading is performed file by file, so new files will not be detected. Including
-            a new file using the <tt>include-and-override</tt> property won't work either.
+            Automatic reloading is performed file by file, so new files will not be detected. If an 
+            existent file is modified to include a new file from it using the 
+            <tt>include-and-override</tt> property the new file won't be loaded either.
          </p>
          <p>
-            To overcome these limitations you can use the method 
-               <tt>EasyConf.refreshComponent(componentName)</tt>, but you will have to call it manually.
+            To overcome these limitations you can use the manual refreshing service. This service is
+            offered through the method <tt>EasyConf.refreshComponent(componentName)</tt> and is also
+            available to J2EE applications as a <a href="/user/J2EE/services.html">Servlet or Struts 
+            Action</a>.
          </p>
       </section>
       <section name="How does it work?">
