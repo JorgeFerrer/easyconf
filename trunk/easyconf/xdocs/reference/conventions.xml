@@ -36,6 +36,14 @@
               property-name[selector1][selector2]=property-value
             </source>
         </li>
+        <li>Special variables:
+          <ul>
+          	<li><tt>easyconf:companyId</tt>: contains the value of the companyId used by
+            	the client application when retrieving the configuration or <tt>null</tt>
+            	if none was used.</li>
+          	<li><tt>easyconf:componentName</tt>: contains the current componentName</li>
+          </ul>
+        </li>         
       </ul>
       <p>
       Other significant strategies of EasyConf are:
