@@ -39,16 +39,16 @@ class ConfigurationLoader {
 
     public ComponentProperties readPropertiesConfiguration(String companyId, String componentName) {
         AggregatedProperties properties = new AggregatedProperties(companyId, componentName);
-        if (companyId != null) {
-            properties.addGlobalFileName(Conventions.GLOBAL_CONFIGURATION_FILE + Conventions.SLASH + companyId
-                    + Conventions.PROPERTIES_EXTENSION);
-        }
+//        if (companyId != null) {
+//            properties.addGlobalFileName(Conventions.GLOBAL_CONFIGURATION_FILE + Conventions.SLASH + companyId
+//                    + Conventions.PROPERTIES_EXTENSION);
+//        }
         properties.addGlobalFileName(Conventions.GLOBAL_CONFIGURATION_FILE + 
                 Conventions.PROPERTIES_EXTENSION);
-        if (companyId != null) {
-            properties.addBaseFileName(componentName + Conventions.SLASH + companyId + 
-                    Conventions.PROPERTIES_EXTENSION);
-        }
+//        if (companyId != null) {
+//            properties.addBaseFileName(componentName + Conventions.SLASH + companyId + 
+//                    Conventions.PROPERTIES_EXTENSION);
+//        }
         properties.addBaseFileName(componentName + Conventions.PROPERTIES_EXTENSION);
 
         log.info("Properties for " + componentName + " loaded from " + properties.loadedSources());

@@ -23,7 +23,8 @@
             <item name="Variables" href="/user/xml/variables.html"/>
             <!-- <item name="Complex mappings" href="/user/xml/complex-mappings.html"/> -->
          </item>
-         <item name="Advanced features" href="/user/reloading.html" collapse="false">
+         <item name="Advanced features" href="/user/asp-model.html" collapse="false">
+            <item name="ASP model" href="/user/asp-model.html" />
             <item name="Reloading" href="/user/reloading.html" />
          	<item name="J2EE" href="/user/J2EE/taglibs.html" collapse="true">
             	<item name="Taglibs" href="/user/J2EE/taglibs.html"/>

@@ -131,15 +131,14 @@
          represent the unique customer id which is currently accesing the application:         
       </p>
       <source>
-         Easyconf.getConfiguration("companyA", "calculator").getProperties();
+Easyconf.getConfiguration("companyA", "calculator").getProperties();
       </source>
       <p>
-         The properties for the returned configuration will be read first with 
-         the values of <tt>calculator.properties</tt> as shown in the previous 
-         example. But then if a file called <tt>calculator-companyA.properties</tt>
-         exists it will also be loaded overridding with its values any previously
-         set value.
-      </p>         
+         When used this way EasyConf allows to have configuration files specific
+         to each company which override the default configuration. To know how
+         to achieve this read the <a href="/user/asp-model.html">ASP model</a> section of the 
+         documentation.
+       </p>
     </section>
 
     <section name="More functionality">

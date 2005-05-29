@@ -64,7 +64,7 @@ public class EasyConfTest extends TestCase {
         suite.addTestSuite(EasyConfTest.class);
         suite.addTestSuite(JMXTest.class);
         suite.addTest(ReloadTest.suite());
-//        suite.addTest(new EasyConfTest("testStringValueWithCommas"));
+//        suite.addTest(new EasyConfTest("testPropertiesASPModel"));
 //        suite.addTest(new EasyConfTest("testSpecifyingVariables"));
         
         return suite;
@@ -351,27 +351,16 @@ public class EasyConfTest extends TestCase {
                 "test_module-local2.properties", getProperties().getLoadedSources());
                 
     }
-    
-    private void assertContains(String msg, String item, List list) {
-        boolean contained = list.contains(item);
-        if (!contained) {
-            for (Iterator it = list.iterator(); it.hasNext();) {
-                String url = (String) it.next();
-                if (url.endsWith("/" + item)) {
-                    contained = true;
-                    break;
-                }
-            }
-        }
-        assertTrue(msg + ". " + item + " is not included in " + list,
-                contained);
-    }
 
     public void testPropertiesASPModel() {
-        ComponentProperties props = EasyConf.getConfiguration("exampleCompany", 
+        String companyId = "exampleCompany";
+        ComponentProperties props = EasyConf.getConfiguration(companyId, 
                 "test_module").getProperties();
+        assertContains("The company-specific file was not read",
+                "test_module-"+companyId+Conventions.PROPERTIES_EXTENSION,
+                props.getLoadedSources());
         assertEquals("The property was not read from the company specific file",
-                "exampleCompany",
+                companyId,
                 props.getString("company-name"));
         assertEquals("The property should have the default value if it is not" +
         		" overridden by the company specific file",
@@ -456,5 +445,20 @@ public class EasyConfTest extends TestCase {
         }
     }
     
+    
+    private void assertContains(String msg, String item, List list) {
+        boolean contained = list.contains(item);
+        if (!contained) {
+            for (Iterator it = list.iterator(); it.hasNext();) {
+                String url = (String) it.next();
+                if (url.endsWith("/" + item)) {
+                    contained = true;
+                    break;
+                }
+            }
+        }
+        assertTrue(msg + ". " + item + " is not included in " + list,
+                contained);
+    }
 
 }

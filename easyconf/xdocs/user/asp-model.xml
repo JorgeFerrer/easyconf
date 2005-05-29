@@ -1,0 +1,69 @@
+<document>
+   <properties>
+      <title>Configuring an application for an ASP</title>
+      <author >Jorge Ferrer</author>
+   </properties>
+   <body>
+    <section name="Configuring an application for an ASP">
+		<p>
+         An ASP or Application Service Provider offers applications to several customers
+         from a single installation. In this environment a single running application 
+         may need to have different configurations depending on the customer that is
+         accessing the application. EasyConf is prepared to configure applications 
+         which are developed to work in this environment.
+      </p>
+      <p>
+         <b>Note:</b> do not confuse ASP in the sense of <i>Application Service
+         Provider</i> with ASP in the sense of <i>Active Server Pages</i> which is
+         a Microsoft proprietary technology). EasyConf is a Java library and does 
+         not support Active Server Pages.
+      </p>
+      <p>
+         Applications which work in ASP model must ask EasyConf for the configuration
+         providing both the component name and a company id. The company id will
+         represent the unique customer id which is currently accesing the application:         
+      </p>
+      <source>
+Easyconf.getConfiguration("companyA", "calculator").getProperties();
+      </source>
+      <p>
+         In this situation the desired behaviour is to read the configuration
+         from the file <tt>calculator.properties</tt> as shown in the previous 
+         example. But then have a specific file for <i>companyA</i> which contains
+         overridden values. Let's call that file <tt>calculator-companyA.properties</tt>.
+         To achieve this behaviour in EasyConf just add the following line in the
+         file <tt>calculator.properties</tt>:
+      </p>         
+      <source>
+include-and-override=calculator-${easyconf:companyId}.properties         
+      </source>
+      <p>
+         The trick here is done by using the variable <tt>easyconf:companyId</tt> which
+         is a special variable which exposes to the configuration files the value of
+         the company used when retrieving the configuration. The previous code is an 
+         example, the company specific file could have any desired name as long as it
+         contains the name of the company in it. An alternative to the previous line
+         could be:
+      </p>
+      <source>
+include-and-override=${easyconf:companyId}-specific-configuration-for-calculator.properties         
+      </source>
+      <p>
+         Note that it is also possible to have a company specific file for the aggregated
+         configuration of all components. To achieve this behaviour just add the following
+         line (for example) to the file <tt>global-configuration.properties</tt>:
+      </p>
+      <source>
+include-and-override=global-configuration-${easyconf:companyId}.properties         
+      </source>
+      <p>
+         The first implementation of this funcitonality performed the loading 
+         of a company specific file
+         automatically. The new method has several advantages at the cost of one 
+         single line: 1) Making the extra file loaded more explicit, 2) Ability to 
+         decide the naming convention of the extra file, 3) Ability to decide the override
+         order, 4) Full flexibility in every other sense
+       </p>
+    </section>
+  </body>
+</document>

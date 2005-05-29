@@ -39,4 +39,7 @@ public interface Conventions {
     String JNDI_PREFIX = "jndi:";
 
     String RELOAD_DELAY_PROPERTY = "easyconf:reload-delay";
+    public static final String COMPANY_ID_PROPERTY = "easyconf:companyId";
+    public static final String COMPONENT_NAME_PROPERTY = "easyconf:componentName";
+    public static final String PREFIX_SEPARATOR = ":";
 }

@@ -43,7 +43,6 @@ import java.util.*;
  * @author jferrer
  */
 public class AggregatedProperties extends CompositeConfiguration {
-    private static final String PREFIX_SEPARATOR = ":";
     private static final Log log = LogFactory.getLog(AggregatedProperties.class);
 
     private CompositeConfiguration baseConf = new CompositeConfiguration();
@@ -89,11 +88,17 @@ public class AggregatedProperties extends CompositeConfiguration {
             //value = systemConfiguration.getProperty(key);
             value = System.getProperty(key);
         }
+        if (key.equals(Conventions.COMPANY_ID_PROPERTY)) {
+            value = companyId;
+        }
+        if (key.equals(Conventions.COMPONENT_NAME_PROPERTY)) {
+            value = componentName;
+        }
         return value;
     }
 
     private String getPrefix() {
-        return componentName + PREFIX_SEPARATOR;
+        return componentName + Conventions.PREFIX_SEPARATOR;
     }
 
 
@@ -201,6 +206,8 @@ public class AggregatedProperties extends CompositeConfiguration {
         tempConf.addConfiguration(prefixedSystemConfiguration);
         tempConf.addConfiguration(newConf);
         tempConf.addConfiguration(systemConfiguration);
+        tempConf.addProperty(Conventions.COMPANY_ID_PROPERTY, companyId);
+        tempConf.addProperty(Conventions.COMPONENT_NAME_PROPERTY, componentName);
         String[] fileNames = tempConf.getStringArray(Conventions.INCLUDE_PROPERTY);
         for (int i = fileNames.length - 1; i >= 0; i--) {
             String iteratedFileName = fileNames[i];
