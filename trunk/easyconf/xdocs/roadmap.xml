@@ -11,7 +11,7 @@
             those conventions are consolidated version 1.0 will be released
          </p>
          <p>
-            In the meanwhile we have several features in mind. We expect most
+            Meanwhile we have several features in mind. We expect most
             of them to be finished in the first half of 2005.
          </p>
       </section>
@@ -23,13 +23,13 @@
             <li>Reloading (done in version 0.9.0)</li>
             <li>Properties in database (beta implementation in version 0.9.0)</li>
             <li>Properties in JNDI (beta implementation in version 0.9.0)</li>
-            <li>New property type: name-value pairs</li>
+            <li>New property types: name-value pairs, locale, dates, etc.</li>
           </ul>   
          <p>
             <b>Planned features for XML files</b>
          </p>
          <p>The first planned features are to solve the currently known
-            limitations of the support of XML files with respecto to
+            limitations of the support of XML files with respect to
             the configuration through property files. These are:
          </p>
          <ul>
@@ -47,11 +47,15 @@
             <li>Reloading (done in version 0.9.0)</li>
          </ul>
          <p>
-           <b>Finish the reload configuration service</b>
+           <b>Finish the reload configuration service (done in version 0.9.0)</b>
          </p>
          <p>
             Implement the servlet interface and fix it by including
-            Jakarta Commons Configuration v1.1 when it is released.
+            Jakarta Commons Configuration v1.1 when it is released (done in version 0.9.0).
+         </p>
+         <p>
+           <b>Leverage JMX technology</b> (access and modification of configuration through
+           JMX is already available in version 0.9.0, more will come)
          </p>
       </section>
    </body>
