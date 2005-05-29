@@ -217,6 +217,9 @@ public class EasyConfTest extends TestCase {
             getProperties().getStringArray("Inexistent property", Filter.by("selector1", "selector2"));
             fail("A NoSuchElementException should have been thrown");
         } catch (NoSuchElementException success) {}
+        getProperties().setThrowExceptionOnMissing(false);
+        getProperties().getString("Inexistent property", Filter.by("selector1", "selector2"));
+        assertTrue("A NoSuchElementException should NOT have been thrown", true);
     }
 
     public void testReadStringOverriddenInPrj() {
