@@ -52,7 +52,7 @@
 	      and portals</li>
         <li><b>Support for ASP applications</b>: each company/organization serviced by the Application 
          Service Provider my have its own configuration (since v0.9)</li> 
-        <li><b>Provides access to the configuration using JMX</b></li>
+        <li><b>Provides access to the configuration using JMX (since v0.9)</b></li>
         <li><b>Well documented</b></li>
 	     <li><b>Easy to remember conventions</b> instead of configuration to simplify usage</li>
 	  </ol>
