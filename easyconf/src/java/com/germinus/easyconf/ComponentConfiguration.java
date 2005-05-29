@@ -86,7 +86,7 @@ public class ComponentConfiguration {
      */
     public ComponentProperties getProperties() {
         ComponentProperties properties = getAvailableProperties();
-        if (!properties.hasBaseConfiguration()) {
+        if ((!properties.hasBaseConfiguration())){
             String msg = "The base properties file was not found";
             throw new ConfigurationNotFoundException(componentName, msg);
         }
