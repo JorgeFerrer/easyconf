@@ -25,6 +25,7 @@
          </p>
       </section>
       <section name="Refresh configuration service">
+         <p><b>New in version 0.9.0</b></p>
          <p>
         		Manually refresh the configuration of either one specific component 
             or all the configuration components. This service can receive one
