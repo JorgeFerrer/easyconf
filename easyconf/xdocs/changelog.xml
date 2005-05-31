@@ -32,10 +32,12 @@
                <li>The class <tt>ConfReader</tt> was renamed as <tt>EasyConf</tt>. Because of this
                   change this release is not binary compatible with previous version. You should
                   change it in your source code and recompile.</li>
-               <li>The <tt>getProperties(String key)</tt> method of <tt>ComponentProperties</tt>
-                  has been changed to <tt>getProperties()</tt> which returns a Properties decorator
-                  of the properties. The previous functionality can still be obtained by using the
-                  <tt>subset(key)</tt> method and then the <tt>getProperties()</tt> method.</li>
+               <li>Changed the way to obtain a subset of the properties of type <tt>java.util.Properties</tt>
+						Previously the <tt>getProperties(String key)</tt> method of <tt>ComponentProperties</tt>
+						was used. Now this method no longer exists, but the functionality is still available.
+						First obtain a subset of the properties using the method
+                  <tt>subset(key)</tt>. And then convert the subset to <tt>java.util.Properties</tt>
+						using the <tt>getProperties()</tt> method.</li>
             </ul>
          </li>
       </ul>
