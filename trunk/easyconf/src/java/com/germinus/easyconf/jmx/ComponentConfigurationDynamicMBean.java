@@ -46,7 +46,7 @@ import com.germinus.easyconf.EasyConf;
  * href="ComponentConfigurationDynamicMBean.java.html"> <b><i>View Source </i>
  * </b> </a>
  *
- * @author Alvaro González
+ * @author Alvaro Gonzï¿½lez
  * @version $Revision$
  *
  */
@@ -267,7 +267,10 @@ public class ComponentConfigurationDynamicMBean implements DynamicMBean {
 	// ***** Implementations of the MBean's operations *****//
 
 	private void reloadConfiguration() {
+//		System.out.println("Old Properties: "+componentConfiguration.getProperties().toMap());
+		EasyConf.refreshComponent(componentName);
 		this.componentConfiguration = EasyConf.getConfiguration(componentName);
+//		System.out.println("New Properties: "+componentConfiguration.getProperties().toMap());
 	}
 
 	private void newProperty(String propertyName) throws MBeanException {
