@@ -15,6 +15,9 @@
  */
 package com.germinus.easyconf.jmx;
 
+import java.io.File;
+import java.util.Properties;
+
 import javax.management.Attribute;
 import javax.management.AttributeList;
 import javax.management.AttributeNotFoundException;
@@ -30,9 +33,12 @@ import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
+import javax.management.ReflectionException;
 
 import com.germinus.easyconf.ComponentConfiguration;
+import com.germinus.easyconf.Conventions;
 import com.germinus.easyconf.EasyConf;
+import com.germinus.easyconf.FileUtil;
 import com.germinus.easyconf.jmx.ComponentConfigurationDynamicMBean;
 
 import junit.framework.TestCase;
@@ -45,19 +51,27 @@ import junit.framework.TestCase;
  *
  */
 public class JMXTest extends TestCase {
+	private static final String CONFIGURATION_DIR = "target/test-classes";
 	private static final String JMX_NAME_PREFIX = "easyconf:component=";
 	private static final String JMX_TEST_MODULE = "jmx_module";
 	private static final String TEST_MODULE = "test_module";
+	private static final String RELOAD_MODULE = "jmx_reload_module";
 	private static final String STRING_NOT_OVERRIDEN = "string-not-overridden";
+	private static final String RELOADED_PROPERTY = "reloaded";
+	private static final String RELOADED_PROPERTY_VALUE1 = "beforeReloaded";
+	private static final String RELOADED_PROPERTY_VALUE2 = "afterReloaded";
 	private static final String STRING_NOT_OVERRIDEN_VALUE = "jmx_module";
 	private static final String STRING_OVERRIDEN_IN_PRJ = "string-overridden-in-prj";
 	private static final String STRING_OVERRIDEN_IN_PRJ_VALUE = "prj";
 	private static final String NON_EXISTENT_ATTRIBUTE = "com.germinus.easyconf.JMXTest.NON_EXISTENT_ATTRIBUTE";
 	private static final String NEW_ATTRIBUTE = "com.germinus.easyconf.JMXTest.NEW_ATTRIBUTE";
+	private static final String WHATEVER_VALUE = "WHATEVER";
 	private MBeanServer mbeanServer;
 	private ObjectName testMBeanName;
 	private ObjectName testMBeanName2;
-	private static final String WHATEVER_VALUE = "WHATEVER";
+	private ObjectName testMBeanName3;
+	private File toReloadFile;
+	
 		
 	
 	public void testDynamicMBeanGetAttribute() throws Exception{		
@@ -158,6 +172,37 @@ public class JMXTest extends TestCase {
 		assertEquals("Incorrect number of operations returned by getMBeanInfo",3,operations.length);
 	}
 	
+	public void testDynamicMBeanReload() throws Exception{
+//		Properties props=new Properties();
+//		props.setProperty(RELOADED_PROPERTY,RELOADED_PROPERTY_VALUE2);
+//		boolean b=toReloadFile.delete();
+//		assertEquals("No se pudo borrar",true,b);
+//		setReloadedFile(props);
+//		try {
+//			mbeanServer.invoke(testMBeanName3,
+//					ComponentConfigurationDynamicMBean.RELOAD_OPERATION_NAME,
+//					new Object[]{},new String[]{});
+//		} catch (InstanceNotFoundException e) {
+//			fail("Reloaded module MBEan not found");
+//		} catch (MBeanException e) {
+//			fail("Mbean problem: "+e);
+//		} catch (ReflectionException e) {
+//			fail("reflection problem: "+e);
+//		}
+//		try {			
+//			Object attribute=mbeanServer.getAttribute(testMBeanName3,RELOADED_PROPERTY);
+//			assertNotNull("Attribute not retrieved properly. Is null.",attribute);
+//			String attributeString=(String)attribute;
+//			assertEquals("Incorrect reloaded attribute value.",RELOADED_PROPERTY_VALUE2,attributeString);
+//		} catch (AttributeNotFoundException e2) {
+//			fail("Attribute not found");
+//		} catch (InstanceNotFoundException e2) {
+//			fail("Mbean not found");
+//		} catch (MBeanException e2) {
+//			throw e2.getTargetException();
+//		}
+	}
+	
 	protected void assertAttribute(String attributeName,Object attributeValue,Attribute attribute){
 		assertAttribute(null,attributeName,attributeValue,attribute);
 	}
@@ -175,20 +220,32 @@ public class JMXTest extends TestCase {
 	 */
 	protected void setUp() throws Exception {		
 		mbeanServer=MBeanServerFactory.newMBeanServer();
-		registerMBeans();
+		Properties props = new Properties();
+        props.setProperty(RELOADED_PROPERTY, RELOADED_PROPERTY_VALUE1);
+		setReloadedFile(props);
+		registerMBeans();		
+	}
+	
+	protected void setReloadedFile(Properties props) throws Exception{		
+		toReloadFile = new File(CONFIGURATION_DIR+ "/" + RELOAD_MODULE + ".properties");                        
+        FileUtil.write(toReloadFile, props);		
 	}
 	
 	protected void registerMBeans() {
+		
 		ComponentConfiguration componentConfiguration =
 			EasyConf.getConfiguration(JMX_TEST_MODULE);		
 		ComponentConfigurationDynamicMBean confMBean = 
 			new ComponentConfigurationDynamicMBean(componentConfiguration);
 		ComponentConfigurationDynamicMBean confMBean2 = 
 			new ComponentConfigurationDynamicMBean(JMX_TEST_MODULE);
+		ComponentConfigurationDynamicMBean confMBean3 = 
+			new ComponentConfigurationDynamicMBean(RELOAD_MODULE);
 		assertNotNull("MBean not created properly with ComponentConfiguration constructor", confMBean);
 		assertNotNull("MBean not created properly with String constructor", confMBean2);
 		assertNotNull("Error creating ComponentConfiguration", confMBean2
 				.getComponentConfiguration());		
+		assertNotNull("MBean not created properly with ComponentConfiguration.", confMBean3);
 		try {
 			testMBeanName = new ObjectName(JMX_NAME_PREFIX + "jmx_module");
 		} catch (MalformedObjectNameException e1) {
@@ -199,8 +256,14 @@ public class JMXTest extends TestCase {
 		} catch (MalformedObjectNameException e1) {
 			fail("Malformed JMX name: " + JMX_NAME_PREFIX + "test_module");
 		}
+		try {
+			testMBeanName3 = new ObjectName(JMX_NAME_PREFIX + RELOAD_MODULE);
+		} catch (MalformedObjectNameException e1) {
+			fail("Malformed JMX name: " + JMX_NAME_PREFIX + RELOAD_MODULE);
+		}
 		assertNotNull("JMX ObjectName not created porperly", testMBeanName);
 		assertNotNull("JMX ObjectName not created porperly", testMBeanName2);
+		assertNotNull("JMX ObjectName not created porperly", testMBeanName3);
 		try {
 			ObjectInstance instance = mbeanServer.registerMBean(confMBean,
 					testMBeanName);
@@ -221,5 +284,22 @@ public class JMXTest extends TestCase {
 		} catch (NotCompliantMBeanException e) {
 			fail("Not Mbean compliant(confMBean2): " + e.getLocalizedMessage());
 		}
+		try {
+			ObjectInstance instance = mbeanServer.registerMBean(confMBean3,
+					testMBeanName3);
+			assertNotNull("Object Instance not created properly", instance);
+		} catch (InstanceAlreadyExistsException e) {
+		} catch (MBeanRegistrationException e) {
+			fail("Mbean not registerd properly");
+		} catch (NotCompliantMBeanException e) {
+			fail("Not Mbean compliant(confMBean2): " + e.getLocalizedMessage());
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see junit.framework.TestCase#tearDown()
+	 */
+	protected void tearDown() throws Exception {
+		this.toReloadFile.delete();
 	}
 }
