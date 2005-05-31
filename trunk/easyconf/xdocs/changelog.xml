@@ -12,10 +12,12 @@
          version 0.9.0rc2
       </p>
       <ul>
-         <li><p><b>Added support for applications for ASPs</b>: A single running applications
+         <li><p><b>Added support for applications for Application Service Providers (ASP)</b>: 
+					A single running applications
             can service several companies/organizations and each may have its own configuration
             of the application</p></li>
-         <li><p><b>Added method <tt>getClassesArray</tt></b></p></li>        
+         <li><p><b>Added support for properties of type list of classes</b>: to get its
+					value use the method <tt>getClassesArray</tt> of <tt>ComponentConfiguration</tt></p></li>        
          <li><p><b>Improved support for converting properties to other objects</b>: For example
             now it can be converted to a 
             <tt><a href="http://jakarta.apache.org/commons/configuration/apidocs/org/apache/commons/configuration/DataConfiguration.html">DataConfiguration</a></tt> 
