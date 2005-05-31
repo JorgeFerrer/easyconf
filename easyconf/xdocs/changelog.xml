@@ -27,6 +27,7 @@
             a Datasource). This support is still under testing to fine tune cache issues.</b></p></li>         
          <li><p><b>Migrated to Jakarta Commons Configuration 1.1</b>: which has made possible some of the
             above improvements</p></li>
+         <li><p><b>Added minimal JMX-support for managing a component's properties through a MBean.</b></p></li>
          <li><p><b>API changes</b>:</p>
             <ul>
                <li>The class <tt>ConfReader</tt> was renamed as <tt>EasyConf</tt>. Because of this
