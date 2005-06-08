@@ -146,6 +146,12 @@ public class EasyConfTest extends TestCase {
     public void testFilterWithDefault() {
         assertEquals("Invalid string value when specifying two selectors", "selector1-and-selector2", 
 					 getProperties().getString("property-with-filter", Filter.by("selector1", "selector2"), "defaultvalue"));
+		assertEquals("Invalid string value when specifying two selectors but second does not exists", "selector1", 
+				 getProperties().getString("property-with-filter", Filter.by("selector1", "non-existent-selector"), "defaultvalue"));
+		assertEquals("Invalid string value when specifying two inexistent selectors but default value in file", "no-selector", 
+				 getProperties().getString("property-with-filter", Filter.by("non-existent-selector", "non-existent-selector"), "defaultvalue"));
+		assertEquals("Invalid string value when specifying two inexistent selectors", "defaultvalue", 
+				 getProperties().getString("property-with-filter2", Filter.by("non-existent-selector", "non-existent-selector"), "defaultvalue"));
         assertEquals("Invalid long value when specifying two selectors", 1234, 
 				 	  getProperties().getLong("long-with-filter", Filter.by("selector1", "selector2"), 0l));
         assertEquals("Invalid short value when specifying two selectors", 1234, 
