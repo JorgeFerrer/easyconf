@@ -686,13 +686,16 @@ public class ComponentProperties {
             }
             value = getTypedPropertyWithDefault(
                     key + filter.getFilterSuffix(i), theClass, filteredConf,
-                    defaultValue);
+                    null);
             if (varsConf != null) {
                 properties.removeConfiguration(varsConf);
             }
             log.debug("Value for " + key + filter.getFilterSuffix(i) + "="
                     + value);
         }
+		if (value == null) {
+			value = defaultValue;
+		}
         return value;
     }
 
