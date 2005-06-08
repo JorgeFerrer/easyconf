@@ -29,6 +29,10 @@ public class ConfigurationException extends NestableRuntimeException {
     
     private String componentName;
 
+    public ConfigurationException() {
+        super();
+    }
+    
     public ConfigurationException(String componentName, String msg, Throwable thr) {
         super(msg, thr);
         this.componentName = componentName;
