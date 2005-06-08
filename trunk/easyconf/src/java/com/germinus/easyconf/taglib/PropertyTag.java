@@ -51,7 +51,12 @@ import java.util.ArrayList;
  * @jsp.tag name="property" body-content="empty" tei-class="com.germinus.easyconf.taglib.PropertyTei"
  */
 public class PropertyTag extends BodyTagSupport {
-    private static final String DEFAULT_TYPE = "java.lang.String";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3546082471134573881L;
+
+	private static final String DEFAULT_TYPE = "java.lang.String";
 
     protected String id = null;
     protected String component = null;
@@ -62,10 +67,16 @@ public class PropertyTag extends BodyTagSupport {
     protected String selector3 = "";
     protected String selector4 = "";
     protected String selector5 = "";    
-    protected String defaultValue = "not-configured";
+    protected String defaultValue;
     private static final List EMPTY_LIST = new ArrayList();
 
-    /**
+	
+    public PropertyTag() {
+		super();
+		release();
+	}
+
+	/**
      * @jsp.attribute required="true" rtexprvalue="true"
      */
     public String getId() {
