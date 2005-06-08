@@ -190,16 +190,16 @@ public class PropertyTag extends BodyTagSupport {
             selectors.add(selector1);
         }
         if (StringUtils.isNotEmpty(selector2)) {
-            selectors.add(selector1);
+            selectors.add(selector2);
         }
         if (StringUtils.isNotEmpty(selector3)) {
-            selectors.add(selector1);
+            selectors.add(selector3);
         }
         if (StringUtils.isNotEmpty(selector4)) {
-            selectors.add(selector1);
+            selectors.add(selector4);
         }
         if (StringUtils.isNotEmpty(selector5)) {
-            selectors.add(selector1);
+            selectors.add(selector5);
         }
         return (String[]) selectors.toArray(new String[0]);
     }
