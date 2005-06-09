@@ -51,11 +51,13 @@ public class EasyConfTest extends TestCase {
         componentConf = EasyConf.getConfiguration("test_module");
         System.setProperty("easyconf-environment", "local");
         System.setProperty("test_module:easyconf-environment", "local");
+		getProperties().setThrowExceptionOnMissing(true);
     }
 
     protected void tearDown() throws Exception {
         System.setProperty("easyconf-environment", "BAD-BAD-BAD");
         System.setProperty("test_environment:easyconf-environment", "BAD-BAD-BAD");
+		getProperties().setThrowExceptionOnMissing(false);
     }
 
 
