@@ -64,7 +64,7 @@ public class ComponentProperties {
 
     ComponentProperties(AggregatedProperties conf) {
         this.properties = conf;
-        setThrowExceptionOnMissing(true);
+        setThrowExceptionOnMissing(false);
     }
 
     // .................. Conversion methods ...................
