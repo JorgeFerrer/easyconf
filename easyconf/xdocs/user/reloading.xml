@@ -59,6 +59,18 @@
             <tt>include-and-override</tt> property the new file won't be loaded either.
          </p>
          <p>
+         	In order to determine if the file has changed EasyConf needs to know its path on         	
+         	the filesystem. When the files are loaded from the classpath it is up to the
+         	classloader to offer a URL which contains the filesystem path or not. EasyConf
+         	is able to obtain the path if the protocol used by the classloader is <tt>file</tt>
+         	or <tt>jar</tt>. Some classloaders are known to use the <tt>classloader</tt> 
+         	protocol and in this case EasyConf won't have enough information to reload the file.
+         	This issue is of importance mainly when configuring J2EE applications. For example,
+         	the classloader used by JBoss offers enough information and reloading works, but 
+         	the one used by Oracle10g doesn't. If you have information about other app. servers
+         	please let us know and we'll update this information.
+         </p>
+         <p>
             To overcome these limitations you can use the manual refreshing service. This service is
             offered through the method <tt>EasyConf.refreshComponent(componentName)</tt> and is also
             available to J2EE applications as a <a href="/user/J2EE/services.html">Servlet or Struts 

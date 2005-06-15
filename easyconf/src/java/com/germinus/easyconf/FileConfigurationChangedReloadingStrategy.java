@@ -60,7 +60,9 @@ public class FileConfigurationChangedReloadingStrategy extends
     protected boolean hasChanged() {
         File file = getFile();
         if (!file.exists()) {
-            log.debug("File does not exist");
+			if (log.isDebugEnabled()) {
+				log.debug("File does not exist: " + file);
+			}
             return false;
         }
         boolean result = (file.lastModified() > lastModified);
@@ -76,8 +78,16 @@ public class FileConfigurationChangedReloadingStrategy extends
             String path = sourceURL.getPath();
             String jarFilePath = path.substring("file:".length(), path.indexOf('!'));
             return new File(jarFilePath);
-        } else {
+        } else if (configuration != null) {
             return configuration.getFile();
+        } else if ("classloader".equals(sourceURL.getProtocol())) {
+			if (log.isDebugEnabled()) {
+				log.debug("Reloading will not work for files loaded by the classloader: " + sourceURL);
+			}
+			return new File(sourceURL.getFile());
         }
+		log.warn("Cannot determine the filesystem file which contains the " +
+				"configuration file for: " + sourceURL);
+		return new File(sourceURL.getFile());
     }
 }
