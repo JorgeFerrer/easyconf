@@ -88,10 +88,10 @@ public class AggregatedProperties extends CompositeConfiguration {
             //value = systemConfiguration.getProperty(key);
             value = System.getProperty(key);
         }
-        if (key.equals(Conventions.COMPANY_ID_PROPERTY)) {
+        if ((value == null) && (key.equals(Conventions.COMPANY_ID_PROPERTY))) {
             value = companyId;
         }
-        if (key.equals(Conventions.COMPONENT_NAME_PROPERTY)) {
+        if ((value == null) && (key.equals(Conventions.COMPONENT_NAME_PROPERTY))) {
             value = componentName;
         }
         return value;

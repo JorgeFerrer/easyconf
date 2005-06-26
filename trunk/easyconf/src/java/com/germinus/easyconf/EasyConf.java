@@ -18,6 +18,7 @@ package com.germinus.easyconf;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 
 /**
@@ -103,11 +104,10 @@ public class EasyConf {
      * issue is scheduled to be solved after version 1.0 of such library. 
      */
     public static void refreshComponent(String componentName) {
-        String entryName = componentName;
-        Object componentConf = cache.get(entryName);
+        ComponentConfiguration componentConf = (ComponentConfiguration) cache.get(componentName);
         if (componentConf != null) {
-            cache.remove(componentConf);
-            log.info("Refreshed the configuration of component " + entryName);
+            cache.remove(componentName);
+            log.info("Refreshed the configuration of component " + componentName);
         }
     }
     /**

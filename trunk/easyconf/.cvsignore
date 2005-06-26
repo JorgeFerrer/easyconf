@@ -1,5 +1,7 @@
+target
+*.iml
+*.ipr
+*.iws
+*.log
 .classpath
 .project
-bin
-target
-*.log

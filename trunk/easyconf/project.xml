@@ -10,7 +10,7 @@
   <name>Easyconf library</name>
   <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-SNAPSHOT -->
-  <currentVersion>0.9.0rc3-SNAPSHOT</currentVersion>
+  <currentVersion>0.9.0</currentVersion>
   <organization>
     <name>EasyConf team</name>
     <url>http://www.sourceforge.net/projects/easyconf</url>
@@ -247,7 +247,7 @@
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
     <unitTest>
       <includes>
-        <include>com/germinus/easyconf/EasyConfTest.java</include>
+        <include>com/germinus/easyconf/${test.run.type}Tests.java</include>
       </includes>
       <resources>
         <resource>

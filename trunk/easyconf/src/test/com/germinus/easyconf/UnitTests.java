@@ -20,6 +20,8 @@ import junit.framework.TestSuite;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.germinus.easyconf.jmx.JMXTest;
+
 /**
  * Launches all the tests of EasyConf
  *
@@ -39,8 +41,8 @@ public class UnitTests extends TestCase {
 
     public static TestSuite suite () {
         TestSuite suite = new TestSuite("Junit Tests");
-//        suite.addTestSuite(ConfReaderTest.class);
         suite.addTest(EasyConfTest.suite());
+        suite.addTestSuite(JMXTest.class);
         return suite;
     }
 

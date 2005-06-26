@@ -16,7 +16,6 @@
 package com.germinus.easyconf;
 
 import org.xml.sax.SAXException;
-
 import java.io.IOException;
 
 /**
@@ -102,4 +101,19 @@ public class ComponentConfiguration {
         return properties;
     }
 
+    
+	public boolean equals(Object obj) {
+		if (!(obj instanceof ComponentConfiguration)) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		ComponentConfiguration cconf = (ComponentConfiguration) obj;
+		return componentName.equals(cconf.getComponentName());
+	}
+	
+	public int hashCode() {
+		return componentName.hashCode();
+	}
 }
