@@ -48,12 +48,10 @@ import java.util.ArrayList;
  * &gt;logic:equal name="registration_disabled" value="true">
  *   The registration is disabled
  * &gt;/logic:equal>
+ * 
  * @jsp.tag name="property" body-content="empty" tei-class="com.germinus.easyconf.taglib.PropertyTei"
  */
 public class PropertyTag extends BodyTagSupport {
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 3546082471134573881L;
 
 	private static final String DEFAULT_TYPE = "java.lang.String";

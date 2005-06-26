@@ -52,6 +52,23 @@ String skin = getProperties().getString("skin", "blue");
               <tt>NoSuchElementException</tt> is thrown.
           </p>
       </section>
+      <section name="Behaviour when a property does not exist">
+		<p>
+			EasyConf can behave in one of two ways when it tries to access a property
+			that doesn't exist:
+			<ul>
+				<li><b>Return a default value</b> (default mode): when the property does not
+					exist an empty list is retured if getList() was called, <tt>0</tt> if a native number
+						method was called and <tt>null</tt> for all other object types.</li>
+				<li><b>Throw exception</b>: when the property does not exist a <tt>NoSuchElementException</tt>
+					is thrown. To enable this behaviour call:
+					<source>
+						componentConf.setThrowExceptionOnMissing(true);
+					</source>
+					After retrieving the <tt>ComponentConfiguration</tt> object from EasyConf.
+					</li>
+			</ul>
+      </section>
       <section name="Numeric property types">
          <p>
             Besides the usual <tt>String</tt> type, EasyConf has included support

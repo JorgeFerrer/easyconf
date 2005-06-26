@@ -5,14 +5,13 @@
 	</properties>
 	<body>
 		<section name="Download stable version">
-			<p> Latest stable version is: 0.8. Check the <a href="changelog.html">Changelog</a>
+			<p> Latest stable version is: 0.9.0. Check the <a href="changelog.html">Changelog</a>
             for more information</p>
 			<p> It can be downloaded from SourceForge's <a 
 				href="http://sourceforge.net/project/showfiles.php?group_id=131552">file 
 				distribution</a> system. </p>
           <p>
-                The following dependent libraries will also
-                be needed:
+                The following main dependent libraries will also be needed:
                 <ul>
                         <li>commons-configuration 1.1</li>
                         <li>commons-collections 3.1</li>
@@ -30,10 +29,10 @@
           </p>
 		</section>
 		<section name="Maven users">
-                   <p>
+           <p>
 		      Maven users can set a dependency on EasyConf if they have ibiblio on their sites 
 		      list. Here is an example of the dependency 
-				XML that you could use:
+			  XML that you could use:
 		   </p>
 		   <source>
 			<![CDATA[

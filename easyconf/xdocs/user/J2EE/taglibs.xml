@@ -110,5 +110,27 @@
                ]]>            
          </source>
       </section>
+	  <section name="Taglib URI">
+		<p>
+			It is a good practice when working with J2EE taglibs to use a symbolic URI
+			instead of the real path to the <tt>tld</tt> file. The URI that you should use
+			to refer the EasyConf taglib is:
+			<source>
+				http://easyconf.sourceforge.net/easyconf-tags
+			</source>
+		</p>
+		<p>
+			One way to map this URI to the real location of the <tt>tld</tt> file is adding
+			the following lines in appropriate place inside the <tt>web.xml</tt> file:
+			<source>
+            <![CDATA[
+<taglib>
+	<taglib-uri>http://easyconf.sourceforge.net/easyconf-tags</taglib-uri>
+	<taglib-location>/WEB-INF/tld/easyconf.tld</taglib-location>
+</taglib>
+               ]]>            
+			</source>
+		</p>
+	  </section>
    </body>
 </document>

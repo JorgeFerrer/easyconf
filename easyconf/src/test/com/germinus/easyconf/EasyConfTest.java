@@ -29,8 +29,6 @@ import junit.framework.Test;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.germinus.easyconf.jmx.JMXTest;
-
 /**
  * System Test of the whole functionality of easyconf.
  * Note that it depends on external files
@@ -64,9 +62,6 @@ public class EasyConfTest extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(EasyConfTest.class);
-        suite.addTestSuite(JMXTest.class);
-        suite.addTest(ReloadTest.suite());
-//        suite.addTest(new EasyConfTest("testPropertiesASPModel"));
 //        suite.addTest(new EasyConfTest("testSpecifyingVariables"));
         
         return suite;
@@ -424,9 +419,11 @@ public class EasyConfTest extends TestCase {
      * Does not work due to a bug in digester (TODO: confirm)
      */
     public void bugtestXmlThatUsesNonExistentProperty() {
+    	ComponentConfiguration p2;
+    	
         String name = "module_with_xml_that_uses_non_existent_property";
         try {
-            ComponentConfiguration conf = EasyConf.getConfiguration(name);
+        	ComponentConfiguration conf = EasyConf.getConfiguration(name);
         } catch (InvalidPropertyException expected) {
             assertEquals("Invalid component name in the exception",
                     name, expected.getComponentName());
