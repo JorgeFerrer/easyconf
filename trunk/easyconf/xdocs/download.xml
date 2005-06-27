@@ -39,7 +39,7 @@
 <dependency>
 	<groupId>easyconf</groupId>
 	<artifactId>easyconf</artifactId>
-	<version>0.8.0</version>
+	<version>0.9.0</version>
 	<url>http://easyconf.sourceforge.net</url>
 </dependency>
 			]]>

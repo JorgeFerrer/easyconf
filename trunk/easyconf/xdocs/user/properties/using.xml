@@ -68,6 +68,7 @@ String skin = getProperties().getString("skin", "blue");
 					After retrieving the <tt>ComponentConfiguration</tt> object from EasyConf.
 					</li>
 			</ul>
+		</p>
       </section>
       <section name="Numeric property types">
          <p>
