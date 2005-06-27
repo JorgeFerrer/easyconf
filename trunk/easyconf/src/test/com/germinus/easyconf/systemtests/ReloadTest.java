@@ -17,6 +17,7 @@ package com.germinus.easyconf.systemtests;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Properties;
 
 import junit.framework.Test;
@@ -40,7 +41,8 @@ import com.germinus.easyconf.FileUtil;
  */
 public class ReloadTest extends TestCase {
 
-    private static final String INCLUDED_FILE_1 = "user-conf.properties";
+    private static final String RELOADED_KEY_INITIAL_VALUE = "initial-value";
+	private static final String INCLUDED_FILE_1 = "reload_module_include.properties";
     private static final String CONFIGURATION_DIR = "target/test-classes";
     private static final String COMPONENT_NAME_1 = "reload_module";
     private static final String COMPONENT_NAME_2 = "manual_reload_module";
@@ -81,7 +83,7 @@ public class ReloadTest extends TestCase {
         includedFile1 = new File(CONFIGURATION_DIR + "/" + INCLUDED_FILE_1);
         Properties props1 = new Properties();
         props1.setProperty(Conventions.RELOAD_DELAY_PROPERTY, "1");
-        props1.setProperty("reloaded-key", "value1");
+        props1.setProperty("reloaded-key", RELOADED_KEY_INITIAL_VALUE);
         FileUtil.write(includedFile1, props1);
 
         baseConf2 = new File(CONFIGURATION_DIR+ "/" + COMPONENT_NAME_2 + ".properties");
@@ -93,6 +95,7 @@ public class ReloadTest extends TestCase {
         FileUtil.write(xmlConf, XML_1);
         rules = new File(CONFIGURATION_DIR + "/" + COMPONENT_NAME_1  + Conventions.DIGESTERRULES_EXTENSION);
         FileUtil.write(rules, DIGESTER_RULES);
+		EasyConf.refreshAll();
     }
     
     protected void tearDown() throws Exception {
@@ -135,16 +138,16 @@ public class ReloadTest extends TestCase {
         File dest = baseConf;
         ComponentProperties initialProperties = EasyConf.
 			getConfiguration(componentName).getProperties();
-        assertEquals("The first file wasn't read correctly",
-                "value1", initialProperties.getString("reloaded-key"));
+        assertEquals("The initial file value wasn't read correctly",
+                RELOADED_KEY_INITIAL_VALUE, initialProperties.getString("reloaded-key"));
 
         Properties newProps = new Properties();
-        String newPropertyValue = "value2";
+        String newPropertyValue = "value-before-manual-specific-refreshing";
 		newProps.setProperty("reloaded-key", newPropertyValue);
         dest.delete();
-        Thread.sleep(1100);
         FileUtil.write(dest, newProps);
-        EasyConf.refreshComponent(componentName);
+
+		EasyConf.refreshComponent(componentName);
         ComponentProperties reloadedProperties = EasyConf.
 			getConfiguration(componentName).getProperties();
         assertEquals("The file has not been reloaded!!",
@@ -152,39 +155,38 @@ public class ReloadTest extends TestCase {
 
     }
 
-//    public void testManualOneComponentReloading() throws IOException {
-//	    File dest = includedFile1;
-//	    ComponentProperties initialProperties = getComponentConf().getProperties();
-//		assertEquals("The first file wasn't read correctly", "value1",
-//	            initialProperties.getString("reloaded-key"));
-//	
-//	    Properties newProps = new Properties();
-//	    String newPropertyValue = "value2";
-//	    newProps.setProperty("reloaded-key", newPropertyValue);
-//	    dest.delete();
-//	    FileUtil.write(dest, newProps);
-//
-//	    EasyConf.refreshComponent(COMPONENT_NAME_1);
-//	    
-//	    ComponentProperties refreshedProperties = getComponentConf().getProperties();
-//	    String obtainedValue = refreshedProperties.getString("reloaded-key");
-//		assertEquals("The file has not been reloaded!!", newPropertyValue,
-//	            obtainedValue);
-//	}
-
 	public void testManualFullReloading() throws IOException {
-        File dest = includedFile1;
-        assertEquals("The first file wasn't read correctly", "value1",
-                getComponentConf().getProperties().getString("reloaded-key"));
+    	String componentName = COMPONENT_NAME_1;
+        File dest = baseConf;
+        ComponentProperties initialProperties = EasyConf.
+			getConfiguration(componentName).getProperties();
+        assertEquals("The initial file value wasn't read correctly",
+                RELOADED_KEY_INITIAL_VALUE, initialProperties.getString("reloaded-key"));
 
         Properties newProps = new Properties();
-        String newPropertyValue = "value2";
-        newProps.setProperty("reloaded-key", newPropertyValue);
+        String newPropertyValue = "value-before-manual-refreshing";
+		newProps.setProperty("reloaded-key", newPropertyValue);
         dest.delete();
         FileUtil.write(dest, newProps);
-        EasyConf.refreshAll();
-        assertEquals("The file has not been reloaded!!", newPropertyValue,
-                getComponentConf().getProperties().getString("reloaded-key"));
+
+		EasyConf.refreshAll();
+        ComponentProperties reloadedProperties = EasyConf.
+			getConfiguration(componentName).getProperties();
+        assertEquals("The file has not been reloaded!!",
+                newPropertyValue, reloadedProperties.getString("reloaded-key"));
+//        File dest = includedFile1;
+////        assertEquals("The initial property value is not correct. Cannot check functionality!",
+////				RELOADED_KEY_INITIAL_VALUE,
+////                getComponentConf().getProperties().getString("reloaded-key"));
+////
+//        Properties newProps = new Properties();
+//        String newPropertyValue = "value-before-manual-refresh";
+//        newProps.setProperty("reloaded-key", newPropertyValue);
+//        dest.delete();
+//        FileUtil.write(dest, newProps);
+//        EasyConf.refreshAll();
+//        assertEquals("The file has not been reloaded!!", newPropertyValue,
+//                getComponentConf().getProperties().getString("reloaded-key"));
     }
 
     /**
@@ -199,7 +201,7 @@ public class ReloadTest extends TestCase {
 //                + "/test-conf.jar");
 //        FileUtil.writeAsJAR(xmlConf, "jar-conf.properties", props);
         assertEquals("After the first read the value should be value1",
-                "value1", getComponentConf().getProperties().getString(
+                RELOADED_KEY_INITIAL_VALUE, getComponentConf().getProperties().getString(
                         "jar-reloaded-key"));
 //        props.setProperty("jar-reloaded-key", "value2");
         System.out.println("Please, switch JAR files before 5 seconds...");
