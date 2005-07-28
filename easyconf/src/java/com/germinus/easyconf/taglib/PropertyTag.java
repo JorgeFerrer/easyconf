@@ -266,6 +266,8 @@ public class PropertyTag extends BodyTagSupport {
             value = conf.getList(property, getPropertyFilter(), EMPTY_LIST);
         } else if (getType().equals("java.lang.Integer")) {
             value = conf.getInteger(property, getPropertyFilter(), new Integer(0));
+        } else if (getType().equals("java.lang.String[]")) {
+            value = conf.getStringArray(property, getPropertyFilter(), new String[0]);
         } else if (getType().equals("java.lang.String")) {
             if (defaultValue != null) {
                 value = conf.getString(property, getPropertyFilter(), defaultValue);
