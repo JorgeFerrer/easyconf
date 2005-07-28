@@ -26,7 +26,7 @@
       </section>
       <section name="property tag">         
          <p>
-				<b>Property attributes</b>
+				<b>Tag attributes</b>
             <ul>
                <li><b>id</b>: the name of the variable/attribute which will hold the property value 
                   (required)</li>
@@ -44,10 +44,14 @@
                   <tt>java.lang.Boolean</tt>,
                   <tt>java.lang.Short</tt>,
                   <tt>java.lang.Long</tt> and
+						<tt>java.lang.String[]</tt>,
                   <tt>java.util.List</tt>. (This attribute is optional).                  
                 </li>
                 <li><b>selector1, selector2, selector3, selector4, selector5</b>: allow setting
                   up to 5 selectors for choosing the value of the property (optional)</li>
+					 <li><b>defaultValue</b>: the default value if the property does not exist. This default
+						value is only used if the type is <tt>java.lang.String</tt>. In future versions it will
+						be extended to other types. (optional)</li>
             </ul>
 			</p>
          <p>
@@ -84,7 +88,7 @@
       </section>
       <section name="configurationObject tag">
          <p>
-				<b>Property attributes</b>
+				<b>Tag attributes</b>
             <ul>
                <li><b>id</b>: the name of the variable/attribute which will hold the configuration 
                   object (required)</li>
