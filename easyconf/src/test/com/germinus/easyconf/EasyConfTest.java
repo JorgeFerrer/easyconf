@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Properties;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -374,7 +375,24 @@ public class EasyConfTest extends TestCase {
                 props.getString("global-company-name"));
         
     }
-    public void testXMLASPModel() {
+
+    public void testJavaUtilPropertiesASPModel() {
+        String companyId = "exampleCompany";
+        Properties props = EasyConf.getConfiguration(companyId, 
+                "test_module").getProperties().getProperties();
+        assertEquals("The property was not read from the company specific file",
+                companyId,
+                props.getProperty("company-name"));
+        assertEquals("The property should have the default value if it is not" +
+        		" overridden by the company specific file",
+        		"test_module",
+        		props.getProperty("string-not-overridden"));
+        assertEquals("The property was not read from the company specific global file",
+                "exampleCompanyGlobal",
+                props.getProperty("global-company-name"));
+        
+    }
+	public void testXMLASPModel() {
         DatabaseConf conf = (DatabaseConf) EasyConf.
         		getConfiguration("exampleCompany", "test_module").
         		getConfigurationObject();
