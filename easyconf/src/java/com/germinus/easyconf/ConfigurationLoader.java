@@ -15,6 +15,7 @@
  */
 package com.germinus.easyconf;
 
+import org.apache.commons.configuration.DatabaseConfiguration;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.Substitutor;
 import org.apache.commons.digester.substitution.MultiVariableExpander;
@@ -23,6 +24,8 @@ import org.apache.commons.digester.xmlrules.DigesterLoader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.SAXException;
+
+import com.thoughtworks.xstream.XStream;
 
 import java.io.IOException;
 import java.io.FileNotFoundException;
@@ -36,6 +39,7 @@ import java.net.URL;
 class ConfigurationLoader {
     private static final Log log = LogFactory.getLog(ConfigurationLoader.class);
 
+    private static final XStream xstream = new XStream();
 
     public ComponentProperties readPropertiesConfiguration(String companyId, String componentName) {
         AggregatedProperties properties = new AggregatedProperties(companyId, componentName);
@@ -59,8 +63,41 @@ class ConfigurationLoader {
             String componentName, ComponentProperties properties) 
     	throws IOException, SAXException {
         log.info("Reading the configuration object for " + componentName);
+        ConfigurationObjectCache result = null;
+        
+        String inexistentSource = null;
+        String sourceName = properties.getString(Conventions.CONFIGURATION_OBJECTS_SOURCE_PROPERTY, inexistentSource);
+        if (sourceName == inexistentSource) {
+        	// ignore
+        } else if (DatasourceURL.isDatasource(sourceName)) {
+        	result = readConfigurationObjectFromDatabase(companyId, componentName, properties, sourceName);
+        } else {
+        	throw new ConfigurationException("The specified value for " +
+        			"easyconf:configuration-object-source is not valid: " +
+        			sourceName);
+        }
+        if (result == null) {
+        	result = readConfigurationObjectFromXMLFile(companyId, componentName, properties);
+        }
+        return result;
 
-        String confFileName = null;
+    }
+    
+	private ConfigurationObjectCache readConfigurationObjectFromDatabase(String companyId, String componentName, ComponentProperties properties, String sourceName) {
+		ConfigurationObjectCache result;
+		DatasourceURL dsURL = new DatasourceURL(sourceName, companyId,
+				componentName, DatasourceURL.CONFIGURATION_OBJECTS_TABLE);
+		String confObjXML = dsURL.getConfiguration().
+			getString(Conventions.CONFIGURATION_OBJECTS_KEY);
+		if (confObjXML == null) return null;
+		Object confObject = xstream.fromXML(confObjXML);
+		result = new ConfigurationObjectCache(confObject, null, properties);
+		return result;
+	}
+
+	private ConfigurationObjectCache readConfigurationObjectFromXMLFile(String companyId, String componentName, ComponentProperties properties) throws FileNotFoundException, IOException, SAXException {
+		ConfigurationObjectCache result;
+		String confFileName = null;
         URL confFile = null;
         if (companyId != null) {
             confFileName = componentName + Conventions.SLASH + companyId + Conventions.XML_EXTENSION;
@@ -75,15 +112,14 @@ class ConfigurationLoader {
             throw new FileNotFoundException("File " + confFileName + " not found");
         }
         Object confObj = loadXMLFile(confFile, properties);
-        ConfigurationObjectCache result = new ConfigurationObjectCache(confObj, confFile, properties);
+        result = new ConfigurationObjectCache(confObj, confFile, properties);
         Long delay = properties.getDelayPeriod();
         if (delay != null) {
             result.setReloadingStrategy(
                     new FileURLChangedReloadingStrategy(confFile, delay.longValue()));
         }
-        return result;
-
-    }
+		return result;
+	}
 
     /**
      * Read an XML file and return an Object representation of its contents
@@ -117,4 +153,26 @@ class ConfigurationLoader {
         }
     }
 
+    public void saveConfigurationObjectIntoDatabase(Object configurationObject, String companyId, String componentName, ComponentProperties properties) {
+    	log.info("Saving the configuration object into the database for " + componentName);
+        String inexistentSource = null;
+        String sourceName = properties.getString(Conventions.CONFIGURATION_OBJECTS_SOURCE_PROPERTY, inexistentSource);
+        if (sourceName == inexistentSource) {
+        	throw new ConfigurationException("It is imposible to save the configuration object. "
+        			+ "Please specify a valid datasource in property " 
+        			+ Conventions.CONFIGURATION_OBJECTS_SOURCE_PROPERTY); 
+        } else if (DatasourceURL.isDatasource(sourceName)) {
+        	DatasourceURL dsURL = new DatasourceURL(sourceName, companyId,
+					componentName, DatasourceURL.CONFIGURATION_OBJECTS_TABLE);
+			DatabaseConfiguration dbConf = dsURL
+					.getConfiguration();
+			String xml = xstream.toXML(configurationObject);
+			dbConf.setProperty(DatasourceURL.CONFIGURATION_OBJECTS_KEY, xml);
+        } else {
+        	throw new ConfigurationException("The specified value for " +
+        			"easyconf:configuration-object-source is not valid: " +
+        			sourceName);
+        }
+    }
+    
 }
