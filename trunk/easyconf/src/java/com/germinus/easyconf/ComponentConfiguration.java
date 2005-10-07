@@ -75,6 +75,21 @@ public class ComponentConfiguration {
         }
         return configurationObjectCache.getConfigurationObject();
     }
+    
+    /**
+     * Update or create a new Object to a persistent storage.
+     * 
+     * In order to make this method work it should be stablished a
+     * configuration-objects-source to a database as explained in the docs. 
+     * If the source of configuration objects does not allow persistent storage
+     * (which is the default) an exception will be thrown.
+     * 
+     * @param obj
+     */
+    public void saveConfigurationObject(Object configurationObject) {
+    	getConfigurationManager().saveConfigurationObjectIntoDatabase(configurationObject, companyId, componentName, getAvailableProperties());
+    	configurationObjectCache = new ConfigurationObjectCache(configurationObject, null, getAvailableProperties());
+    }
 
     private ConfigurationLoader getConfigurationManager() {
         return confManager;

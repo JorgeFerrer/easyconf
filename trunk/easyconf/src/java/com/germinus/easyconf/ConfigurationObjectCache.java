@@ -49,8 +49,11 @@ public class ConfigurationObjectCache {
         reload();
         return configurationObject;
     }
-
+    
     private void reload() {
+    	if (confFileUrl == null) {
+    		return;
+    	}
         synchronized (reloadLock) {
             if (reloadingStrategy.reloadingRequired()) {
                 try {

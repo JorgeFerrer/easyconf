@@ -16,41 +16,60 @@
 package com.germinus.easyconf;
 
 import javax.naming.InitialContext;
+import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.apache.commons.configuration.DatabaseConfiguration;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Represents the URL to a datasource as specified in a properties file
- * TODO: Add support for ASP applications
- *
  * @author  Jorge Ferrer
- * @version $Revision$
- *
  */
 public class DatasourceURL {
 
+	private static final Log log = LogFactory.getLog(DatasourceURL.class);
     private static final String DATASOURCE_PREFIX = Conventions.DATASOURCE_PREFIX;
+    public static final String CONFIGURATION_OBJECTS_TABLE = Conventions.CONFIGURATION_OBJECTS_TABLE;
+    public static final String PROPERTIES_TABLE = Conventions.PROPERTIES_TABLE;
+    public static final String CONFIGURATION_OBJECTS_KEY = Conventions.CONFIGURATION_OBJECTS_KEY;
     private static InitialContext ctx = null;
     private String dataSourceName;
     private String companyId;
     private String componentName;
+	private String tableName;
 
-    /**
-     * @param datasourcePath
-     * @param companyId
-     * @param componentName
-     */
-    public DatasourceURL(String datasourcePath, String companyId, String componentName) {
+    public DatasourceURL(String datasourcePath, String companyId, 
+    		String componentName, String tableName) {
         this.dataSourceName = datasourcePath.substring(DATASOURCE_PREFIX.length());
         this.companyId = companyId;
         this.componentName = componentName;
+        this.tableName = tableName;
     }
 
     public DataSource getDatasource() {        
         try {
-            return (DataSource)getContext().lookup(dataSourceName);
+        	DataSource ds = null;
+        	String[] dsFinders = {
+        			"java:/comp/env/" + dataSourceName,
+        			dataSourceName,
+        	};
+        	for (int i = 0; i < dsFinders.length; i++) {
+        		try {
+        			ds = (DataSource)getContext().lookup(dsFinders[i]);
+        			break;
+        		} catch (NameNotFoundException e) {
+        			if (log.isDebugEnabled()) {
+        				log.debug("Datasource " + dataSourceName + " not found", e);
+        			}
+        		}
+        	}
+        	if (ds == null) {
+        		throw new ConfigurationException("Cannot find datasource: " + dataSourceName);
+        	}
+        	return ds;
         } catch (NamingException e) {
             throw new ConfigurationException("Error loading datasource " + dataSourceName);
         }
@@ -64,7 +83,7 @@ public class DatasourceURL {
     }
 
     protected String getTableName() {
-        return "EasyConfProperties";
+    	return tableName;
     }
 
     protected String getComponentColumnName() {
@@ -80,7 +99,9 @@ public class DatasourceURL {
     }
 
     public static boolean isDatasource(String fileName) {
-        return fileName.startsWith(DATASOURCE_PREFIX);
+    	if (fileName == null) return false;
+
+    	return fileName.startsWith(DATASOURCE_PREFIX);
     }
 
     public DatabaseConfiguration getConfiguration() {
@@ -89,7 +110,14 @@ public class DatasourceURL {
                 getComponentColumnName(),
                 getKeyColumnName(),
                 getValueColumnName(),
-                componentName);
+                getCompanyComponentValue());
     }
 
+	private String getCompanyComponentValue() {
+		if (companyId != null) {
+			return companyId + ":" + componentName;
+		} else {
+			return componentName;
+		}
+	}
 }
