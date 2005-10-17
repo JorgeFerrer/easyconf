@@ -681,8 +681,8 @@ public class ComponentProperties {
             if (filter.hasVariables()) {
                 varsConf = new MapConfiguration(filter.getVariables());
                 filteredConf = new CompositeConfiguration();
-                filteredConf.addConfiguration(properties);
                 filteredConf.addConfiguration(varsConf);
+                filteredConf.addConfiguration(properties);
             }
             value = getTypedPropertyWithDefault(
                     key + filter.getFilterSuffix(i), theClass, filteredConf,
