@@ -407,6 +407,13 @@ public class EasyConfTest extends TestCase {
                 "my-value",
                 result);
     }
+    
+    public void testSettingPropertyAsDefaultVariableValue() {
+        String result = getProperties().getString("property-with-variable");
+        assertEquals("The variable has not been substituted successfully",
+                "default-exampleVariable-value",
+                result);    	
+    }
 
     public void testSetProperty() {
         getProperties().setProperty("new-property", "new-value");
