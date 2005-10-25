@@ -38,11 +38,13 @@ public class ConfigurationObjectCache {
     private static final Log log = LogFactory.getLog(ConfigurationObjectCache.class);
     private URL confFileUrl;
     private ComponentProperties properties;
+	private String confName;
     
-    public ConfigurationObjectCache(Object confObj, URL confFileUrl, ComponentProperties properties) {
+    public ConfigurationObjectCache(Object confObj, URL confFileUrl, ComponentProperties properties, String confName) {
         this.configurationObject = confObj;
         this.confFileUrl = confFileUrl;
         this.properties = properties;
+        this.confName = confName;
     }
     
     public Object getConfigurationObject() {
@@ -50,6 +52,17 @@ public class ConfigurationObjectCache {
         return configurationObject;
     }
     
+	public String getConfName() {
+//		if (confName == null) {
+//			try {
+//				confName = (String) BeanUtils.getSimpleProperty(configurationObject, "id");
+//			} catch (Exception e) {
+//				confName = Conventions.DEFAULT_CONF_OBJECT_NAME;
+//			}
+//		}
+		return confName;
+	}
+
     private void reload() {
     	if (confFileUrl == null) {
     		return;

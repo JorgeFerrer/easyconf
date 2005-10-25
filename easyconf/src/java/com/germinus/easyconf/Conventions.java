@@ -43,9 +43,10 @@ public interface Conventions {
 
 	String CONFIGURATION_OBJECTS_TABLE = "easyconf_configuration_objects";
 	String PROPERTIES_TABLE = "easyconf_properties";
-	String CONFIGURATION_OBJECTS_KEY = "configurationObject";
     
-    public static final String COMPANY_ID_PROPERTY = "easyconf:companyId";
-    public static final String COMPONENT_NAME_PROPERTY = "easyconf:componentName";
-    public static final String PREFIX_SEPARATOR = ":";
+    String COMPANY_ID_PROPERTY = "easyconf:companyId";
+    String COMPONENT_NAME_PROPERTY = "easyconf:componentName";
+    String PREFIX_SEPARATOR = ":";
+    
+	String DEFAULT_CONF_OBJECT_NAME = "DEFAULT_CONF_OBJECT";
 }

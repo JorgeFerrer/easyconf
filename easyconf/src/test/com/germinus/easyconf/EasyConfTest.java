@@ -63,7 +63,7 @@ public class EasyConfTest extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(EasyConfTest.class);
-//        suite.addTest(new EasyConfTest("testSpecifyingVariables"));
+//        suite.addTest(new EasyConfTest("testNamedConfiguration"));
         
         return suite;
     }
@@ -271,9 +271,21 @@ public class EasyConfTest extends TestCase {
     				expected, 
 					getProperties().getList("list-overridden-in-prj"));
     }
-
-    public void testObjectConfiguration() {
+   
+    public void testDefaultConfigurationObject() {
+        DatabaseConf configuration = getConfigurationObject();
+		DatabaseAssert.assertContents(configuration);
+        DatabaseConf dbConf = (DatabaseConf) configuration;
+        assertEquals("Incorrect number of tables. The default configuration was not correclty read", 
+        		2, dbConf.getTables().size());
+    }
+    
+    public void testNamedConfigurationObject() {
+    	DatabaseConf conf = (DatabaseConf) componentConf.getConfigurationObject("myname");
         DatabaseAssert.assertContents(getConfigurationObject());
+        DatabaseConf dbConf = (DatabaseConf) conf;
+        assertEquals("Incorrect number of tables. The named configuration was not correclty read", 
+        		3, dbConf.getTables().size());
     }
     
     public void testVariablesInObjectConfiguration() {
@@ -463,7 +475,10 @@ public class EasyConfTest extends TestCase {
     }
 
     DatabaseConf getConfigurationObject() {
-        return (DatabaseConf) componentConf.getConfigurationObject();
+        Object configurationObject = componentConf.getConfigurationObject();
+        assertEquals("Invalid configurationObject class",
+        		DatabaseConf.class, configurationObject.getClass());
+		return (DatabaseConf) configurationObject;
     }
 
     private void assertEquals(String msg, String[] expected, String[] obtained) {

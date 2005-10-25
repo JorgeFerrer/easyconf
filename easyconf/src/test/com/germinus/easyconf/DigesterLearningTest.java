@@ -49,6 +49,9 @@ public class DigesterLearningTest extends TestCase {
         
         Object configuration = readConfig(digester);
         DatabaseAssert.assertContents(configuration);
+        DatabaseConf dbConf = (DatabaseConf) configuration;
+        assertEquals("Incorrect number of tables. The XML file was not read correctly",
+        		2, dbConf.getTables().size());
     }
 
 
@@ -62,6 +65,9 @@ public class DigesterLearningTest extends TestCase {
         Object configuration = readConfig(digester);
 
         DatabaseAssert.assertContents(configuration);
+        DatabaseConf dbConf = (DatabaseConf) configuration;
+        assertEquals("Incorrect number of tables. The XML file was not read correclty", 
+        		2, dbConf.getTables().size());
     }
     
     // .......................... Helper methods .........................

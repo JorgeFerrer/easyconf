@@ -34,7 +34,6 @@ public class DatasourceURL {
     private static final String DATASOURCE_PREFIX = Conventions.DATASOURCE_PREFIX;
     public static final String CONFIGURATION_OBJECTS_TABLE = Conventions.CONFIGURATION_OBJECTS_TABLE;
     public static final String PROPERTIES_TABLE = Conventions.PROPERTIES_TABLE;
-    public static final String CONFIGURATION_OBJECTS_KEY = Conventions.CONFIGURATION_OBJECTS_KEY;
     private static InitialContext ctx = null;
     private String dataSourceName;
     private String companyId;

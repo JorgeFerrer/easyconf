@@ -32,8 +32,6 @@ public class DatabaseAssert extends Assert {
         ObjectAssert.assertInstanceOf("The configuration is not of the correct class",
                 DatabaseConf.class,
                 configuration);
-        DatabaseConf dbConf = (DatabaseConf) configuration;
-        assertEquals("Incorrect number of tables", 2, dbConf.getTables().size());
     }
 
 }
