@@ -15,8 +15,12 @@
  */
 package com.germinus.easyconf;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.xml.sax.SAXException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Contains the configuration of an EasyConf component including properties 
@@ -28,11 +32,12 @@ import java.io.IOException;
  */
 public class ComponentConfiguration {
 
+	private static final Log log = LogFactory.getLog(ComponentConfiguration.class);
     private ComponentProperties properties;
     private String componentName;
     private ConfigurationLoader confManager = new ConfigurationLoader();
     private String companyId;
-    private ConfigurationObjectCache configurationObjectCache;
+    private Map confObjectsCache = new HashMap();
 
     public ComponentConfiguration(String componentName) {
         this(null, componentName);
@@ -51,7 +56,7 @@ public class ComponentConfiguration {
     }
     
     /**
-     * Get an object which represents the configuration of the given component
+     * Get an object which represents the default configuration of component
      * 
      * The object is populated using the digester rules defined in the file
      * componentName.digesterRules.xml which must be found in the classpath (first it is
@@ -60,24 +65,42 @@ public class ComponentConfiguration {
      * @throws ConfigurationException if the object graph cannot be read
      */
     public Object getConfigurationObject() {
-        if (configurationObjectCache != null) {
-            return configurationObjectCache.getConfigurationObject();
-        }
-        try {
-            configurationObjectCache = getConfigurationManager().
-                    readConfigurationObject(companyId,
-                                            componentName, 
-                                            getAvailableProperties());
-        } catch (IOException e) {
-            throw new ConfigurationException(componentName, "Error reading object configuration", e);
-        } catch (SAXException e) {
-            throw new ConfigurationException(componentName, "Error parsing the XML file", e);
-        }
-        return configurationObjectCache.getConfigurationObject();
+    	return getConfigurationObject(Conventions.DEFAULT_CONF_OBJECT_NAME);
     }
     
     /**
-     * Update or create a new Object to a persistent storage.
+     * Get an object which represents a named configuration of the component
+     * 
+     * The object is populated using the digester rules defined in the file
+     * componentName.digesterRules.xml which must be found in the classpath (first it is
+     * searched in the context of the current thread and then in the context of the system
+     * classpath)
+     * @throws ConfigurationException if the object graph cannot be read
+     */
+	public Object getConfigurationObject(String confName) {
+        if (confObjectsCache.get(confName) == null) {
+	        try {
+	            ConfigurationObjectCache confObjectCache = getConfigurationManager().
+	                    readConfigurationObject(companyId,
+	                                            componentName,
+	                                            confName,
+												getAvailableProperties());
+	            log.debug("Obtained confObjectCache for " + confName + ": " + confObjectCache);
+	            log.debug("Its confObjectis " + confObjectCache.getConfigurationObject());
+				confObjectsCache.put(confName, confObjectCache);
+	        } catch (IOException e) {
+	            throw new ConfigurationException(componentName, "Error reading object configuration", e);
+	        } catch (SAXException e) {
+	            throw new ConfigurationException(componentName, "Error parsing the XML file", e);
+	        }
+        }
+        ConfigurationObjectCache confObject = (ConfigurationObjectCache) 
+			confObjectsCache.get(confName); 
+		return confObject.getConfigurationObject();
+	}
+
+	/**
+     * Update or create a new default configuration Object to a persistent storage.
      * 
      * In order to make this method work it should be stablished a
      * configuration-objects-source to a database as explained in the docs. 
@@ -87,8 +110,23 @@ public class ComponentConfiguration {
      * @param obj
      */
     public void saveConfigurationObject(Object configurationObject) {
-    	getConfigurationManager().saveConfigurationObjectIntoDatabase(configurationObject, companyId, componentName, getAvailableProperties());
-    	configurationObjectCache = new ConfigurationObjectCache(configurationObject, null, getAvailableProperties());
+    	saveConfigurationObject(Conventions.DEFAULT_CONF_OBJECT_NAME, configurationObject);
+    }
+
+	/**
+     * Update or create a new Object with the given name to a persistent storage.
+     * 
+     * In order to make this method work it should be stablished a
+     * configuration-objects-source to a database as explained in the docs. 
+     * If the source of configuration objects does not allow persistent storage
+     * (which is the default) an exception will be thrown.
+     * 
+     * @param obj
+     */
+    public void saveConfigurationObject(String confName, Object configurationObject) {
+    	ConfigurationObjectCache newConfObject = new ConfigurationObjectCache(configurationObject, null, getAvailableProperties(), confName);
+    	getConfigurationManager().saveConfigurationObjectIntoDatabase(configurationObject, companyId, componentName, confName, getAvailableProperties());
+    	confObjectsCache.put(confName, newConfObject);
     }
 
     private ConfigurationLoader getConfigurationManager() {
@@ -131,4 +169,5 @@ public class ComponentConfiguration {
 	public int hashCode() {
 		return componentName.hashCode();
 	}
+
 }
