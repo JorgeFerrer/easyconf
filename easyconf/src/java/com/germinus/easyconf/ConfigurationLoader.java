@@ -25,8 +25,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.SAXException;
 
-import com.thoughtworks.xstream.XStream;
-
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -39,7 +37,7 @@ import java.net.URL;
 class ConfigurationLoader {
     private static final Log log = LogFactory.getLog(ConfigurationLoader.class);
 
-    private static final XStream xstream = new XStream();
+    private static final ConfigurationSerializer serializer = ConfigurationSerializer.getSerializer();
 
     public ComponentProperties readPropertiesConfiguration(String companyId, String componentName) {
         AggregatedProperties properties = new AggregatedProperties(companyId, componentName);
@@ -92,7 +90,7 @@ class ConfigurationLoader {
 		String confObjXML = dsURL.getConfiguration().
 			getString(confName);
 		if (confObjXML == null) return null;
-		Object confObject = xstream.fromXML(confObjXML);
+		Object confObject = serializer.deserialize(confObjXML);
 		result = new ConfigurationObjectCache(confObject, null, properties, confName);
 		return result;
 	}
@@ -173,7 +171,7 @@ class ConfigurationLoader {
 					componentName, DatasourceURL.CONFIGURATION_OBJECTS_TABLE);
 			DatabaseConfiguration dbConf = dsURL
 					.getConfiguration();
-			String xml = xstream.toXML(configurationObject);
+			String xml = serializer.serialize(configurationObject);
 			dbConf.setProperty(confName, xml);
         } else {
         	throw new ConfigurationException("The specified value for " +
