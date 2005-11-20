@@ -1,0 +1,51 @@
+HOW TO MAKE AN EASYCONF RELEASE
+-------------------------------
+0) Prepare the documentation
+
+All of EasyConf features must be apropriately documented in the 
+the files at the xdocs directory. This content will be part of
+EasyConf's website.
+
+
+1) Execute maven release targets to create the release artifacts
+
+This targets will ask you for things:
+- Your CVS password (probably several times)
+- Version number
+- CVS tag name: follow the conventions of existing tags. Examples are:
+	RELEASE_0_9
+	RELEASE_0_9_5
+
+The commands to execute are:
+
+maven scm:prepare-release
+maven -Dmaven.site.deploy.live=false -Dmaven.scm.bootstrap.goals=dist scm:perform-release 
+
+NOTE: Sometimes passing the JMX test fails when using the scm:perform-release 
+and the release process is aborted. In such a case go to the directory target/checkouts/easyconf/
+and exec 'maven dist' manually to obtain the release artifacts and follow
+with step 2.
+
+2) Create a new release at SourceForge and upload the files
+2.1) Go to EasyConf>admin>File releases (http://sourceforge.net/project/admin/editpackages.php?group_id=131552)
+2.2) Click [Add release] (http://sourceforge.net/project/admin/newrelease.php?package_id=144291&group_id=131552)
+2.3) Set the version number and click OK
+2.4) Write some change logs
+2.5) Upload all the files found in target/checkouts/easyconf/target/distributions 
+     to  ftp://anonymous@upload.sourceforge.net/incoming
+2.6) Reload the sourceforge release files web page and select the uploaded files
+2.7) Set the processor (platform-independent) and file type to each of the files
+2.8) Send email notice
+
+3) Add a news item at sourceforge about the new release
+
+4) Upload to ibiblio's maven repository 
+(More info about this step at: http://maven.apache.org/reference/repository-upload.html)
+
+4.1) maven create-upload-bundle
+4.2) Upload to Sourceforge. Example:
+scp target/easyconf-0.9.5-bundle.jar jferrergerminus@shell.sourceforge.net:/home/groups/e/ea/easyconf/htdocs/
+
+4.3) Create a request in JIRA: http://jira.codehaus.org/secure/CreateIssue.jspa?pid=10367&issuetype=3
+For examples take a look at previous requests: http://jira.codehaus.org/browse/MAVENUPLOAD-419
+
