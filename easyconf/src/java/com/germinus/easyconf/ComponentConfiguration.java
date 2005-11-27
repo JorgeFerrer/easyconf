@@ -69,6 +69,21 @@ public class ComponentConfiguration {
     }
     
     /**
+     * Get an object which represents the default configuration of component in the
+     * same way as getConfigurationObject(). This method should be used when the
+     * configuration object is going to be modified and other EasyConf clients
+     * shouldn't notice the changes.
+     *
+     * This method ensures that the configuration object is not obtained from the
+     * cache nor is saved in the cache.
+     *
+     * @throws ConfigurationException if the object graph cannot be read
+     */
+    public Object getConfigurationObjectForEdit() {
+    	return getConfigurationObjectForEdit(Conventions.DEFAULT_CONF_OBJECT_NAME);
+    }
+
+    /**
      * Get an object which represents a named configuration of the component
      * 
      * The object is populated using the digester rules defined in the file
@@ -99,6 +114,34 @@ public class ComponentConfiguration {
 		return confObject.getConfigurationObject();
 	}
 
+    /**
+     * Get an object which represents a named configuration of the component in the
+     * same way as getConfigurationObject(String). This method should be used when the
+     * configuration object is going to be modified and other EasyConf clients
+     * shouldn't notice the changes.
+     *
+     * This method ensures that the configuration object is not obtained from the
+     * cache nor is saved in the cache.
+     *
+     * @throws ConfigurationException if the object graph cannot be read
+     */
+	public Object getConfigurationObjectForEdit(String confName) {
+        try {
+            ConfigurationObjectCache confObjectCache = getConfigurationManager().
+                    readConfigurationObject(companyId,
+                            componentName,
+                            confName,
+                            getAvailableProperties());
+            log.debug("Obtained confObjectCache for " + confName + ": " + confObjectCache);
+            log.debug("Its confObjectis " + confObjectCache.getConfigurationObject());
+            return confObjectCache.getConfigurationObject();
+        } catch (IOException e) {
+            throw new ConfigurationException(componentName, "Error reading object configuration", e);
+        } catch (SAXException e) {
+            throw new ConfigurationException(componentName, "Error parsing the XML file", e);
+        }
+	}
+
 	/**
      * Update or create a new default configuration Object to a persistent storage.
      * 
@@ -107,7 +150,7 @@ public class ComponentConfiguration {
      * If the source of configuration objects does not allow persistent storage
      * (which is the default) an exception will be thrown.
      * 
-     * @param obj
+     * @param configurationObject
      */
     public void saveConfigurationObject(Object configurationObject) {
     	saveConfigurationObject(Conventions.DEFAULT_CONF_OBJECT_NAME, configurationObject);
@@ -121,17 +164,31 @@ public class ComponentConfiguration {
      * If the source of configuration objects does not allow persistent storage
      * (which is the default) an exception will be thrown.
      * 
-     * @param obj
+     * @param configurationObject
      */
     public void saveConfigurationObject(String confName, Object configurationObject) {
-    	ConfigurationObjectCache newConfObject = new ConfigurationObjectCache(configurationObject, null, getAvailableProperties(), confName);
-    	getConfigurationManager().saveConfigurationObjectIntoDatabase(configurationObject, companyId, componentName, confName, getAvailableProperties());
+    	ConfigurationObjectCache newConfObject = new ConfigurationObjectCache
+                (configurationObject, null, getAvailableProperties(), confName);
+    	getConfigurationManager().saveConfigurationObjectIntoDatabase
+                (configurationObject, companyId, componentName, confName,
+                        getAvailableProperties());
     	confObjectsCache.put(confName, newConfObject);
     }
 
-    private ConfigurationLoader getConfigurationManager() {
-        return confManager;
+    /**
+     * Delete the configuration Object with the given name from the configured
+     * persistent storage.
+     *
+     * This method only makes sense if a persistent storage has been defined
+     * and saveConfigurationObject() has been called once of the given name.
+     * @param confName
+     */
+    public void deleteConfigurationObject(String confName) {
+        getConfigurationManager().deleteConfigurationObjectFromDatabase
+                (companyId, componentName, confName, getAvailableProperties());
     }
+
+
 
     /**
      * Get a typed map of the properties associated with this component
@@ -145,16 +202,6 @@ public class ComponentConfiguration {
         return properties;
     }
 
-    private ComponentProperties getAvailableProperties() {
-        if (properties != null) {
-            return properties;
-        }
-        properties = getConfigurationManager().
-        	readPropertiesConfiguration(companyId, componentName);
-        return properties;
-    }
-
-    
 	public boolean equals(Object obj) {
 		if (!(obj instanceof ComponentConfiguration)) {
 			return false;
@@ -169,5 +216,21 @@ public class ComponentConfiguration {
 	public int hashCode() {
 		return componentName.hashCode();
 	}
+
+    // ................. Helper methods............................
+
+    private ComponentProperties getAvailableProperties() {
+        if (properties != null) {
+            return properties;
+        }
+        properties = getConfigurationManager().
+        	readPropertiesConfiguration(companyId, componentName);
+        return properties;
+    }
+
+    private ConfigurationLoader getConfigurationManager() {
+        return confManager;
+    }
+
 
 }

@@ -158,8 +158,13 @@ class ConfigurationLoader {
         }
     }
 
-    public void saveConfigurationObjectIntoDatabase(Object configurationObject, String companyId, String componentName, String confName, ComponentProperties properties) {
-    	log.info("Saving the configuration object into the database for " + componentName);
+    public void saveConfigurationObjectIntoDatabase(Object configurationObject,
+                                                    String companyId,
+                                                    String componentName,
+                                                    String confName,
+                                                    ComponentProperties properties) {
+    	log.info("Saving the configuration object into the database for "
+                + componentName);
         String inexistentSource = null;
         String sourceName = properties.getString(Conventions.CONFIGURATION_OBJECTS_SOURCE_PROPERTY, inexistentSource);
         if (sourceName == inexistentSource) {
@@ -171,13 +176,39 @@ class ConfigurationLoader {
 					componentName, DatasourceURL.CONFIGURATION_OBJECTS_TABLE);
 			DatabaseConfiguration dbConf = dsURL
 					.getConfiguration();
-			String xml = serializer.serialize(configurationObject);
-			dbConf.setProperty(confName, xml);
+			String serializedObj = serializer.serialize(configurationObject);
+			dbConf.setProperty(confName, serializedObj);
         } else {
         	throw new ConfigurationException("The specified value for " +
         			"easyconf:configuration-object-source is not valid: " +
         			sourceName);
         }
     }
-    
+
+    public void deleteConfigurationObjectFromDatabase(String companyId,
+                                                      String componentName,
+                                                      String confName,
+                                                      ComponentProperties properties) {
+        String inexistentSource = null;
+        String sourceName = properties.getString
+                (Conventions.CONFIGURATION_OBJECTS_SOURCE_PROPERTY, inexistentSource);
+        if (sourceName == inexistentSource) {
+        	throw new ConfigurationException("It is imposible to delete the "
+                    + "configuration object. "
+        			+ "Please specify a valid datasource in property "
+        			+ Conventions.CONFIGURATION_OBJECTS_SOURCE_PROPERTY);
+        } else if (DatasourceURL.isDatasource(sourceName)) {
+        	DatasourceURL dsURL = new DatasourceURL(sourceName, companyId,
+					componentName, DatasourceURL.CONFIGURATION_OBJECTS_TABLE);
+			DatabaseConfiguration dbConf = dsURL
+					.getConfiguration();
+            dbConf.clearProperty(confName);
+        } else {
+        	throw new ConfigurationException("The specified value for " +
+        			"easyconf:configuration-object-source is not valid: " +
+        			sourceName);
+        }
+
+
+    }
 }
