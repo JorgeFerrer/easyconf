@@ -23,6 +23,7 @@ import org.apache.commons.digester.substitution.VariableSubstitutor;
 import org.apache.commons.digester.xmlrules.DigesterLoader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.StringUtils;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -90,6 +91,7 @@ class ConfigurationLoader {
 		String confObjXML = dsURL.getConfiguration().
 			getString(confName);
 		if (confObjXML == null) return null;
+        confObjXML = StringUtils.replace(confObjXML, "\\,", ",");
 		Object confObject = serializer.deserialize(confObjXML);
 		result = new ConfigurationObjectCache(confObject, null, properties, confName);
 		return result;
@@ -177,6 +179,7 @@ class ConfigurationLoader {
 			DatabaseConfiguration dbConf = dsURL
 					.getConfiguration();
 			String serializedObj = serializer.serialize(configurationObject);
+            serializedObj = StringUtils.replace(serializedObj, ",", "\\,");
 			dbConf.setProperty(confName, serializedObj);
         } else {
         	throw new ConfigurationException("The specified value for " +

@@ -15,7 +15,7 @@
   <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-SNAPSHOT -->
 
-  <currentVersion>0.9.5</currentVersion>
+  <currentVersion>0.9.6-RC1</currentVersion>
   <organization>
     <name>EasyConf team</name>
     <url>http://www.sourceforge.net/projects/easyconf</url>
