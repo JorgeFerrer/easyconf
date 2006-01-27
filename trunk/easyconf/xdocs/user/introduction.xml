@@ -75,39 +75,40 @@
          <p> This manual is a work in progress. Here is the expected table of 
             contents: </p>
          <ul>
-            <li>Introduction</li>
+            <li><a href="introduction.html">Introduction</a></li>
             <li>
                <p>Properties</p>
                <ul>
-                  <li>Using</li>
-                  <li>System properties</li>
-                  <li>Filters</li>
-                  <li>Multiple environments</li>
-                  <li>Multiple components</li>
-                  <li>Planned features</li>
+                  <li><a href="properties/using.html">Using</a></li>
+						<li><a href="properties/sysproperties.html">System properties</a></li>
+						<li><a href="properties/filters.html">Filters</a></li>
+						<li><a href="properties/multicomponents.html">Multiple components</a></li>
+						<li><a href="properties/multienvironments.html">Multiple environments</a></li>
+						<li>DB persistance</li>
                   <!-- db + LDAP + JNDI, pairs, beans -->
                </ul>
             </li>
             <li>
                <p>XML Files</p>
                <ul>
-                  <li>Using</li>
-                  <li>Variables</li>
-                  <li>Complex mappings</li>
-                  <li>Planned features</li>
+						<li><a href="xml/using.html">Using</a></li>
+						<li><a href="xml/variables.html">Variables</a></li>
+						<li>Complex mappings</li>
+						<li>DB persistance</li>
                   <!-- multi component, multi environment, simplification -->
                </ul>
             </li>
-            <li><p>J2EE</p>
+            <li><p>Advanced features</p>
                <ul>
-                  <li>Taglibs</li>
-                  <li>Services (TBD)</li>
-               </ul>
-            </li>
-            <li><p>JMX</p>
-            	<ul>
-                  <li>JMX and Configuration</li>
-                  <li>JMX and EasyConf</li>
+						<li><a href="asp-model.html">ASP model</a></li>
+						<li><a href="reloading.html">Automatic reloading</a></li>
+						<li>J2EE:
+							<ul>
+								<li><a href="J2EE/taglibs.html">Taglibs</a></li>
+								<li><a href="J2EE/services.html">Services</a></li>
+							</ul>
+						</li>
+                  <li><a href="jmx/introduction.html">JMX</a></li>
                </ul>
             </li>
             <li><p>Specific use cases (TBD)</p>
@@ -116,10 +117,9 @@
                   <li>Hibernate</li>
                </ul>
             </li>
-            <li>Utils (TBD)</li>
          </ul>
-         <p> The progress of this manual can be followed viewing the latest <a 
-            href="">CVS files</a> </p>
+         <p> The progress of this manual can be followed either looking at the left menu or if you can't wait by viewing the latest 
+				<a 																										 href="http://cvs.sourceforge.net/viewcvs.py/easyconf/easyconf/xdocs/">CVS files</a> </p>
       </section>
    </body>
 </document>
