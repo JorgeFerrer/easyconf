@@ -1,5 +1,7 @@
 HOW TO MAKE AN EASYCONF RELEASE
 -------------------------------
+
+
 0) Prepare the documentation
 
 All of EasyConf features must be apropriately documented in the 
